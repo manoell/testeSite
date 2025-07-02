@@ -317,6 +317,54 @@
     <script type="module" src="index.js?v2.21.011"></script>
     <script src="./irParaArchor.js"></script>
     <script src="./high-contrast.js"></script>
+	
+	<script>
+		// Função para mostrar loading por tempo específico
+		function showLoadingFor(seconds) {
+			const loading = document.getElementById('loading');
+			loading.classList.add('visivel');
+			
+			setTimeout(() => {
+				loading.classList.remove('visivel');
+			}, seconds * 1000);
+		}
+
+		// Função para mostrar imagem de loading do captcha por tempo específico
+		function showCaptchaLoadingFor(seconds) {
+			const captchaLoading = document.querySelector('.captcha_loading_image');
+			if (captchaLoading) {
+				captchaLoading.style.visibility = 'visible';
+				
+				setTimeout(() => {
+					captchaLoading.style.visibility = 'hidden';
+				}, seconds * 1000);
+			}
+		}
+
+		// Event listener para o botão refresh
+		document.addEventListener('DOMContentLoaded', function() {
+			const refreshBtn = document.getElementById('captcha_refresh_btn');
+			if (refreshBtn) {
+				refreshBtn.addEventListener('click', function(e) {
+					e.preventDefault();
+					showLoadingFor(1); // Mostra loading por 1 segundo
+					// Mantém a funcionalidade original do refresh
+					refreshCaptcha();
+				});
+			}
+			
+			// Event listener para o botão volume-up
+			const volumeBtn = document.querySelector('.captcha_play_button');
+			if (volumeBtn) {
+				volumeBtn.addEventListener('click', function(e) {
+					e.preventDefault();
+					showLoadingFor(10); // Mostra loading por 10 segundos
+					showCaptchaLoadingFor(1); // Mostra imagem loading por 1 segundo
+					// Aqui você pode manter qualquer funcionalidade original do áudio se necessário
+				});
+			}
+		});
+	</script>
 
 </body>
 
