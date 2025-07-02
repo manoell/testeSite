@@ -600,3 +600,72 @@ ul.cabecalho-rastro {
         padding: 0.5em;
     }
 }
+
+/* CSS para redimensionar a imagem do rodapé automaticamente */
+
+.marca-gov {
+    max-width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.marca-gov img {
+    max-width: 100%;
+    max-height: 80px; /* Ajuste conforme a altura desejada do rodapé */
+    width: auto;
+    height: auto;
+    object-fit: contain; /* Mantém proporção sem distorcer */
+}
+
+/* Para telas menores */
+@media (max-width: 768px) {
+    .marca-gov img {
+        max-height: 60px; /* Altura menor em mobile */
+        max-width: 90%;
+    }
+}
+
+/* Para telas muito pequenas */
+@media (max-width: 480px) {
+    .marca-gov img {
+        max-height: 45px;
+        max-width: 85%;
+    }
+}
+
+/* Garantir que o rodapé como um todo tenha uma altura controlada */
+.fim-pagina {
+    min-height: 100px; /* Ajuste conforme necessário */
+    display: flex;
+    align-items: center;
+}
+
+.largura-maxima {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+/* Para desktop, pode organizar em linha */
+@media (min-width: 992px) {
+    .largura-maxima {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .marca-gov {
+        flex: 1;
+        max-width: 300px; /* Limite máximo em desktop */
+    }
+    
+    .copyright,
+    .cnpj-rodape {
+        flex-shrink: 0;
+    }
+}
+

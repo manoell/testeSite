@@ -1,13 +1,114 @@
 /* FOOTER / Rodapé -------------------------------- */
 
+/* LIMPAR DIVS WRAPPER */
+#portal-footer-wrapper,
+#portal-footer,
+#rodape-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+footer {
+    background: #fafafa !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
 .fim-pagina {
-    padding: 1.2rem 1rem 1rem 1.5rem;
-    background-color: #ffe600;
-    background-image: url(../imagens/rodape-bg.svg);
+    padding: 2rem 1rem !important;
+    background-image: url(../img/bg-amarelo.svg);
     background-repeat: no-repeat;
     background-position: center bottom;
     background-size: 100% 150px;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
+
+.largura-maxima {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+}
+
+/* LOGO CENTRALIZADO */
+.marca-gov {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 0 !important;
+}
+
+.marca-gov img {
+    width: auto !important;
+    max-width: 100% !important;
+    max-height: 80px !important;
+    height: auto !important;
+    object-fit: contain !important;
+}
+
+/* TEXTOS CENTRALIZADOS */
+.copyright,
+.cnpj-rodape {
+    font-family: 'Trebuchet MS', 'arial', 'helvetica', 'Open Sans', sans-serif !important;
+    font-weight: normal !important;
+    color: #00416b !important;
+    text-align: center !important;
+    margin: 0 !important;
+    width: 100% !important;
+    position: static !important;
+}
+
+.copyright {
+    font-size: 14px !important;
+}
+
+.cnpj-rodape {
+    font-size: 12px !important;
+}
+
+/* RESPONSIVO MANTENDO CENTRALIZADO */
+@media screen and (min-width: 768px) {
+    .marca-gov img {
+        max-height: 70px !important;
+    }
+    
+    .copyright {
+        font-size: 13px !important;
+    }
+    
+    .cnpj-rodape {
+        font-size: 11px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .fim-pagina {
+        padding: 1.5rem 1rem !important;
+    }
+    
+    .marca-gov img {
+        max-height: 60px !important;
+    }
+    
+    .copyright {
+        font-size: 12px !important;
+    }
+    
+    .cnpj-rodape {
+        font-size: 10px !important;
+    }
+}
+
+/* RESTO DO CSS ORIGINAL */
 
 li a .proporcao-link-rodape {
     width: 16px;
@@ -104,27 +205,6 @@ li a .proporcao-link-rodape {
     }
 }
 
-.fim-pagina .marca-gov {
-    width: 100%;
-    margin-bottom: 1.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-@media screen and (min-width: 768px) {
-    .fim-pagina .largura-maxima {
-        position: relative;
-    }
-    .fim-pagina .marca-gov {
-        width: 33%;
-        margin-bottom: unset;
-    }
-}
-
 .rodape .marca-gov img {
     width: 100%;
     max-width: 490px;
@@ -132,30 +212,6 @@ li a .proporcao-link-rodape {
 
 .rodape .marca-gov img.prevencao {
     width: 10rem;
-}
-
-.fim-pagina .copyright,
-.fim-pagina .cnpj-rodape {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 1rem;
-}
-
-@media screen and (min-width: 768px) {
-    .fim-pagina .copyright {
-        position: absolute;
-        top: 20%;
-        left: 0%;
-        width: unset;
-        margin-bottom: unset;
-    }
-    .fim-pagina .cnpj-rodape {
-        position: absolute;
-        top: 60%;
-        left: 0%;
-        width: unset;
-        margin-bottom: unset;
-    }
 }
 
 /* Início do tratamento do pop-up */
@@ -363,8 +419,4 @@ a:visited {
 
 #content .enabled {
     display: none;
-}
-
-footer {
-    background: #fafafa;
 }
