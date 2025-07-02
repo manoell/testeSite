@@ -7,9 +7,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Rastreamento</title>
-    <!-- Script Ruxit comentado para evitar interferência -->
-    <!-- <script type="text/javascript" src="../ruxitagentjs_ICA7NVfgqrux_10315250519065025.js" data-dtconfig="rid=RID_1261318018|rpid=-1436449472|domain=correios.com.br|reportUrl=/rb_bf62475kpy|app=1076fce661cc53ae|cuc=88037dhn|owasp=1|mel=100000|featureHash=ICA7NVfgqrux|lastModification=1750775729968|srsr=10000|tp=500,50,0|rdnt=1|uxrgce=1|agentUri=/ruxitagentjs_ICA7NVfgqrux_10315250519065025.js"></script> -->
-    
+
     <!-- CDN corrigida -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" />
     
@@ -30,37 +28,6 @@
     <!-- Arquivos locais da pasta /app/ (sem ../) -->
     <link rel="stylesheet" href="index.css?v2.21.011">
     <link rel="stylesheet" href="carrossel.css?v2.21.011">
-    
-    <!-- Global site tag (gtag.js) - Google Analytics - Nova Versão-->
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-        gtag('config', 'G-J59GSF3WW5');
-    </script>
-    <!-- Fim do Google Analytics - Nova Versão-->
-    <!-- Inicio Google Analytics -->
-    <script>
-        (function(i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] || function() {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date();
-            a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0];
-            a.async = 1;
-            a.src = g;
-            m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
-        ga('create', 'UA-564464-1', 'auto');
-        ga('send', 'pageview');
-    </script>
-    <!-- Fim Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J59GSF3WW5"></script>
 </head>
 
 <!-- CLASSE "oculto" REMOVIDA -->
@@ -376,16 +343,6 @@
     </div>
     <div id="loading"></div>
     
-    <script>
-        var RAIZ = '/opt/sistemas/';
-        var SITE = 'https://rastreamento.correios.com.br/';
-        var APP_HTTP = 'https://rastreamento.correios.com.br/app/';
-        var APP = '/opt/sistemas/app/';
-        var APP_FILES = '../static/'; // Corrigido para ../static/
-        var msg = {"AUTENTICACAO_NECESSARIA":"\u00c9 necess\u00e1ria a autentica\u00e7\u00e3o, aperte o bot\u00e3o entrar","AGUARDE":"Aguarde...","AGUARDE_ENVIO_EMAIL":"Enviando Email...","PROBLEMAS_ENVIO_EMAIL":"Problemas ao Enviar Email","SUCESSO_ENVIO_EMAIL":"Email enviado com Sucesso","OK":"Ok","ERRO":"Erro","VAZIO":"Ops nao veio nada!","RETORNO_INEXPERADO":"Ops algo aconteceu!","ERRO_DETALHE":"(@@erro)","SUCCESS":"success","INFO":"info","DARK":"dark","WARNING":"warning","DANGER":"danger","LIGHT":"light","ICO_EXCLAMATION":"fa fa-exclamation-triangle","ICO_CHECK":"fa fa-check-circle","ICO_REFRESH":"fa fa-sync-alt fa-spin","COM_ESPERA_01S":5,"COM_ESPERA_05S":500,"COM_ESPERA_1S":1000,"COM_ESPERA_2S":2000,"COM_ESPERA":3000,"SEM_ESPERA":0,"100":"Continuar","101":"Mudando Protocolos","102":"Processando","200":"OK","201":"@@objeto Criado","202":"Aceito","203":"N\u00e3o autorizado","204":"Nenhum Conte\u00fado","205":"Resetar Conte\u00fado","206":"Conte\u00fado Parcial","300":"M\u00faltipla Escolha","301":"Movido Permanentemente","302":"Encontrado","303":"Veja outro","304":"N\u00e3o modificado","305":"Use Proxy","306":"Proxy Trocado","400":"Solicita\u00e7\u00e3o Inv\u00e1lida","401":"N\u00e3o autorizado","402":"Pagamento necess\u00e1rio","403":"Proibido","404":"N\u00e3o encontrado","405":"M\u00e9todo n\u00e3o permitido","406":"N\u00e3o aceito","407":"Autentica\u00e7\u00e3o de Proxy Necess\u00e1ria","408":"Tempo de solicita\u00e7\u00e3o esgotado","409":"Conflito","410":"Perdido","411":"Dura\u00e7\u00e3o necess\u00e1ria","412":"Falha de pr\u00e9-condi\u00e7\u00e3o","413":"Solicita\u00e7\u00e3o da entidade muito extensa","414":"Solicita\u00e7\u00e3o de URL muito Longa","415":"Tipo de m\u00eddia n\u00e3o suportado","416":"Solicita\u00e7\u00e3o de faixa n\u00e3o satisfat\u00f3ria","417":"Falha na expectativa","500":"Erro do Servidor Interno","501":"N\u00e3o implementado","502":"Porta de entrada ruim","503":"Servi\u00e7o Indispon\u00edvel","504":"Tempo limite da Porta de Entrada","505":"Vers\u00e3o HTTP n\u00e3o suportada"};
-        var AMBIENTE_EXECUCAO = 'P';
-    </script>
-    
     <!-- Todos os scripts com caminhos corrigidos -->
     <script defer type="module" src="../core/templates/bunker/js/bunker.js?3"></script>
     <script type="module" src="../static/js/global.js"></script>
@@ -395,56 +352,64 @@
     <!-- <script src="../lib/jquery/jquery.min.js"></script> -->
     <script src="../lib/jquery/js/jquery.mask.min.js"></script>
 
-    <!-- MAPA Leaflet -->
-    <!-- <script src="../lib/leaflet/leaflet.js"></script>
-         <script src="../lib/leaflet/leaflet-src.js"></script>
-        <script src="../lib/leaflet/leaflet-realtime.js"></script> -->
-
     <!-- Bootstrap -->
     <script src="../lib/bootstrap4/js/bootstrap.bundle.js"></script>
 
     <!-- JQUERY MASKINPUT -->
     <script src="../lib/maskedinput-1.3.1/dist/jquery.maskedinput.min.js"></script>
-
-    <!-- Inicio Google Analytics -->
-
-    <!-- <script>
-        (function(i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] || function() {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date();
-            a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0];
-            a.async = 1;
-            a.src = g;
-            m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
-        ga('create', 'UA-564464-1', 'auto');
-        ga('send', 'pageview');
-    </script> -->
-    <!-- Fim Google Analytics -->
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-J59GSF3WW5"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-        gtag('config', 'G-J59GSF3WW5');
-    </script> -->
-    <!-- Fim Global site tag (gtag.js) - Google Analytics -->
-    
-    <!--<script src="../core/js/rastroMulti.js?--><?//= CSSJSV ?><!--"></script>-->
-    <!--<script type="module" src="../core/js/rastroUnico.js?--><?//= CSSJSV ?><!--"></script>-->
     
     <!-- Scripts locais da pasta /app/ -->
     <script type="module" src="index.js?v2.21.011"></script>
     <script src="./irParaArchor.js"></script>
     <script src="./high-contrast.js"></script>
+	
+	<script>
+		// Função para mostrar loading por tempo específico
+		function showLoadingFor(seconds) {
+			const loading = document.getElementById('loading');
+			loading.classList.add('visivel');
+			
+			setTimeout(() => {
+				loading.classList.remove('visivel');
+			}, seconds * 1000);
+		}
+
+		// Função para mostrar imagem de loading do captcha por tempo específico
+		function showCaptchaLoadingFor(seconds) {
+			const captchaLoading = document.querySelector('.captcha_loading_image');
+			if (captchaLoading) {
+				captchaLoading.style.visibility = 'visible';
+				
+				setTimeout(() => {
+					captchaLoading.style.visibility = 'hidden';
+				}, seconds * 1000);
+			}
+		}
+
+		// Event listener para o botão refresh
+		document.addEventListener('DOMContentLoaded', function() {
+			const refreshBtn = document.getElementById('captcha_refresh_btn');
+			if (refreshBtn) {
+				refreshBtn.addEventListener('click', function(e) {
+					e.preventDefault();
+					showLoadingFor(1); // Mostra loading por 1 segundo
+					// Mantém a funcionalidade original do refresh
+					refreshCaptcha();
+				});
+			}
+			
+			// Event listener para o botão volume-up
+			const volumeBtn = document.querySelector('.captcha_play_button');
+			if (volumeBtn) {
+				volumeBtn.addEventListener('click', function(e) {
+					e.preventDefault();
+					showLoadingFor(10); // Mostra loading por 10 segundos
+					showCaptchaLoadingFor(1); // Mostra imagem loading por 1 segundo
+					// Aqui você pode manter qualquer funcionalidade original do áudio se necessário
+				});
+			}
+		});
+	</script>
 
 </body>
 
