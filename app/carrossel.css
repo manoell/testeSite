@@ -1,3 +1,9 @@
+/* =================================================================
+   CARROSSEL DE BANNERS - OTIMIZADO
+   Estilos para o carrossel de banners promocionais
+   ================================================================= */
+
+/* ===== CONTROLES DO CARROSSEL ===== */
 .carousel-control-next,
 .carousel-control-prev {
     height: 40px;
@@ -6,7 +12,6 @@
     top: 50%;
     bottom: auto;
     transform: translateY(-50%);
-    /*background-color: #f47735;*/
 }
 
 .carousel-control-prev {
@@ -17,6 +22,7 @@
     padding-right: 0;
 }
 
+/* ===== ÍCONES DOS CONTROLES ===== */
 .carousel-control-next-icon,
 .carousel-control-prev-icon {
     color: black;
@@ -31,10 +37,8 @@
     background-image: url("../static/svg/seta_next_cinza.svg");
 }
 
+/* ===== ITENS DO CARROSSEL ===== */
 .carousel-item {
-    transition: -webkit-transform 0.5s ease;
     transition: transform 0.5s ease;
-    transition: transform 0.5s ease, -webkit-transform 0.5s ease;
-    -webkit-backface-visibility: visible;
     backface-visibility: visible;
 }
