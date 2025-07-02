@@ -1,0 +1,15 @@
+# Desabilitar listagem de diretórios
+Options -Indexes
+
+# Redirecionar para app quando acessar diretamente
+DirectoryIndex index.php
+
+# Permitir assets estáticos
+<FilesMatch "\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$">
+    allow from all
+</FilesMatch>
+
+# Bloquear arquivos sensíveis
+<Files ".htaccess">
+    deny from all
+</Files>
