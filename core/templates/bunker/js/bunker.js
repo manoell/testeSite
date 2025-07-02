@@ -1,4 +1,3 @@
-import './menu.js';
 import './botoes.js';
 import './acessibilidade.js';
 import * as forms from './forms.js';

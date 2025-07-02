@@ -10,6 +10,7 @@ const ddUsuMob = document.querySelector('#menu .menu div.dd-mobile');
 let pilha = [];
 
 function abre() {
+   if (!ctn) return; // Se não tem menu, não faz nada
    hambuguer.classList.add('aberto');
    ctn.classList.remove('oculto');
    document.body.classList.add('menu-aberto');
@@ -19,6 +20,7 @@ function abre() {
 }
 
 function fecha() {
+  if (!ctn) return; // Se não tem menu, não faz nada
   hambuguer.classList.remove('aberto');
   ctn.classList.add('oculto');
   document.body.classList.remove('menu-aberto');
@@ -34,6 +36,7 @@ function fecha() {
 }
 
 function abreSubmenu(ev, anchor) {
+  if (!ctn) return;
   let a;
   if (ev) {
     a = ev.currentTarget;
@@ -58,6 +61,7 @@ function abreSubmenu(ev, anchor) {
 }
 
 function fechaSubmenu(ev) {
+  if (!ctn) return;
   let a;
   if (ev) {
     a = ev.currentTarget;
@@ -115,6 +119,7 @@ function subHash() {
 }
 
 function abreFechMenUsu(ev) {
+  if (!menuUsuario || !ddUsu) return;
   ev.stopPropagation();
   if (menuUsuario.classList.contains('aberto')) {
     menuUsuario.classList.remove('aberto');
@@ -126,6 +131,7 @@ function abreFechMenUsu(ev) {
 }
 
 function abreFechMenUsuMob(ev) {
+  if (!menuUsuarioMob || !ddUsuMob) return;
   ev.stopPropagation();
   if (menuUsuarioMob.classList.contains('aberto')) {
     menuUsuarioMob.classList.remove('aberto');
@@ -153,51 +159,83 @@ function saveConf() {
 
 function ini() {
   readConf();
-  hambuguer.addEventListener('click', ev => {
-    const ham = ev.currentTarget;
-    if (ham.classList.contains('aberto')) {
-      fecha();
+  
+  if (hambuguer) {
+    // Se não tem menu, desabilita o hambúrguer mas não adiciona listener
+    if (!ctn) {
+      hambuguer.style.pointerEvents = 'none';
+      hambuguer.style.cursor = 'default';
     } else {
-      abre();
+      // Se tem menu, funciona normalmente
+      hambuguer.addEventListener('click', ev => {
+        const ham = ev.currentTarget;
+        if (ham.classList.contains('aberto')) {
+          fecha();
+        } else {
+          abre();
+        }
+      });
+      hambuguer.addEventListener('click', ev => ev.stopPropagation());
     }
-  });
-  ctn.classList.add('oculto');
-  setInterval(() => {
-    const altura = window.innerHeight - hambuguer.getBoundingClientRect().bottom;
-    ctn.style.height = (altura - 9) + 'px';
-  }, 500);
+    enterClick(hambuguer);
+  }
+  
+  if (ctn) {
+    ctn.classList.add('oculto');
+    setInterval(() => {
+      const altura = window.innerHeight - hambuguer.getBoundingClientRect().bottom;
+      ctn.style.height = (altura - 9) + 'px';
+    }, 500);
+    
+    ctn.addEventListener('click', ev => ev.stopPropagation());
+    const subs = ctn.querySelectorAll('div');
+    for (let s of subs) {
+      if (s.classList.contains('dd-mobile')) {
+        continue;
+      }
+      let voltar = document.createElement('a');
+      voltar.textContent = 'Voltar';
+      voltar.className = 'voltar';
+      s.insertAdjacentElement('afterbegin', voltar);
+    }
+    ctn.querySelectorAll('a').forEach(a => {
+      a.tabIndex = 1;
+    });
+    ctn.querySelectorAll(':scope > div a').forEach(a => {
+      a.tabIndex = -1;
+    });
+    const abriveis = ctn.querySelectorAll('a:not([href])');
+    for (let a of abriveis) {
+      if (a.classList.contains('voltar')) {
+        a.addEventListener('click', fechaSubmenu);
+      } else {
+        a.addEventListener('click', abreSubmenu);
+      }
+      enterClick(a);
+    }
+
+    if (desktop && conf.aberto) abre();
+    try {
+      let sub = ctn;
+      for (let i = 0; i < conf.abertos.length; i++) {
+        let a = sub.childNodes[conf.abertos[i]];
+        abreSubmenu(null, a);
+        if (!desktop) {
+          addHash();
+        }
+        sub = a.nextSibling.nextSibling;
+      }
+    } catch {
+      conf.abertos = [];
+      saveConf();
+    }
+  }
+  
   document.body.addEventListener('click', () => {
     if (!desktop) {
       fecha();
     }
   });
-  hambuguer.addEventListener('click', ev => ev.stopPropagation());
-  ctn.addEventListener('click', ev => ev.stopPropagation());
-  const subs = ctn.querySelectorAll('div');
-  for (let s of subs) {
-    if (s.classList.contains('dd-mobile')) {
-      continue;
-    }
-    let voltar = document.createElement('a');
-    voltar.textContent = 'Voltar';
-    voltar.className = 'voltar';
-    s.insertAdjacentElement('afterbegin', voltar);
-  }
-  ctn.querySelectorAll('a').forEach(a => {
-    a.tabIndex = 1;
-  });
-  ctn.querySelectorAll(':scope > div a').forEach(a => {
-    a.tabIndex = -1;
-  });
-  const abriveis = ctn.querySelectorAll('a:not([href])');
-  for (let a of abriveis) {
-    if (a.classList.contains('voltar')) {
-      a.addEventListener('click', fechaSubmenu);
-    } else {
-      a.addEventListener('click', abreSubmenu);
-    }
-    enterClick(a);
-  }
 
   window.addEventListener('popstate', ev => {
     if (desktop) return;
@@ -211,35 +249,25 @@ function ini() {
   });
 
   removeHash();
-
-  if (desktop && conf.aberto) abre();
-  try {
-    let sub = ctn;
-    for (let i = 0; i < conf.abertos.length; i++) {
-      let a = sub.childNodes[conf.abertos[i]];
-      abreSubmenu(null, a);
-      if (!desktop) {
-        addHash();
-      }
-      sub = a.nextSibling.nextSibling;
-    }
-  } catch {
-    conf.abertos = [];
-    saveConf();
-  }
-  enterClick(hambuguer);
+  
   if (menuUsuario) {
     menuUsuario.addEventListener('click', abreFechMenUsu);
-    menuUsuarioMob.addEventListener('click', abreFechMenUsuMob);
     ddUsu.addEventListener('click', ev => ev.stopPropagation());
-    ddUsuMob.addEventListener('click', ev => ev.stopPropagation());
-    document.body.addEventListener('click', () => {
-      menuUsuario.classList.remove('aberto');
-      menuUsuarioMob.classList.remove('aberto');
-      ddUsu.classList.remove('aberto');
-      ddUsuMob.classList.remove('aberto');
-    });
     enterClick(menuUsuario);
+  }
+  
+  if (menuUsuarioMob) {
+    menuUsuarioMob.addEventListener('click', abreFechMenUsuMob);
+    ddUsuMob.addEventListener('click', ev => ev.stopPropagation());
+  }
+  
+  if (menuUsuario || menuUsuarioMob) {
+    document.body.addEventListener('click', () => {
+      if (menuUsuario) menuUsuario.classList.remove('aberto');
+      if (menuUsuarioMob) menuUsuarioMob.classList.remove('aberto');
+      if (ddUsu) ddUsu.classList.remove('aberto');
+      if (ddUsuMob) ddUsuMob.classList.remove('aberto');
+    });
   }
 }
 
