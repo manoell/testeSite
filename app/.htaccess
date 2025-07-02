@@ -1,0 +1,14 @@
+# Desabilitar listagem de diretórios
+Options -Indexes
+
+# Index padrão
+DirectoryIndex index.php
+
+# Bloquear arquivos sensíveis
+<Files ".htaccess">
+    deny from all
+</Files>
+
+<Files "*.log">
+    deny from all
+</Files>

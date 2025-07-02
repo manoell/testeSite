@@ -1,0 +1,28 @@
+# Desabilitar listagem de diretórios
+Options -Indexes
+
+# Redirecionar para app quando acessar diretamente
+DirectoryIndex index.php
+
+# Permitir assets necessários
+<FilesMatch "\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$">
+    allow from all
+</FilesMatch>
+
+# Permitir securimage funcionar
+<Files "securimage_show.php">
+    allow from all
+</Files>
+
+<Files "securimage_play.php">
+    allow from all
+</Files>
+
+<Files "securimage.js">
+    allow from all
+</Files>
+
+# Bloquear arquivos sensíveis
+<Files ".htaccess">
+    deny from all
+</Files>
