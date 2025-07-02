@@ -343,26 +343,35 @@
     </div>
     <div id="loading"></div>
     
-    <!-- Todos os scripts com caminhos corrigidos -->
-    <script defer type="module" src="../core/templates/bunker/js/bunker.js?3"></script>
-    <script type="module" src="../static/js/global.js"></script>
+    <!-- SEÇÃO DE SCRIPTS - SUBSTITUIR A PARTE ATUAL -->
+	<!-- Localizar esta seção no final do arquivo app/index.php (antes do </body>) -->
 
-    <!-- JQUERY -->
-    <script src="../lib/jquery/jquery.js"></script>
-    <!-- <script src="../lib/jquery/jquery.min.js"></script> -->
-    <script src="../lib/jquery/js/jquery.mask.min.js"></script>
+	<!-- Todos os scripts com caminhos corrigidos -->
+	<script defer type="module" src="../core/templates/bunker/js/bunker.js?3"></script>
+	<script type="module" src="../static/js/global.js"></script>
 
-    <!-- Bootstrap -->
-    <script src="../lib/bootstrap4/js/bootstrap.bundle.js"></script>
+	<!-- JQUERY -->
+	<script src="../lib/jquery/jquery.js"></script>
+	<script src="../lib/jquery/js/jquery.mask.min.js"></script>
 
-    <!-- JQUERY MASKINPUT -->
-    <script src="../lib/maskedinput-1.3.1/dist/jquery.maskedinput.min.js"></script>
-    
-    <!-- Scripts locais da pasta /app/ -->
-    <script type="module" src="index.js?v2.21.011"></script>
-    <script src="./irParaArchor.js"></script>
-    <script src="./high-contrast.js"></script>
-	
+	<!-- Bootstrap -->
+	<script src="../lib/bootstrap4/js/bootstrap.bundle.js"></script>
+
+	<!-- JQUERY MASKINPUT -->
+	<script src="../lib/maskedinput-1.3.1/dist/jquery.maskedinput.min.js"></script>
+
+	<!-- 🆕 NOVOS MÓDULOS OTIMIZADOS - ADICIONAR ESTAS LINHAS -->
+	<script type="module" src="constants.js?v2.21.011"></script>
+	<script type="module" src="templates.js?v2.21.011"></script>
+	<script type="module" src="utils.js?v2.21.011"></script>
+	<script type="module" src="api.js?v2.21.011"></script>
+
+	<!-- 🔄 SCRIPTS OTIMIZADOS - SUBSTITUIR OS ORIGINAIS -->
+	<script type="module" src="index.js?v2.21.011"></script>
+	<script type="module" src="irParaArchor.js?v2.21.011"></script>
+	<script type="module" src="high-contrast.js?v2.21.011"></script>
+
+	<!-- Manter os scripts existentes no final (loading, etc.) -->
 	<script>
 		// Função para mostrar loading por tempo específico
 		function showLoadingFor(seconds) {
@@ -393,8 +402,7 @@
 				refreshBtn.addEventListener('click', function(e) {
 					e.preventDefault();
 					showLoadingFor(1); // Mostra loading por 1 segundo
-					// Mantém a funcionalidade original do refresh
-					refreshCaptcha();
+					// A funcionalidade do refresh agora é gerenciada pelo sistema otimizado
 				});
 			}
 			
@@ -405,7 +413,6 @@
 					e.preventDefault();
 					showLoadingFor(10); // Mostra loading por 10 segundos
 					showCaptchaLoadingFor(1); // Mostra imagem loading por 1 segundo
-					// Aqui você pode manter qualquer funcionalidade original do áudio se necessário
 				});
 			}
 		});

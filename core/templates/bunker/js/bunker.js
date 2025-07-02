@@ -5,7 +5,6 @@ import * as forms from './forms.js';
 import * as modal from './modal.js';
 import * as alerta from './alerta.js';
 import * as tabs from './tabs.js';
-import * as tabelas from './tabelas.js';
 
 document.body.classList.remove('oculto');
 // Tema escuro da Black Friday
