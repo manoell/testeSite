@@ -1,1 +1,0 @@
-No Content: ./core/templates/bunker/js/tabelas.js

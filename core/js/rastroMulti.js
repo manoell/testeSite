@@ -15,9 +15,15 @@ const formataDataHora = (dataHora) => {
 
 
 const formataData = (dataHora) => {
-    let dh = dataHora ? ? '0000-00-00T00:00:00';
+    if (!dataHora) {
+        return '00/00/0000';
+    }
 
-    const dataFormatada = dh.substring(0, 10).split('-').reverse().join('/').substring(0, 10);
+    const dataFormatada = dataHora.substring(0, 10)
+        .split('-')
+        .reverse()
+        .join('/');
+    
     return dataFormatada;
 }
 
