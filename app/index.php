@@ -215,14 +215,11 @@
         <div id="regiao-botoes" class="oculta"></div>
     </main>
 	
-	<!-- In&#237;cio do rodap&#233; -->
+	<!-- Início do rodapé -->
     <footer>
-        <!-- Div repons&#225;vel pelo portlet de rodap&#233; -->
+        <!-- Div responsável pelo portlet de rodapé -->
         <div id="portal-footer-wrapper"></div>
         <div id="portal-footer">
-
-
-
             <div id="rodape-content">
                 <div class="fim-pagina">
                     <div class="largura-maxima">
@@ -240,7 +237,7 @@
 			</div>
         </div>
     </footer>
-    <!-- Fim do rodap&#233; -->
+    <!-- Fim do rodapé -->
     
     <div id="alerta">
         <div class="msg"></div>
