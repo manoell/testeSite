@@ -54,22 +54,11 @@
     <section id="menu">
         <a class="hamburger" tabindex="1"></a>
         <a class="logo" href="https://www.correios.com.br"></a>
-        <a class="pesquisar"></a>
-        <a class="entrar" href="../core/seguranca/entrar.php"></a>
         
         <div class="menu">
             <section>
                 <h1>Rastreamento <!-- 1.4.6.013 - v2.21.011 --></h1>
-                <a href="../core/seguranca/entrar.php">Entrar</a>
             </section>
-            
-            <a href="http://globaltracktrace.ptc.post/gtt.web/Search.aspx" target="_blank">Rastreamento em outros países</a>
-            <a href="https://www.correios.com.br/acesso-a-informacao/perguntas-frequentes">Perguntas frequentes</a>
-            <a href="https://mais.correios.com.br/app/index.php" target="_blank">Busca Agências</a>
-            <a href="https://www.correios.com.br/falecomoscorreios/central-de-atendimento" target="_blank">Central de Atendimento</a>
-            <a href="https://www.correios.com.br/receber/prazo-de-guarda" target="_blank">Prazo de Guarda Objetos Nacionais</a>
-            <a href="https://www.correios.com.br/receber/prazo-de-guarda-objetos-internacionais" target="_blank">Prazo de Guarda Objetos Internacionais</a>
-            <a href="https://www2.correios.com.br/sistemas/precosPrazos/restricaoentrega/" target="_blank">Restrição de Entrega por CEP</a>
         </div>
     </section>
     
@@ -97,7 +86,6 @@
                                 <input type="text" id="objeto" name="objeto" class="form-control"
                                        placeholder="AA123456785BR" value="" required>
                             </div>
-                            <div style="margin-top: 1em"> * limite de 20 objetos</div>
                             <div class="mensagem"></div>
                         </div>
                     </div>
@@ -230,110 +218,11 @@
     </main>
     
     <footer id="rodape">
-        <div class="recipiente largura-maxima">
-            <div class="rodape-links">
-                <h2>Fale Conosco</h2>
-                <ul class="lista-icone">
-                    <li>
-                        <a href="https://faleconosco.correios.com.br/faleconosco/app/index.php" target="_blank">
-                            <!-- Caminhos das imagens do rodapé corrigidos -->
-                            <img class="icones-link" src="../core/templates/bunker/img/rodape/monitor.png">
-                            <span>Registro de Manifestações</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.correios.com.br/falecomoscorreios/central-de-atendimento" target="_blank">
-                            <img class="icones-link" src="../core/templates/bunker/img/rodape/duvida.png">
-                            <span>Central de Atendimento</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://faleconosco.correios.com.br/faleconosco/app/cadastro/contrate/index.php" target="_blank">
-                            <img class="icones-link" src="../core/templates/bunker/img/rodape/negocios.png">
-                            <span>Soluções para o seu negócio</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://faleconosco.correios.com.br/faleconosco/app/cadastro/suporte/index.php" target="_blank">
-                            <img class="icones-link" src="../core/templates/bunker/img/rodape/headset.png">
-                            <span>Suporte ao cliente com contrato</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.correios.com.br/falecomoscorreios/ouvidoria" target="_blank">
-                            <img class="icones-link" src="../core/templates/bunker/img/rodape/ouvidoria.png">
-                            <span>Ouvidoria</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.correios.com.br/falecomoscorreios/canais-de-denuncia" target="_blank">
-                            <img class="icones-link" src="../core/templates/bunker/img/rodape/denuncia.png">
-                            <span>Denúncia</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="rodape-links">
-                <h2>Sobre os Correios</h2>
-                <ul class="lista-icone">
-                    <li>
-                        <a href="https://www.correios.com.br/acesso-a-informacao/institucional/identidade-corporativa" target="_blank">
-                            <img class="icones-link" src="../core/templates/bunker/img/rodape/identidade.png">
-                            <span>Identidade corporativa</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.correios.com.br/educacao-e-cultura" target="_blank">
-                            <img class="icones-link" src="../core/templates/bunker/img/rodape/educação.png">
-                            <span>Educação e cultura</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.correios.com.br/acesso-a-informacao/servidores/arquivos/codigo-de-conduta-etica-dos-correios.pdf" target="_blank">
-                            <img class="icones-link" src="../core/templates/bunker/img/rodape/código ética.png">
-                            <span>Código de ética</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.correios.com.br/acesso-a-informacao/institucional/publicacoes/processos-de-contas-anuais" target="_blank">
-                            <img class="icones-link" src="../core/templates/bunker/img/rodape/Transparência.png">
-                            <span>Transparência e prestação de contas</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.correios.com.br/falecomoscorreios/politica-de-privacidade-e-cookies" target="_blank">
-                            <img class="icones-link" src="../core/templates/bunker/img/rodape/cadeado.png">
-                            <span>Política de Privacidade e Notas Legais</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="rodape-links">
-                <h2>Outros Sites</h2>
-                <ul class="lista-icone">
-                    <li>
-                        <a href="http://shopping.correios.com.br/wbm/store/script/store.aspx?cd_company=ErZW8Dm9i54=" target="_blank">
-                            <img class="icones-link" src="../core/templates/bunker/img/rodape/loja correios.png">
-                            <span>Loja online dos Correios</span>
-                        </a>
-                    </li>
-                    <!--            <li>-->
-                    <!--                <a href="https://www.gov.br/mcom/pt-br" target="_blank">-->
-                    <!--                    <img class="icones-link" src="--><?//= SITE ?><!--core/templates/bunker/img/rodape/governo-federal.png">-->
-                    <!--                    <span>Ministério das Comunicações</span>-->
-                    <!--                </a>-->
-                    <!--            </li>-->
-                </ul>
-            </div>
-        </div>
-        
         <div class="marca-gov">
-            <!--                <img src="--><?//= SITE ?><!--core/templates/bunker/img/marca-gov.png"/>-->
+            <img src="../core/templates/bunker/img/rodape/marca-gov.png"/>
         </div>
         <p>
-        <div class="copyright">© Copyright 2025 Correios</div>
+        <div class="copyright"><strong>© Copyright 2025 Correios</strong></div>
         </p>
     </footer>
     
