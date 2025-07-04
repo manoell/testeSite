@@ -80,19 +80,7 @@
 │           │   │   ouvidoria.png
 │           │   │
 │           │   └───rodape
-│           │           cadeado.png
-│           │           código ética.png
-│           │           denuncia.png
-│           │           duvida.png
-│           │           educação.png
-│           │           headset.png
-│           │           identidade.png
-│           │           loja correios.png
 │           │           marca-gov.png
-│           │           monitor.png
-│           │           negocios.png
-│           │           ouvidoria.png
-│           │           Transparência.png
 │           │
 │           └───js
 │                   acessibilidade.js
