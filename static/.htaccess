@@ -1,15 +1,96 @@
+# ===== PASTA STATIC - CONFIGURAÇÃO OTIMIZADA E COMPATÍVEL =====
+
 # Desabilitar listagem de diretórios
 Options -Indexes
 
-# Redirecionar para app quando acessar diretamente
+# Index padrão
 DirectoryIndex index.php
 
-# Permitir assets estáticos
-<FilesMatch "\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$">
-    allow from all
-</FilesMatch>
+# ===== CACHE PARA ASSETS ESTÁTICOS =====
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # CSS e JS - cache longo
+    ExpiresByType text/css "access plus 6 months"
+    ExpiresByType application/javascript "access plus 6 months"
+    
+    # Imagens - cache médio para não conflitar
+    ExpiresByType image/png "access plus 3 months"
+    ExpiresByType image/jpeg "access plus 3 months"
+    ExpiresByType image/jpg "access plus 3 months"
+    ExpiresByType image/gif "access plus 3 months"
+    ExpiresByType image/svg+xml "access plus 3 months"
+    ExpiresByType image/webp "access plus 3 months"
+    ExpiresByType image/ico "access plus 3 months"
+    
+    # Fontes
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/eot "access plus 1 year"
+</IfModule>
+
+# ===== COMPRESSÃO GZIP =====
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ===== HEADERS BÁSICOS =====
+
+<IfModule mod_headers.c>
+    # Cache headers para assets estáticos
+    <FilesMatch "\.(css|js|woff|woff2|ttf|eot)$">
+        Header set Cache-Control "public, max-age=15552000"
+        Header unset ETag
+    </FilesMatch>
+    
+    # Headers mais permissivos para imagens
+    <FilesMatch "\.(png|jpg|jpeg|gif|svg|webp|ico)$">
+        Header set Cache-Control "public, max-age=7776000"
+    </FilesMatch>
+    
+    # Segurança básica
+    Header always set X-Content-Type-Options nosniff
+</IfModule>
+
+# ===== MIME TYPES =====
+
+<IfModule mod_mime.c>
+    AddType font/woff .woff
+    AddType font/woff2 .woff2
+    AddType application/font-woff .woff
+    AddType application/font-woff2 .woff2
+    AddType font/ttf .ttf
+    AddType font/eot .eot
+    AddType image/webp .webp
+    AddType image/svg+xml .svg
+    AddType application/javascript .js
+    AddType text/css .css
+</IfModule>
+
+# ===== SEGURANÇA BÁSICA =====
 
 # Bloquear arquivos sensíveis
 <Files ".htaccess">
-    deny from all
+    Require all denied
 </Files>
+
+<Files "*.log">
+    Require all denied
+</Files>
+
+# ===== ACESSO TOTAL PARA ASSETS =====
+
+# Permitir todos os assets estáticos sem restrições
+<FilesMatch "\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|webp)$">
+    Require all granted
+    # Permitir acesso de qualquer origem para imagens
+    Header always set Access-Control-Allow-Origin "*"
+</FilesMatch>

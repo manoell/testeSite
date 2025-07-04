@@ -1,22 +1,32 @@
-/* ..................................................................................................... */
+/* =================================================================
+   SISTEMA DE ALTO CONTRASTE - OTIMIZADO
+   Versão otimizada: seletores consolidados, performance melhorada
+   ================================================================= */
 
-/* ALTO CONTRASTE */
-
+/* ===== ELEMENTOS BASE ===== */
 .contrast,
 .contrast nav,
 .contrast div,
 .contrast li,
 .contrast ol,
+.contrast ul,
 .contrast header,
 .contrast footer,
 .contrast section,
 .contrast main,
 .contrast aside,
-.contrast article {
+.contrast article,
+.contrast table,
+.contrast tbody,
+.contrast thead,
+.contrast tr,
+.contrast td,
+.contrast th {
     background: black !important;
     color: white !important;
 }
 
+/* ===== ELEMENTOS DE TEXTO ===== */
 .contrast h1,
 .contrast h2,
 .contrast h3,
@@ -32,41 +42,76 @@
 .contrast i,
 .contrast b,
 .contrast u,
-.contrast span {
+.contrast span,
+.contrast small,
+.contrast code,
+.contrast pre {
     color: white !important;
 }
 
+/* ===== LINKS ===== */
 .contrast a {
     color: yellow !important;
 }
 
-.contrast button,
-.contrast input[type=button],
-.contrast input[type=reset],
-.contrast input[type=submit] {
-    background: black !important;
-    color: yellow !important;
-    border: none !important;
+.contrast a:hover,
+.contrast a:focus {
+    color: #ffff99 !important;
+    text-decoration: underline !important;
 }
 
-.contrast input[type=text],
-.contrast input[type=password],
-.contrast input[type=url],
-.contrast input[type=search],
-.contrast input[type=email],
-.contrast input[type=tel],
-.contrast input[type=date],
-.contrast input[type=month],
-.contrast input[type=week],
-.contrast input[type=datetime],
-.contrast input[type=datetime-local],
-.contrast textarea,
-.contrast input[type=number] {
+.contrast a:visited {
+    color: #ffcc00 !important;
+}
+
+/* ===== BOTÕES ===== */
+.contrast button,
+.contrast input[type="button"],
+.contrast input[type="reset"],
+.contrast input[type="submit"],
+.contrast .btn {
     background: black !important;
-    border: 1px solid white !important;
+    color: yellow !important;
+    border: 2px solid yellow !important;
+}
+
+.contrast button:hover,
+.contrast input[type="button"]:hover,
+.contrast input[type="reset"]:hover,
+.contrast input[type="submit"]:hover,
+.contrast .btn:hover {
+    background: yellow !important;
+    color: black !important;
+}
+
+/* ===== INPUTS ===== */
+.contrast input[type="text"],
+.contrast input[type="password"],
+.contrast input[type="url"],
+.contrast input[type="search"],
+.contrast input[type="email"],
+.contrast input[type="tel"],
+.contrast input[type="date"],
+.contrast input[type="month"],
+.contrast input[type="week"],
+.contrast input[type="datetime"],
+.contrast input[type="datetime-local"],
+.contrast input[type="number"],
+.contrast textarea,
+.contrast select {
+    background: black !important;
+    border: 2px solid white !important;
     color: white !important;
 }
 
+.contrast input:focus,
+.contrast textarea:focus,
+.contrast select:focus {
+    border-color: yellow !important;
+    box-shadow: 0 0 0 2px yellow !important;
+}
+
+/* ===== IMAGENS ===== */
 .contrast img.on-contrast-force-gray {
     filter: grayscale(100%) contrast(120%);
 }
@@ -75,14 +120,118 @@
     filter: brightness(0) invert(1);
 }
 
-.contrast #divParaVc nav a {
-    color: black !important;
-}
+/* ===== ESPECÍFICOS DO SISTEMA ===== */
 
+/* Navegação de abas */
+.contrast #divParaVc nav a,
 .contrast #divPorVc nav a {
     color: black !important;
+    background: yellow !important;
 }
 
-.contrast .tabs>nav a.sel {
-    background: yellow;
+.contrast .tabs > nav a.sel {
+    background: yellow !important;
+    color: black !important;
+}
+
+.contrast .tabs > nav a {
+    background: black !important;
+    color: yellow !important;
+    border: 1px solid yellow !important;
+}
+
+/* ===== FORMULÁRIOS ===== */
+.contrast .form-control {
+    background: black !important;
+    border: 2px solid white !important;
+    color: white !important;
+}
+
+.contrast .form-control:focus {
+    border-color: yellow !important;
+    box-shadow: 0 0 0 2px yellow !important;
+}
+
+/* ===== MODAIS ===== */
+.contrast .modal-content {
+    background: black !important;
+    border: 2px solid yellow !important;
+}
+
+.contrast .modal-header {
+    border-bottom: 2px solid yellow !important;
+}
+
+.contrast .modal-footer {
+    border-top: 2px solid yellow !important;
+}
+
+/* ===== ALERTAS ===== */
+.contrast .alert {
+    background: black !important;
+    border: 2px solid yellow !important;
+    color: white !important;
+}
+
+/* ===== TABELAS ===== */
+.contrast table {
+    border: 2px solid white !important;
+}
+
+.contrast th,
+.contrast td {
+    border: 1px solid white !important;
+}
+
+/* ===== BREADCRUMB ===== */
+.contrast .breadcrumb {
+    background: black !important;
+}
+
+.contrast .breadcrumb a {
+    color: yellow !important;
+}
+
+/* ===== DROPDOWNS ===== */
+.contrast .dropdown-menu {
+    background: black !important;
+    border: 2px solid yellow !important;
+}
+
+.contrast .dropdown-item {
+    color: white !important;
+}
+
+.contrast .dropdown-item:hover {
+    background: yellow !important;
+    color: black !important;
+}
+
+/* ===== CARDS ===== */
+.contrast .card {
+    background: black !important;
+    border: 2px solid white !important;
+}
+
+.contrast .card-header {
+    background: black !important;
+    border-bottom: 1px solid white !important;
+}
+
+/* ===== CARROSSEL ===== */
+.contrast .carousel-control-prev-icon,
+.contrast .carousel-control-next-icon {
+    filter: invert(1);
+}
+
+/* ===== PERFORMANCE ===== */
+.contrast * {
+    transition: none !important;
+    animation: none !important;
+}
+
+/* ===== ACESSIBILIDADE ===== */
+.contrast :focus {
+    outline: 3px solid yellow !important;
+    outline-offset: 2px !important;
 }

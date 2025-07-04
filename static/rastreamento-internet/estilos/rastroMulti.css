@@ -1,3 +1,9 @@
+/* =================================================================
+   RASTREAMENTO MÚLTIPLO - ESTILOS OTIMIZADOS
+   Versão otimizada: consolidadas regras, performance melhorada
+   ================================================================= */
+
+/* ===== RESPONSIVIDADE BASE ===== */
 @media (min-width: 768px) {
     form,
     nav,
@@ -8,14 +14,247 @@
     }
 }
 
+@media (min-width: 992px) {
+    form,
+    nav,
+    #tabs-rastreamento,
+    #breadcrumb {
+        width: 962px;
+        margin: auto;
+    }
+}
+
+@media (min-width: 1200px) {
+    form,
+    nav,
+    #tabs-rastreamento,
+    #breadcrumb {
+        width: 1170px;
+        margin: auto;
+    }
+}
+
+/* ===== BOTÃO DE PESQUISA ===== */
 button.pesquisar,
 a.button.pesquisar {
     border-radius: 50%;
     padding: 0;
     background-image: url("../../lib/font-awesome/svg/search-solid.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
+button.pesquisar:hover,
+a.button.pesquisar:hover {
+    background-color: #f5f5f5;
+    transform: scale(1.05);
+}
+
+button.pesquisar:active,
+a.button.pesquisar:active {
+    transform: scale(0.95);
+}
+
+/* ===== CÓDIGOS DE OBJETO ===== */
 .cod-objeto {
-    color: #1874CD;
+    color: #1874cd;
     font-weight: bold;
+    font-family: monospace;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.cod-objeto:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* ===== TABELAS DE RESULTADOS ===== */
+.resultado-multiplo {
+    margin-top: 1rem;
+}
+
+.resultado-multiplo table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.resultado-multiplo th,
+.resultado-multiplo td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.resultado-multiplo th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+}
+
+/* ===== STATUS DOS OBJETOS ===== */
+.status-entregue {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.status-transito {
+    color: #ffc107;
+    font-weight: bold;
+}
+
+.status-erro {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* ===== AÇÕES DOS OBJETOS ===== */
+.acoes-objeto {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.acoes-objeto .btn {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+}
+
+/* ===== LOADING STATE ===== */
+.carregando-multiplo {
+    text-align: center;
+    padding: 2rem;
+}
+
+.carregando-multiplo .spinner {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    border: 0.25rem solid #f3f3f3;
+    border-top: 0.25rem solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ===== CONTADOR DE RESULTADOS ===== */
+.contador-resultados {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.contador-resultados strong {
+    color: #495057;
+}
+
+/* ===== FILTROS ===== */
+.filtros-multiplo {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filtro-status {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filtro-status:hover {
+    background-color: #f8f9fa;
+}
+
+.filtro-status.ativo {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+/* ===== EXPANSÃO DE DETALHES ===== */
+.detalhes-expandidos {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-top: 1px solid #dee2e6;
+}
+
+.detalhes-expandidos .timeline {
+    margin: 0;
+}
+
+/* ===== RESPONSIVIDADE ESPECÍFICA ===== */
+@media (max-width: 767px) {
+    .acoes-objeto {
+        flex-direction: column;
+    }
+    
+    .filtros-multiplo {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .resultado-multiplo table,
+    .resultado-multiplo thead,
+    .resultado-multiplo tbody,
+    .resultado-multiplo th,
+    .resultado-multiplo td,
+    .resultado-multiplo tr {
+        display: block;
+    }
+    
+    .resultado-multiplo thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    
+    .resultado-multiplo tr {
+        border: 1px solid #ccc;
+        margin-bottom: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+    }
+    
+    .resultado-multiplo td {
+        border: none;
+        position: relative;
+        padding-left: 50%;
+        padding-bottom: 0.5rem;
+    }
+    
+    .resultado-multiplo td:before {
+        content: attr(data-label) ": ";
+        position: absolute;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: bold;
+    }
+}
+
+/* ===== PERFORMANCE ===== */
+.resultado-multiplo {
+    will-change: contents;
+}
+
+.cod-objeto,
+.filtro-status,
+button.pesquisar {
+    will-change: transform;
 }

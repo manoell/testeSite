@@ -1,100 +1,90 @@
+/* =================================================================
+   RASTREAMENTO ÚNICO - TIMELINE OTIMIZADA
+   Versão otimizada: performance melhorada, código consolidado
+   ================================================================= */
+
+/* ===== CABEÇALHO DO RASTRO ===== */
 .cabecalho-rastro {
     display: flex;
-    padding-bottom: 0px;
-    /*height: 90px;*/
-    justify-content: left;
+    padding-bottom: 0;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
 .cabecalho-content {
     margin-left: 30px;
     padding-bottom: 20px;
-    /*padding-top: 7px;*/
 }
 
 .cabecalho-rastro p {
     font-weight: 600;
     font-family: Arial, Helvetica, sans-serif;
     letter-spacing: 0.1pt;
+    margin: 0;
 }
 
+/* ===== LISTA BASE ===== */
 ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
+/* ===== STEPS DA TIMELINE ===== */
 .ship-steps .step {
     display: flex;
-    padding-bottom: 0px;
-    /*height: 90px;*/
+    padding-bottom: 0;
+    position: relative;
 }
 
 .step-content {
     margin-left: 30px;
     padding-bottom: 20px;
+    flex: 1;
 }
 
+/* ===== TEXTOS ===== */
 .text {
     width: 100%;
     text-align: left;
-    margin-top: 0;
-    margin-bottom: 0;
+    margin: 0;
+    line-height: 1.4;
 }
 
 .text-head {
-    font-size: 0.80rem;
+    font-size: 0.8rem;
     font-weight: bold;
-    /*color: #878787; cinza escuro
-    color: #120a8f;*/
     color: #00416b;
-    /*azul correios*/
+    margin-bottom: 0.25rem;
 }
 
 .text-content {
     font-size: 0.75rem;
     font-weight: normal;
-    /*color: #6d6d6d;*/
     color: #222;
+    margin-bottom: 0.1rem;
 }
 
+/* ===== SETAS E CONECTORES ===== */
 .arrow-current {
     height: auto;
-    /*72px;*/
-    /*Altura da linha*/
     border-right: 2.5px solid #ffc40c;
-    /* Adiciona borda esquerda na div como ser fosse uma linha.*/
     width: 21px;
+    position: relative;
 }
 
 .arrow-none {
     height: auto;
-    /*Altura da linha*/
     width: 21px;
 }
 
 .arrow-dashed {
     height: 82px;
-    /*72px;*/
-    /*Altura da linha*/
-    /*border-right: 2.0px dashed #ffc40c;*/
-    /* Adiciona borda esquerda na div como ser fosse uma linha.*/
     border-right: 1.5px dashed #878787;
     width: 21px;
 }
 
-.step-img {
-    height: 40px;
-    width: 40px;
-}
-
-.step-img-icone {
-    background-color: #ddd;
-    border-radius: 100%;
-    object-fit: scale-down;
-    height: 40px;
-    width: 40px;
-}
-
+/* ===== CÍRCULOS DA TIMELINE ===== */
 .circle {
     background-color: #ddd;
     border-radius: 50%;
@@ -102,6 +92,7 @@ ul {
     height: 45px;
     overflow: hidden;
     position: relative;
+    flex-shrink: 0;
 }
 
 .circle .circle-logo {
@@ -118,11 +109,10 @@ ul {
     height: 33px;
     top: 7px;
     left: 6px;
-    /*background-color: #ddd;*/
-    /* Icone traço 19/07/2024 */
     filter: invert(24%) sepia(69%) saturate(2298%) hue-rotate(181deg) brightness(90%) contrast(101%);
 }
 
+/* ===== CÍRCULO SECUNDÁRIO ===== */
 .circle-p {
     background-color: #878787;
     border-radius: 50%;
@@ -133,6 +123,7 @@ ul {
     left: 5px;
 }
 
+/* ===== ELEMENTOS DECORATIVOS ===== */
 .bola {
     height: 2vh;
     width: 2vh;
@@ -146,7 +137,6 @@ ul {
 
 .bola3 {
     border-radius: 50%;
-    /*transform: translate(48%, 46%);*/
     width: 1vh;
     height: 1vh;
     left: 0.2vh;
@@ -155,100 +145,50 @@ ul {
     background-color: blue;
 }
 
+/* ===== TIPOGRAFIA GLOBAL ===== */
 p {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    /*font-family: 'Trebuchet MS', 'arial', 'helvetica', 'Open Sans', sans-serif;*/
     letter-spacing: -0.4pt;
     word-spacing: 0.8pt;
     line-height: 1.4;
     padding-bottom: 0.1rem;
+    margin: 0;
 }
 
+/* ===== BOTÃO VER MAIS ===== */
 .btn-ver-mais {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 10px 0;
     margin-left: 15px;
+    position: relative;
 }
 
+/* ===== BOTÕES DE AÇÃO ===== */
 .btn-rastro {
-    height: 20%;
+    height: auto;
     width: 100%;
     margin-bottom: 10px;
     margin-right: 5px;
+    padding: 0.5rem;
+    font-size: 0.8rem;
 }
 
-@media all and (max-width: 320px) {
-    .text-head {
-        font-size: 0.70rem;
-    }
-    .text-content {
-        font-size: 0.65rem;
-    }
-    .step-img {
-        height: 35px;
-        width: 35px;
-    }
-    .arrow-current {
-        width: 18px;
-    }
-    .arrow-none {
-        width: 18px;
-    }
-    .arrow-dashed {
-        width: 18px;
-    }
-    .step-content {
-        margin-left: 23px;
-    }
-    .step-img-icone {
-        height: 35px;
-        width: 35px;
-    }
-    .circle {
-        width: 35px;
-        height: 35px;
-    }
-    .circle .circle-img {
-        width: 25px;
-        height: 25px;
-        /* icone traçado */
-        filter: invert(24%) sepia(69%) saturate(2298%) hue-rotate(181deg) brightness(90%) contrast(101%);
-    }
-    /* ic-traco*/
-    body.contrast .circle-img {
-        filter: invert(100%) sepia(100%) saturate(2%) hue-rotate(288deg) brightness(106%) contrast(101%);
-    }
-    .btn-ver-mais {
-        margin-left: 10px;
-    }
-}
-
-@media all and (min-width: 768px) {
-    .btn-rastro {
-        width: 30%;
-        margin-bottom: 0px;
-        margin-right: 5px;
-    }
-}
-
-/*tooltip do botão ver mais*/
-
+/* ===== TOOLTIPS ===== */
 .btn-ver-mais a .title {
     position: absolute;
-    /*left: 173px;*/
     display: block;
     background: #ffd400;
     width: auto;
     padding: 5px 15px;
     transform: translateY(-220%) translateX(0px);
     border-radius: 4px;
-    /*box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);*/
     visibility: hidden;
     opacity: 0;
-    transition: 0.5s;
+    transition: all 0.3s ease;
     color: #52473b;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 0.7rem;
+    white-space: nowrap;
+    z-index: 10;
 }
 
 .btn-ver-mais a:hover .title {
@@ -260,14 +200,8 @@ p {
 .btn-ver-mais a .title::before {
     content: '';
     position: absolute;
-    /*top: 48%;*/
     top: 90%;
-    /*left: -8px;*/
     left: 2px;
-    /*width: 12px;
-    height: 12px;*/
-    /*background: red;*/
-    /*#ffd400;*/
     transform: rotate(45deg) translateY(-50%);
     border-radius: 2px;
     border-top: 10px solid transparent;
@@ -275,8 +209,7 @@ p {
     border-right: 10px solid #ffd400;
 }
 
-/*tooltip contraste*/
-
+/* ===== TOOLTIP CONTRASTE ===== */
 .btn-ver-mais a .title-c {
     position: absolute;
     display: block;
@@ -287,11 +220,13 @@ p {
     border-radius: 4px;
     visibility: hidden;
     opacity: 0;
-    transition: 0.5s;
+    transition: all 0.3s ease;
     color: #fff;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 0.7rem;
     border: 1px solid #fff;
+    white-space: nowrap;
+    z-index: 10;
 }
 
 .btn-ver-mais a:hover .title-c {
@@ -322,4 +257,101 @@ p {
     border-top: 13px solid transparent;
     border-bottom: 13px solid transparent;
     border-right: 13px solid #fff;
+}
+
+/* ===== RESPONSIVIDADE MOBILE ===== */
+@media all and (max-width: 320px) {
+    .text-head {
+        font-size: 0.7rem;
+    }
+    
+    .text-content {
+        font-size: 0.65rem;
+    }
+    
+    .arrow-current,
+    .arrow-none,
+    .arrow-dashed {
+        width: 18px;
+    }
+    
+    .step-content {
+        margin-left: 23px;
+    }
+    
+    .circle {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .circle .circle-img {
+        width: 25px;
+        height: 25px;
+        filter: invert(24%) sepia(69%) saturate(2298%) hue-rotate(181deg) brightness(90%) contrast(101%);
+    }
+    
+    .btn-ver-mais {
+        margin-left: 10px;
+    }
+}
+
+/* ===== RESPONSIVIDADE TABLET ===== */
+@media all and (min-width: 768px) {
+    .btn-rastro {
+        width: 30%;
+        margin-bottom: 0;
+        margin-right: 5px;
+        display: inline-block;
+    }
+}
+
+/* ===== CONTRASTE ESPECÍFICO ===== */
+body.contrast .circle-img {
+    filter: invert(100%) sepia(100%) saturate(2%) hue-rotate(288deg) brightness(106%) contrast(101%);
+}
+
+/* ===== PERFORMANCE ===== */
+.ship-steps {
+    will-change: contents;
+}
+
+.circle,
+.step-content {
+    will-change: transform;
+}
+
+.btn-ver-mais a .title,
+.btn-ver-mais a .title-c {
+    will-change: transform, opacity;
+}
+
+/* ===== ACESSIBILIDADE ===== */
+.btn-ver-mais a:focus .title,
+.btn-ver-mais a:focus .title-c {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(-220%) translateX(7px);
+}
+
+/* ===== STATES DE INTERAÇÃO ===== */
+.step:hover .circle {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+}
+
+.btn-rastro:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+}
+
+/* ===== LOADING STATES ===== */
+.step.loading .circle {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
 }

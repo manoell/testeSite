@@ -1,19 +1,15 @@
-/*******************************
-* MODAL AS LEFT/RIGHT SIDEBAR
-* Add "left" or "right" in modal parent div, after class="modal".
-* Get free snippets on bootpen.com
-*******************************/
+/* =================================================================
+   GLOBAL CSS - MODAIS E UTILITÁRIOS - OTIMIZADO
+   Versão otimizada: consolidadas regras, performance melhorada
+   ================================================================= */
 
+/* ===== MODAL SIDEBAR (LEFT/RIGHT) ===== */
 .modal.left .modal-dialog,
 .modal.right .modal-dialog {
     position: fixed;
     margin: auto;
     width: 400px;
-    /* width: 320px; */
     height: 100%;
-    -webkit-transform: translate3d(0%, 0, 0);
-    -ms-transform: translate3d(0%, 0, 0);
-    -o-transform: translate3d(0%, 0, 0);
     transform: translate3d(0%, 0, 0);
 }
 
@@ -21,6 +17,8 @@
 .modal.right .modal-content {
     height: 100%;
     overflow-y: auto;
+    border-radius: 0;
+    border: none;
 }
 
 .modal.left .modal-body,
@@ -28,13 +26,11 @@
     padding: 15px 15px 80px;
 }
 
-/*Left*/
+/* ===== ANIMAÇÕES OTIMIZADAS ===== */
 
+/* Modal Left */
 .modal.left.fade .modal-dialog {
-    left: -320px;
-    -webkit-transition: opacity 0.3s linear, left 0.3s ease-out;
-    -moz-transition: opacity 0.3s linear, left 0.3s ease-out;
-    -o-transition: opacity 0.3s linear, left 0.3s ease-out;
+    left: -400px;
     transition: opacity 0.3s linear, left 0.3s ease-out;
 }
 
@@ -42,13 +38,9 @@
     left: 0;
 }
 
-/*Right*/
-
+/* Modal Right */
 .modal.right.fade .modal-dialog {
-    right: -320px;
-    -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
-    -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
-    -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+    right: -400px;
     transition: opacity 0.3s linear, right 0.3s ease-out;
 }
 
@@ -56,101 +48,74 @@
     right: 0;
 }
 
-/* ----- MODAL STYLE ----- */
+/* ===== MODAL TOP ===== */
+.modal.top .modal-dialog {
+    position: fixed;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    transform: translate3d(0%, 0, 0);
+}
 
-.modal-content {
+.modal.top .modal-content {
+    height: 100%;
+    overflow-y: auto;
     border-radius: 0;
     border: none;
 }
 
-.modal-header {
-    border-bottom-color: #EEEEEE;
-    background-color: #FAFAFA;
-}
-
-/* ---------------- */
-
-.full-width-div {
-    position: absolute !important;
-    /* width   : 100%; */
-    /* height: 100vh; */
-    left: 0;
-    right: 0;
-}
-
-/*******************************
-* MODAL AS LEFT/RIGHT SIDEBAR
-* Add "left" or "right" in modal parent div, after class="modal".
-* Get free snippets on bootpen.com
-*******************************/
-
-.modal.top .modal-dialog,
-.modal.left .modal-dialog,
-.modal.right .modal-dialog {
-    position: fixed;
-    margin: auto;
-    width: 100%;
-    /* width         : 320px; */
-    height: 100%;
-    -webkit-transform: translate3d(0%, 0, 0);
-    -ms-transform: translate3d(0%, 0, 0);
-    -o-transform: translate3d(0%, 0, 0);
-    transform: translate3d(0%, 0, 0);
-}
-
-.modal.top .modal-content,
-.modal.left .modal-content,
-.modal.right .modal-content {
-    height: 100%;
-    overflow-y: auto;
-}
-
-/*.modal.top .modal-body,*/
-
-.modal.left .modal-body,
-.modal.right .modal-body {
-    padding: 15px 15px 80px;
-}
-
-/*Top*/
-
 .modal.top.fade .modal-dialog {
-    top: -768px;
-    -webkit-transition: opacity 0.3s linear, top 0.3s ease-out;
-    -moz-transition: opacity 0.3s linear, top 0.3s ease-out;
-    -o-transition: opacity 0.3s linear, top 0.3s ease-out;
+    top: -100vh;
     transition: opacity 0.3s linear, top 0.3s ease-out;
 }
 
 .modal.top.fade.show .modal-dialog {
     top: 0;
-    /* left: auto; */
 }
 
-/*Left*/
-
-.modal.left.fade .modal-dialog {
-    left: -320px;
-    -webkit-transition: opacity 0.3s linear, left 0.3s ease-out;
-    -moz-transition: opacity 0.3s linear, left 0.3s ease-out;
-    -o-transition: opacity 0.3s linear, left 0.3s ease-out;
-    transition: opacity 0.3s linear, left 0.3s ease-out;
+/* ===== ESTILOS DO MODAL ===== */
+.modal-header {
+    border-bottom-color: #eeeeee;
+    background-color: #fafafa;
 }
 
-.modal.left.fade.show .modal-dialog {
+/* ===== UTILITÁRIO FULL WIDTH ===== */
+.full-width-div {
+    position: absolute !important;
     left: 0;
-}
-
-/*Right*/
-
-.modal.right.fade .modal-dialog {
-    right: -320px;
-    -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
-    -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
-    -o-transition: opacity 0.3s linear, right 0.3s ease-out;
-    transition: opacity 0.3s linear, right 0.3s ease-out;
-}
-
-.modal.right.fade.show .modal-dialog {
     right: 0;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+    .modal.left .modal-dialog,
+    .modal.right .modal-dialog {
+        width: 100%;
+        max-width: 400px;
+    }
+    
+    .modal.left.fade .modal-dialog {
+        left: -100%;
+    }
+    
+    .modal.right.fade .modal-dialog {
+        right: -100%;
+    }
+}
+
+/* ===== PERFORMANCE IMPROVEMENTS ===== */
+.modal.left .modal-dialog,
+.modal.right .modal-dialog,
+.modal.top .modal-dialog {
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+/* ===== ACESSIBILIDADE ===== */
+.modal[aria-hidden="true"] {
+    display: none;
+}
+
+.modal[aria-hidden="false"] {
+    display: block;
 }
