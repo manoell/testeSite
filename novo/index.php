@@ -30,12 +30,12 @@
         </header>
         <section>
             <a tabindex="1" href="javascript:irPara.jumpTo('tabs-rastreamento');" class="conteudo numero" data-numero="1">Ir para o conteúdo</a>
+            <a tabindex="1" href="https://vlibras.gov.br" class="libras" target="_blank">Libras</a>
             <a tabindex="1" href="javascript:irPara.jumpTo('menu');" class="menu numero" data-numero="2">Ir para o menu</a>
+            <a tabindex="1" class="saiba-mais">Saiba mais sobre acessibilidade</a>
             <a tabindex="1" href="javascript:irPara.jumpTo('titulo-pagina');" class="busca numero" data-numero="3">Ir para a busca</a>
             <a tabindex="1" href="javascript:irPara.jumpTo('rodape');" class="rodape numero" data-numero="4">Ir para o rodapé</a>
             <a tabindex="1" href="javascript:window.toggleContrast();irPara.fechaMenuAcessibilidade()" class="contraste">Alto contraste</a>
-            <a tabindex="1" href="https://vlibras.gov.br" class="libras">Libras</a>
-            <a tabindex="1" class="saiba-mais">Saiba mais sobre acessibilidade</a>
         </section>
     </div>
     
@@ -94,6 +94,7 @@
 
                     <!-- CAPTCHA -->
                     <div class="campos captcha">
+                        <!-- PRIMEIRA LINHA: Imagem CAPTCHA + Controles de áudio -->
                         <div class="campo">
                             <div class="controle">
                                 <img id="captcha_image" src="api/securimage/securimage_show.php" alt="CAPTCHA Image">
@@ -107,7 +108,7 @@
                                 
                                 <div id="captcha_image_audio_controls">
                                     <a tabindex="-1" class="captcha_play_button" href="api/securimage/securimage_play.php" onclick="return false">
-                                        <i class="fa fa-volume-up" aria-hidden="true" style="width: 16px"></i>
+                                        <i class="fa fa-volume-up" aria-hidden="true"></i>
                                         <img class="captcha_loading_image rotating" height="32" width="32"
                                              src="api/securimage/images/loading.png" alt="Loading audio" style="display: none">
                                     </a>
@@ -119,7 +120,7 @@
                             </div>
                         </div>
                         
-                        <!-- Campo CAPTCHA -->
+                        <!-- SEGUNDA LINHA: Campo CAPTCHA + Botão -->
                         <div class="campo">
                             <div class="rotulo">
                                 <label for="captcha">Digite o texto contido na imagem</label>

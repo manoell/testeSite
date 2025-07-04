@@ -156,7 +156,117 @@
                 </div>
                 <button hidden type="button" id="b-invoked" name="b-invoked"></button>
             </form>
-            <div id="tabs-rastreamento"></div>
+            <div id="tabs-rastreamento">
+				<div id="ver-rastro-unico" style="display: block;">
+				<div id="cabecalho-rastro" class="d-flex justify-content-between">
+					<ul class="cabecalho-rastro">                
+						<div class="arrow-dashed justify-content-start">
+							<div class="circle">
+								<img class="circle-logo" src="../static/rastreamento-internet/imgs/correios-sf.png" width="35px" height="35px">
+							</div>
+						</div>
+						<div class="cabecalho-content">
+							<p class="text text-content">PREVISÃO DE ENTREGA</p>                    	
+
+						<p class="text text-content">1 a 5 dias úteis após pagamento confirmado</p><p class="text text-content"></p></div>                                                
+					</ul>        
+					<div class="share-bar noPrint">
+						<a title="Compartilhar" class="btn btn-light" data-objeto="ND575882651BR">
+							<i class="fa fa-share-alt" aria-hidden="true"></i>
+						</a>
+					</div>
+				</div>		
+
+
+				<ul class="ship-steps">
+					<li class="step">
+
+				<div class="arrow-current">
+					<div class="circle">
+					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/fatura-relogio-stroke.svg">            
+					</div>
+				</div>
+
+
+				<div class="step-content">
+					<p class="text text-head">Importação autorizada  pela autoridade competente - aguardando pagamento</p>
+					<p class="text text-content">CURITIBA - PR</p>
+					  <p class="text text-head"><a href="#btnRealizarPagamento"><u>REALIZAR PAGAMENTO</u></a></p>
+					<p class="text text-content"></p>
+				</div>
+
+			</li><li class="step">
+
+				<div class="arrow-current">
+					<div class="circle">
+					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/bandeira-brasil-stroke.svg">            
+					</div>
+				</div>
+
+
+				<div class="step-content">
+					<p class="text text-head">Objeto recebido pelos Correios do Brasil</p>
+					<p class="text text-content">CURITIBA - PR</p>
+
+					<p class="text text-content"></p>
+				</div>
+
+			</li><li class="step">
+
+				<div class="arrow-current">
+					<div class="circle">
+					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/documento-visto-stroke.svg">            
+					</div>
+				</div>
+
+
+				<div class="step-content">
+					<p class="text text-head">Análise concluída - importação autorizada</p>
+					<p class="text text-content">CURITIBA - PR</p>
+					  <p class="text text-head"></p>
+					<p class="text text-content"></p>
+				</div>
+
+			</li><li class="step">
+
+				<div class="arrow-current">
+					<div class="circle">
+					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/documento-encaminhar-stroke.svg">            
+					</div>
+				</div>
+
+
+				<div class="step-content">
+					<p class="text text-head">Informações enviadas para análise da autoridade aduaneira/órgãos anuentes</p>
+					<p class="text text-content">CURITIBA - PR</p>
+					  <p class="text text-head"></p>
+					<p class="text text-content"></p>
+				</div>
+
+			</li><li class="step">
+
+				<div class="arrow-none">
+					<div class="circle">
+					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/postagem-stroke.svg">            
+					</div>
+				</div>
+
+
+				<div class="step-content">
+					<p class="text text-head">Objeto postado</p>
+					<p class="text text-content">CHINA</p>
+
+					<p class="text text-content"></p>
+				</div>
+
+			</li>
+				</ul>
+
+					</div>
+
+
+
+					</div>
             <br>
             <div class="bannersro">
                 <div id="carouselExampleControls" class="carousel" data-ride="carousel" data-interval="10000">

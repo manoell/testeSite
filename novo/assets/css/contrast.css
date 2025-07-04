@@ -1,6 +1,7 @@
 /* =================================================================
    SISTEMA DE ALTO CONTRASTE - OTIMIZADO
    Versão otimizada: seletores consolidados, performance melhorada
+   Ajustado para funcionar com novas classes do layout
    ================================================================= */
 
 /* ===== ELEMENTOS BASE ===== */
@@ -265,6 +266,20 @@
 .contrast .marca-gov img,
 .contrast #captcha_image {
     filter: contrast(1.5) brightness(1.2) invert(1);
+}
+
+/* ===== CONTROLES DE CAPTCHA ===== */
+.contrast .captcha_play_button,
+.contrast #captcha_refresh_btn {
+    background: black !important;
+    color: yellow !important;
+    border: 2px solid yellow !important;
+}
+
+.contrast .captcha_play_button:hover,
+.contrast #captcha_refresh_btn:hover {
+    background: yellow !important;
+    color: black !important;
 }
 
 /* ===== ÍCONES FONT AWESOME ===== */
