@@ -10,6 +10,11 @@
     line-height: normal; /* ← GARANTIR ALTURA CONSISTENTE */
 }
 
+#captcha {
+    min-height: 2.65rem; /* ← ADICIONAR ESTA LINHA */
+    line-height: normal; /* ← GARANTIR ALTURA CONSISTENTE */
+}
+
 /* ===== SEÇÃO DE BANNERS ===== */
 .bannersro {
     text-align: center;
