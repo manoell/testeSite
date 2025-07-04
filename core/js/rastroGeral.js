@@ -51,7 +51,7 @@ const validarCodigoObjeto = (objetos, captcha) => {
 
     const msgInvalido = 'Código de objeto, CPF ou CNPJ  informado não está válido';
     const msgMax20 = 'Por favor, informe no máximo 20 objetos';
-    const msgVazio = 'Favor informar de 1 a 20 códigos de objetos ou um CPF ou um CNPJ válido';
+    const msgVazio = 'Favor informar 1 código de objeto ou um CPF ou um CNPJ válido';
     const msgCPFinvalido = 'O CPF informado está inválido';
     const msgCNPJinvalido = 'O CNPJ informado está inválido';
     let ret = {

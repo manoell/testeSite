@@ -53,7 +53,7 @@
     
     <section id="menu">
         <a class="hamburger" tabindex="1"></a>
-        <a class="logo" href="https://www.correios.com.br"></a>
+        <a class="logo" href="#"></a>
         
         <div class="menu">
             <section>
@@ -100,13 +100,13 @@
                                 <div id="captcha_image_audio_div">
                                     <audio id="captcha_image_audio" preload="none" style="display: none">
                                         <source id="captcha_image_source_wav"
-                                                src="../core/securimage/securimage_play.php?id=745127474"
+                                                src="../core/securimage/securimage_play.php"
                                                 type="audio/wav">
                                     </audio>
                                 </div>
                                 <div id="captcha_image_audio_controls">
                                     <a tabindex="-1" class="captcha_play_button"
-                                       href="../core/securimage/securimage_play.php?id=73745"
+                                       href="../core/securimage/securimage_play.php"
                                        onclick="return false">
                                         <i class="fa fa-volume-up" aria-hidden="true" style="width: 16px"></i>
                                         <img class="captcha_loading_image rotating" height="32" width="32"
@@ -153,18 +153,7 @@
                 <div id="carouselExampleControls" class="carousel" data-ride="carousel" data-interval="10000">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <a href="https://www.correios.com.br/central-de-informacoes/boletim-aos-clientes/mensagens-falsas-sobre-encomendas" target="_blank">
-                                <picture>
-                                    <!-- Caminhos das imagens corrigidos -->
-                                    <source srcset="../static/rastreamento-internet/banners/alerta-golpe1.png?ver=v2.21.011" media="(max-width: 480px)" class="banner-geral">
-                                    <source srcset="../static/rastreamento-internet/banners/alerta-golpe2.png?ver=v2.21.011" media="(max-width: 770px)" class="banner-geral">
-                                    <source srcset="../static/rastreamento-internet/banners/alerta-golpe3.png?ver=v2.21.011" media="(max-width: 994px)" class="banner-geral">
-                                    <img src="../static/rastreamento-internet/banners/alerta-golpe4.png?ver=v2.21.011" class="justify-content-center banner-geral"/>
-                                </picture>
-                            </a>
-                        </div>
-                        <div class="carousel-item ">
-                            <a href="https://www.correios.com.br/atendimento/balcao-do-cidadao/seguros" target="_blank">
+                            <a href="#seguro" target="_blank">
                                 <picture>
                                     <source srcset="../static/rastreamento-internet/banners/campanha_abril_1.png?ver=v2.21.011" media="(max-width: 480px)" class="banner-geral">
                                     <source srcset="../static/rastreamento-internet/banners/campanha_abril_2.png?ver=v2.21.011" media="(max-width: 770px)" class="banner-geral">
@@ -174,22 +163,12 @@
                             </a>
                         </div>
                         <div class="carousel-item ">
-                            <a href="https://www.correioscelular.com.br" target="_blank">
+                            <a href="#celular" target="_blank">
                                 <picture>
                                     <source srcset="../static/rastreamento-internet/banners/dia_namorados1.png?ver=v2.21.011" media="(max-width: 480px)" class="banner-geral">
                                     <source srcset="../static/rastreamento-internet/banners/dia_namorados2.png?ver=v2.21.011" media="(max-width: 770px)" class="banner-geral">
                                     <source srcset="../static/rastreamento-internet/banners/dia_namorados3.png?ver=v2.21.011" media="(max-width: 994px)" class="banner-geral">
                                     <img src="../static/rastreamento-internet/banners/dia_namorados4.png?ver=v2.21.011" class="justify-content-center banner-geral"/>
-                                </picture>
-                            </a>
-                        </div>
-                        <div class="carousel-item ">
-                            <a href="https://www.correios.com.br/atendimento/ferramentas/aplicativo-dos-correios" target="_blank">
-                                <picture>
-                                    <source srcset="../static/rastreamento-internet/banners/loja_correios_1.png?ver=v2.21.011" media="(max-width: 480px)" class="banner-geral">
-                                    <source srcset="../static/rastreamento-internet/banners/loja_correios_2.png?ver=v2.21.011" media="(max-width: 770px)" class="banner-geral">
-                                    <source srcset="../static/rastreamento-internet/banners/loja_correios_3.png?ver=v2.21.011" media="(max-width: 994px)" class="banner-geral">
-                                    <img src="../static/rastreamento-internet/banners/loja_correios_4.png?ver=v2.21.011" class="justify-content-center banner-geral"/>
                                 </picture>
                             </a>
                         </div>

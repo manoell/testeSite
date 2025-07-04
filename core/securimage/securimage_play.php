@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Project:     Securimage: A PHP class for creating and managing form CAPTCHA images<br />
  * File:        securimage_play.php<br />
@@ -34,6 +33,11 @@
  *
  */
 
+// Se não foi fornecido ID, sair sem fazer nada
+if (empty($_GET['id'])) {
+    exit();
+}
+
 require_once dirname(__FILE__) . '/securimage.php';
 
 // if using database, adjust these options as necessary and change $img = new Securimage(); to $img = new Securimage($options);
@@ -44,27 +48,20 @@ $options = array(
     'database_user'   => '',
     'database_driver' => Securimage::SI_DRIVER_MYSQL
 );
-
 $img = new Securimage();
-
 // Other audio settings
 //$img->audio_use_sox   = true;
 //$img->audio_use_noise = true;
 //$img->degrade_audio   = false;
 //$img->sox_binary_path = 'sox';
 //Securimage::$lame_binary_path = '/usr/bin/lame'; // for mp3 audio support
-
 // To use an alternate language, uncomment the following and download the files from phpcaptcha.org
 // $img->audio_path = $img->securimage_path . '/audio/es/';
-
 // If you have more than one captcha on a page, one must use a custom namespace
 // $img->namespace = 'form2';
-
 // set namespace if supplied to script via HTTP GET
 if (!empty($_GET['namespace'])) $img->setNamespace($_GET['namespace']);
-
-
 // mp3 or wav format
 $format = (isset($_GET['format']) && strtolower($_GET['format']) == 'mp3') ? 'mp3' : null;
-
 $img->outputAudioFile($format);
+?>

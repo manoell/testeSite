@@ -9,7 +9,7 @@ export const CODE_LENGTHS = {
     CPF: 11,
     CNPJ: 14,
     CPF_ALTERNATIVE: 12,
-    TRACKING_MAX: 260 // máximo 20 objetos * 13 caracteres
+    TRACKING_MAX: 13 // máximo 20 objetos * 13 caracteres
 };
 
 // Classes CSS utilizadas
@@ -81,7 +81,7 @@ export const ERROR_MESSAGES = {
     FILL_CAPTCHA: 'Preencha o campo captcha',
     INVALID_CODE: 'Código de objeto, CPF ou CNPJ informado não está válido',
     MAX_OBJECTS: 'Por favor, informe no máximo 20 objetos',
-    INVALID_INPUT: 'Favor informar de 1 a 20 códigos de objetos ou um CPF ou um CNPJ válido',
+    INVALID_INPUT: 'Favor informar 1 código de objeto ou um CPF ou um CNPJ válido',
     NETWORK_ERROR: 'Erro de conexão. Tente novamente.',
     GENERIC_ERROR: 'Ocorreu um erro inesperado. Tente novamente.'
 };
