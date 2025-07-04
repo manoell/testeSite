@@ -102,84 +102,87 @@ class TrackingSystem {
     }
 
     validateCaptchaField() {
-        const input = domCache.get(`#${DOM_IDS.CAPTCHA_INPUT}`);
-        if (!input) return false;
+		const input = domCache.get(`#${DOM_IDS.CAPTCHA_INPUT}`);
+		if (!input) return false;
 
-        const captcha = input.value.trim();
-        
-        if (!captcha) {
-            forms.setValidade(input, ERROR_MESSAGES.FILL_CAPTCHA);
-            return false;
-        }
+		const captcha = input.value.trim();
+		
+		if (!captcha) {
+			forms.setValidade(input, ERROR_MESSAGES.FILL_CAPTCHA);
+			return false;
+		}
 
-        forms.setValidade(input, '');
-        return true;
-    }
+		return true;
+	}
 
     async handleSearch() {
-        const trackingInput = domCache.get(`#${DOM_IDS.TRACKING_INPUT}`);
-        const captchaInput = domCache.get(`#${DOM_IDS.CAPTCHA_INPUT}`);
-        
-        if (!trackingInput || !captchaInput) return;
+		const trackingInput = domCache.get(`#${DOM_IDS.TRACKING_INPUT}`);
+		const captchaInput = domCache.get(`#${DOM_IDS.CAPTCHA_INPUT}`);
+		
+		if (!trackingInput || !captchaInput) return;
 
-        // Pegar valor limpo (remover tudo exceto letras e números)
-        const valorOriginal = trackingInput.value;
-        const valorLimpo = valorOriginal.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
-        
-        if (!valorLimpo) {
-            forms.setValidade(trackingInput, 'Por favor, digite um código de rastreio, CPF ou CNPJ');
-            return;
-        }
+		// Pegar valor limpo (remover tudo exceto letras e números)
+		const valorOriginal = trackingInput.value;
+		const valorLimpo = valorOriginal.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+		
+		if (!valorLimpo) {
+			forms.setValidade(trackingInput, 'Por favor, digite um código de rastreio, CPF ou CNPJ');
+			return;
+		}
 
-        // Determinar tipo de entrada
-        const tipoEntrada = this.determinarTipoEntrada(valorLimpo);
-        
-        if (!tipoEntrada) {
-            forms.setValidade(trackingInput, 'Código de objeto, CPF ou CNPJ informado não está válido');
-            return;
-        }
+		// Determinar tipo de entrada
+		const tipoEntrada = this.determinarTipoEntrada(valorLimpo);
+		
+		if (!tipoEntrada) {
+			forms.setValidade(trackingInput, 'Código de objeto, CPF ou CNPJ informado não está válido');
+			return;
+		}
 
-        // Validar captcha
-        if (!this.validateCaptchaField()) {
-            return;
-        }
+		// Validar captcha - APENAS VERIFICAR SE ESTÁ VAZIO
+		const captcha = captchaInput.value.trim();
+		if (!captcha) {
+			forms.setValidade(captchaInput, ERROR_MESSAGES.FILL_CAPTCHA);
+			return;
+		}
 
-        forms.setValidade(trackingInput, '');
+		// Limpar possíveis erros anteriores do captcha
+		forms.setValidade(captchaInput, '');
+		forms.setValidade(trackingInput, '');
 
-        // Processar usando resultado.php
-        try {
-            alerta.abre('Consultando...');
-            
-            const dados = await this.consultarResultado(valorLimpo);
-            
-            alerta.fecha();
-            
-            // Processar baseado no tipo retornado
-            switch (dados.tipo) {
-                case 'cpf':
-                    this.processarDadosCPF(dados, valorLimpo);
-                    break;
-                case 'cnpj':
-                    this.processarDadosCNPJ(dados, valorLimpo);
-                    break;
-                case 'rastreio':
-                    this.processarDadosRastreio(dados, valorLimpo);
-                    break;
-                default:
-                    // Fallback para código de rastreio sem consulta
-                    this.processarCodigoRastreio(valorLimpo);
-                    break;
-            }
-            
-            // Ações finais sempre executadas
-            this.finalizarConsulta();
-            
-        } catch (error) {
-            alerta.fecha();
-            alerta.abre(error.message, 5, 'OK');
-            this.refreshCaptcha();
-        }
-    }
+		// Processar usando resultado.php
+		try {
+			alerta.abre('Consultando...');
+			
+			const dados = await this.consultarResultado(valorLimpo);
+			
+			alerta.fecha();
+			
+			// Processar baseado no tipo retornado
+			switch (dados.tipo) {
+				case 'cpf':
+					this.processarDadosCPF(dados, valorLimpo);
+					break;
+				case 'cnpj':
+					this.processarDadosCNPJ(dados, valorLimpo);
+					break;
+				case 'rastreio':
+					this.processarDadosRastreio(dados, valorLimpo);
+					break;
+				default:
+					// Fallback para código de rastreio sem consulta
+					this.processarCodigoRastreio(valorLimpo);
+					break;
+			}
+			
+			// Ações finais sempre executadas
+			this.finalizarConsulta();
+			
+		} catch (error) {
+			alerta.fecha();
+			this.handleSearchError(error); // ← USAR O MÉTODO ATUALIZADO
+			this.refreshCaptcha();
+		}
+	}
 
     processarDadosCPF(dados, cpf) {
         // Salvar dados em variáveis globais
@@ -639,14 +642,14 @@ class TrackingSystem {
     }
 
     handleSearchError(error) {
-        if (error.message === ERROR_MESSAGES.INVALID_CAPTCHA) {
-            alerta.fecha();
-            const captchaInput = domCache.get(`#${DOM_IDS.CAPTCHA_INPUT}`);
-            forms.setValidade(captchaInput, error.message);
-        } else {
-            alerta.abre(error.message, 10, 'OK');
-        }
-    }
+		if (error.message === ERROR_MESSAGES.INVALID_CAPTCHA) {
+			const captchaInput = domCache.get(`#${DOM_IDS.CAPTCHA_INPUT}`);
+			forms.setValidade(captchaInput, ERROR_MESSAGES.INVALID_CAPTCHA);
+			// Não fechar o alerta aqui, será fechado automaticamente
+		} else {
+			alerta.abre(error.message, 10, 'OK');
+		}
+	}
 
     // === NOVOS MÉTODOS PARA SISTEMA DE CONSULTA ===
     

@@ -102,20 +102,21 @@ export class APIManager {
     }
 
     handleError(error) {
-        if (error.message.includes('timeout') || error.message.includes('cancelado')) {
-            return new Error('Tempo limite excedido. Tente novamente.');
-        }
+		if (error.message.includes('timeout') || error.message.includes('cancelado')) {
+			return new Error('Tempo limite excedido. Tente novamente.');
+		}
 
-        if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-            return new Error(ERROR_MESSAGES.NETWORK_ERROR);
-        }
+		if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+			return new Error(ERROR_MESSAGES.NETWORK_ERROR);
+		}
 
-        if (error.message.includes('Captcha inválido')) {
-            return new Error(ERROR_MESSAGES.INVALID_CAPTCHA);
-        }
+		// ← MANTER ESTA VERIFICAÇÃO ESPECÍFICA:
+		if (error.message.includes('Captcha inválido')) {
+			return new Error(ERROR_MESSAGES.INVALID_CAPTCHA);
+		}
 
-        return error;
-    }
+		return error;
+	}
 
     cancelAllRequests() {
         this.abortControllers.forEach(controller => controller.abort());
