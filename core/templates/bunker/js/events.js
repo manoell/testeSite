@@ -1,15 +1,21 @@
 /**
- * Dispara o evento de click em um elemento caso caso o foco esteja sobre ele.
- * @param {Element} el
+ * events.js - Utilitários de Eventos Otimizados
+ * Versão otimizada: simplificado, melhor performance
  */
 
-const enterClick = el => {
-  el.addEventListener('keydown', ev => {
-    if (ev.key == 'Enter') {
-      ev.preventDefault();
-      el.dispatchEvent(new Event('click'));
-    }
-  });
+/**
+ * Dispara evento de click quando Enter é pressionado
+ * @param {Element} element - Elemento alvo
+ */
+const enterClick = element => {
+    if (!element) return;
+    
+    element.addEventListener('keydown', ev => {
+        if (ev.key === 'Enter') {
+            ev.preventDefault();
+            element.dispatchEvent(new Event('click'));
+        }
+    });
 };
 
 export { enterClick };

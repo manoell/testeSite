@@ -1,11 +1,15 @@
+/* =================================================================
+   FOOTER - SISTEMA OTIMIZADO
+   Versão otimizada: consolidadas regras, removido código redundante
+   ================================================================= */
 
-/* Links em lista com ícones */
+/* ===== LISTAS COM ÍCONES ===== */
 .lista-icone li a {
     display: inline-flex;
     justify-content: flex-start;
     align-items: center;
     margin-left: -0.25rem;
-    height: 1.875rem; /*30px;*/
+    height: 1.875rem;
     padding: 0.15625rem;
     color: #004168;
 }
@@ -19,6 +23,7 @@
     color: #d59118;
 }
 
+/* ===== ÍCONES E ELEMENTOS ===== */
 .lista-icone li i:first-child {
     flex-grow: 0;
     align-self: center;
@@ -58,23 +63,36 @@
     margin-right: 0.5rem;
 }
 
-/*novo footer*/
+/* ===== RODAPÉ PRINCIPAL ===== */
 #rodape {
     font-size: 14px;
     padding: 0.75rem 0.625rem 0.625rem 0.9375rem;
-    font-family: 'Trebuchet MS', 'arial', 'helvetica', 'Open Sans', sans-serif;
+    font-family: 'Trebuchet MS', arial, helvetica, 'Open Sans', sans-serif;
     background: url("../img/bg-amarelo.svg") #ffe600 no-repeat center bottom;
     background-size: 100% 9rem;
     min-height: 10rem;
-
     background-color: #ffe600;
     background-repeat: no-repeat;
     background-position: center bottom;
 }
 
+/* ===== LINKS DO RODAPÉ ===== */
 #rodape .rodape-links {
     grid-column: span 12;
     margin: 0.9375rem 0rem 0rem 0rem;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media screen and (min-width: 576px) {
+    #rodape .rodape-links {
+        grid-column: span 6;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    #rodape .rodape-links {
+        grid-column: span 4;
+    }
 }
 
 @media screen and (min-width: 992px) {
@@ -83,17 +101,7 @@
     }
 }
 
-@media screen and (min-width: 576px) {
-    #rodape .rodape-links {
-        grid-column: span 6;
-    }
-}
-@media screen and (min-width: 768px) {
-    #rodape .rodape-links {
-        grid-column: span 4;
-    }
-}
-
+/* ===== MARCA DO GOVERNO ===== */
 #rodape .marca-gov {
     margin-top: 2.1875rem;
     text-align: center;
@@ -108,6 +116,7 @@
     max-width: 450px;
 }
 
+/* ===== LAYOUT GRID ===== */
 .recipiente {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
@@ -126,24 +135,19 @@
     margin-right: auto;
 }
 
+/* ===== HEADINGS DO RODAPÉ ===== */
 #rodape h2 {
-    /*font-size: 2rem;
-    margin-bottom: 1rem;
-    color: var(--azul-escuro);*/
-
     margin-bottom: 1.0rem;
     line-height: 1.2em;
     font-size: 1.602em;
     color: var(--azul-escuro);
-
     font-weight: bold;
 }
 
+/* ===== COPYRIGHT ===== */
 .copyright {
     font-size: 14px;
     width: 100%;
     text-align: center;
     margin-bottom: 1.25rem;
 }
-
-    

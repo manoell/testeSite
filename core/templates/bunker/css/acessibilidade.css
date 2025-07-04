@@ -1,5 +1,11 @@
+/* =================================================================
+   ACESSIBILIDADE - SISTEMA OTIMIZADO
+   Versão otimizada: consolidadas regras, removido código redundante
+   ================================================================= */
+
+/* ===== MENU PRINCIPAL ===== */
 #acessibilidade {
-    font-family: 'Trebuchet MS', 'arial', 'helvetica', 'Open Sans', sans-serif;
+    font-family: 'Trebuchet MS', arial, helvetica, 'Open Sans', sans-serif;
     background-color: #efedea;
     padding: 0.5rem 1rem;
     display: flex;
@@ -13,17 +19,18 @@
 }
 
 #acessibilidade > a.aberto {
-    background: url("../img/arrow-up.svg") no-repeat center right;
+    background-image: url("../img/arrow-up.svg");
 }
 
 #acessibilidade > a.idioma {
     padding-left: 1.5rem;
     background: url("../img/bandeira-brasil.svg") no-repeat center left,
-    url("../img/arrow-down.svg") no-repeat center right -0.25rem;
+                url("../img/arrow-down.svg") no-repeat center right -0.25rem;
 }
 
+/* ===== DROPDOWN ===== */
 #acess-drop-down {
-    /*position: absolute;*/
+    position: absolute;
     top: 2.25rem;
     left: 0;
     width: calc(100vw - 17px);
@@ -44,6 +51,7 @@ body.touch #acess-drop-down {
     display: block;
 }
 
+/* ===== HEADER DO DROPDOWN ===== */
 #acess-drop-down header {
     display: flex;
     justify-content: flex-end;
@@ -59,6 +67,7 @@ body.touch #acess-drop-down {
     background-image: url("../img/close-brown.svg");
 }
 
+/* ===== SEÇÃO DE LINKS ===== */
 #acess-drop-down section {
     display: grid;
     grid-gap: 1rem;
@@ -74,6 +83,7 @@ body.touch #acess-drop-down {
     }
 }
 
+/* ===== LINKS COM ÍCONES ===== */
 #acess-drop-down section a {
     padding-left: 1.5rem;
     position: relative;
@@ -95,6 +105,7 @@ body.touch #acess-drop-down {
     left: 1px;
 }
 
+/* ===== ÍCONES ESPECÍFICOS ===== */
 #acess-drop-down section a.contraste {
     background: url("../img/alto-contraste-blue.svg") no-repeat left -1px center;
     background-size: 21px;

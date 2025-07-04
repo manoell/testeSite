@@ -1,3 +1,9 @@
+/* =================================================================
+   SISTEMA DE FORMULÁRIOS - OTIMIZADO
+   Versão otimizada: consolidadas regras, grid responsivo simplificado
+   ================================================================= */
+
+/* ===== CONTAINER DE CAMPOS ===== */
 .campos {
     display: flex;
     flex-flow: row wrap;
@@ -8,68 +14,41 @@
     flex: 1 1 100%;
 }
 
+/* ===== GRID RESPONSIVO ===== */
 @media (min-width: 1024px) {
-
     .campos > .campo {
         padding: 0.5rem;
     }
 
-
-    .campos > .campo.col-1 {
-        flex: 0 1 calc(100% / 12);
-    }
-
-    .campos > .campo.col-2 {
-        flex: 0 1 calc(200% / 12);
-    }
-
-    .campos > .campo.col-3 {
-        flex: 0 1 calc(300% / 12);
-    }
-
-    .campos > .campo.col-4 {
-        flex: 0 1 calc(400% / 12);
-    }
-
-    .campos > .campo.col-5 {
-        flex: 0 1 calc(500% / 12);
-    }
-
-    .campos > .campo.col-6 {
-        flex: 0 1 calc(600% / 12);
-    }
-
-    .campos > .campo.col-7 {
-        flex: 0 1 calc(700% / 12);
-    }
-
-    .campos > .campo.col-8 {
-        flex: 0 1 calc(800% / 12);
-    }
-
-    .campos > .campo.col-9 {
-        flex: 0 1 calc(900% / 12);
-    }
-
-    .campos > .campo.col-10 {
-        flex: 0 1 calc(1000% / 12);
-    }
-
-    .campos > .campo.col-11 {
-        flex: 0 1 calc(1100% / 12);
-    }
-
-    .campos > .campo.col-12 {
-        flex: 0 1 calc(1200% / 12);
-    }
+    .campos > .campo.col-1 { flex: 0 1 calc(100% / 12); }
+    .campos > .campo.col-2 { flex: 0 1 calc(200% / 12); }
+    .campos > .campo.col-3 { flex: 0 1 calc(300% / 12); }
+    .campos > .campo.col-4 { flex: 0 1 calc(400% / 12); }
+    .campos > .campo.col-5 { flex: 0 1 calc(500% / 12); }
+    .campos > .campo.col-6 { flex: 0 1 calc(600% / 12); }
+    .campos > .campo.col-7 { flex: 0 1 calc(700% / 12); }
+    .campos > .campo.col-8 { flex: 0 1 calc(800% / 12); }
+    .campos > .campo.col-9 { flex: 0 1 calc(900% / 12); }
+    .campos > .campo.col-10 { flex: 0 1 calc(1000% / 12); }
+    .campos > .campo.col-11 { flex: 0 1 calc(1100% / 12); }
+    .campos > .campo.col-12 { flex: 0 1 calc(1200% / 12); }
 }
 
-.campos > .campo input, .campos > .campo input:invalid,
-.campos > .campo select, .campos > .campo select:invalid,
-.campos > .campo textarea, .campos > .campo textarea:invalid,
-input[type=text], input[type=text]:invalid, input[type=search], input[type=search]:invalid
-select, select:invalid,
-textarea, textarea:invalid {
+/* ===== INPUTS BASE ===== */
+.campos > .campo input, 
+.campos > .campo input:invalid,
+.campos > .campo select, 
+.campos > .campo select:invalid,
+.campos > .campo textarea, 
+.campos > .campo textarea:invalid,
+input[type=text], 
+input[type=text]:invalid, 
+input[type=search], 
+input[type=search]:invalid,
+select, 
+select:invalid,
+textarea, 
+textarea:invalid {
     display: block;
     width: 100%;
     outline: none;
@@ -82,6 +61,7 @@ textarea, textarea:invalid {
     box-shadow: none;
 }
 
+/* ===== ESTADOS DOS INPUTS ===== */
 .campos > .campo input:focus,
 .campos > .campo select:focus,
 .campos > .campo textarea:focus {
@@ -103,20 +83,25 @@ textarea, textarea:invalid {
     color: #908579;
 }
 
+/* ===== SELECT CUSTOMIZADO ===== */
 .campos > .campo select {
     background: url(../img/arrow-down.svg) no-repeat center right 0.25rem;
     -webkit-appearance: none;
 }
 
-.campos > .campo input[type=radio], .campos > .campo input[type=checkbox] {
+/* ===== CHECKBOXES E RADIOS ===== */
+.campos > .campo input[type=radio], 
+.campos > .campo input[type=checkbox] {
     width: auto;
 }
 
-.campos > .campo input[type=radio]:focus, .campos > .campo input[type=checkbox]:focus {
+.campos > .campo input[type=radio]:focus, 
+.campos > .campo input[type=checkbox]:focus {
     box-shadow: none;
     border: none;
 }
 
+/* ===== INPUTS ESPECIAIS ===== */
 .campos > .campo input[type=number] {
     text-align: right;
     -moz-appearance: textfield;
@@ -132,10 +117,12 @@ textarea, textarea:invalid {
     -webkit-appearance: none;
 }
 
-.campos > .campo input[type=date], .campos > .campo input[type=time] {
+.campos > .campo input[type=date], 
+.campos > .campo input[type=time] {
     text-align: center;
 }
 
+/* ===== RANGE INPUTS ===== */
 .campos > .campo input[type=range] {
     -webkit-appearance: none;
 }
@@ -172,6 +159,7 @@ textarea, textarea:invalid {
     height: 4px;
 }
 
+/* ===== RÓTULOS ===== */
 .campos > .campo > .rotulo {
     display: flex;
     flex-flow: row wrap;
@@ -190,6 +178,7 @@ textarea, textarea:invalid {
     color: #f08080;
 }
 
+/* ===== CONTROLES ===== */
 .campos > .campo > .controle {
     display: flex;
     flex-flow: row wrap;
@@ -208,7 +197,8 @@ textarea, textarea:invalid {
     padding: 0.4rem;
 }
 
-.campos > .campo > .controle button.com-texto, .campos > .campo > .controle a.button.com-texto {
+.campos > .campo > .controle button.com-texto, 
+.campos > .campo > .controle a.button.com-texto {
     flex: 0 1 auto;
     height: auto;
     align-self: stretch;
@@ -223,10 +213,12 @@ textarea, textarea:invalid {
     }
 }
 
-.campos > .campo > .controle input[type=radio], .campos > .campo > .controle input[type=checkbox] {
+.campos > .campo > .controle input[type=radio], 
+.campos > .campo > .controle input[type=checkbox] {
     margin-right: 0.25rem;
 }
 
+/* ===== MENSAGENS ===== */
 .campos > .campo > .mensagem {
     font-style: italic;
     padding: 0.25rem 0;

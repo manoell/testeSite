@@ -1,3 +1,9 @@
+/* =================================================================
+   SISTEMA DE MODAIS - OTIMIZADO
+   Versão otimizada: simplificado layout, melhor performance
+   ================================================================= */
+
+/* ===== MODAL BASE ===== */
 .modal {
     display: none;
     z-index: 11;
@@ -15,6 +21,7 @@
     background: rgba(0, 0, 0, 0.25);
 }
 
+/* ===== SEÇÃO DO MODAL ===== */
 .modal section {
     background: white;
     padding: 1rem;
@@ -31,15 +38,18 @@
     }
 }
 
+/* ===== BODY QUANDO MODAL ABERTO ===== */
 body.modal-aberto {
     overflow: hidden;
     padding-right: 17px;
 }
 
-body.touch.modal-aberto, body.modo-foco.modal-aberto {
+body.touch.modal-aberto, 
+body.modo-foco.modal-aberto {
     padding-right: 0;
 }
 
+/* ===== HEADER DO MODAL ===== */
 .modal header {
     display: flex;
 }
@@ -56,6 +66,7 @@ body.touch.modal-aberto, body.modo-foco.modal-aberto {
     }
 }
 
+/* ===== BOTÃO FECHAR ===== */
 .modal header .fechar {
     margin-left: auto;
     flex: 0 0 1.25rem;

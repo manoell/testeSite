@@ -1,8 +1,15 @@
+/* =================================================================
+   SISTEMA DE BOTÕES - OTIMIZADO
+   Versão otimizada: consolidadas regras, removido código duplicado
+   ================================================================= */
+
 :root {
     --lado-botao: 3rem;
 }
 
-button, a.button {
+/* ===== BOTÕES BASE ===== */
+button, 
+a.button {
     background: no-repeat center;
     flex: 0 0 var(--lado-botao);
     height: var(--lado-botao);
@@ -17,25 +24,26 @@ button, a.button {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-a.button {
     -webkit-tap-highlight-color: transparent;
 }
 
-button:hover, a.button:hover {
+button:hover, 
+a.button:hover {
     background-color: #f5f5f5;
     color: black;
 }
 
-button:active, a.button:active {
+button:active, 
+a.button:active {
     background-color: #d9d9db;
 }
 
-button:focus, a.button:focus {
+button:focus, 
+a.button:focus {
     box-shadow: 0 0 2px 2px #eeeeee;
 }
 
+/* ===== BOTÕES CIRCULARES ===== */
 button.menu, a.button.menu,
 button.mais, a.button.mais,
 button.voltar, a.button.voltar,
@@ -58,6 +66,7 @@ button.swap, a.button.swap {
     padding: 0;
 }
 
+/* ===== ÍCONES DOS BOTÕES ===== */
 button.menu, a.button.menu {
     background-image: url("../img/menu.svg");
 }
@@ -126,10 +135,6 @@ button.check.checked, a.button.check.checked {
     background-image: url("../img/check-checked.svg");
 }
 
-button.check.checked, a.button.check.checked {
-    background-image: url("../img/check-checked.svg");
-}
-
 button.filter, a.button.filter {
     background-image: url("../img/filter.svg");
 }
@@ -150,6 +155,7 @@ button.swap, a.button.swap {
     background-image: url("../img/swap.svg");
 }
 
+/* ===== DROPDOWN DE BOTÕES ===== */
 .buttons {
     position: relative;
 }
@@ -171,7 +177,8 @@ button.swap, a.button.swap {
     display: flex;
 }
 
-.buttons > div button, .buttons > div a.button {
+.buttons > div button, 
+.buttons > div a.button {
     height: var(--lado-botao);
     width: auto;
     min-width: var(--lado-botao);
@@ -181,17 +188,20 @@ button.swap, a.button.swap {
     justify-content: flex-start;
 }
 
-.buttons > div button:focus, .buttons > div a.button:focus {
+.buttons > div button:focus, 
+.buttons > div a.button:focus {
     box-shadow: none;
 }
 
+/* ===== GRUPO DE BOTÕES ===== */
 .botoes {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
 }
 
-.botoes button, .botoes a.button {
+.botoes button, 
+.botoes a.button {
     flex: 0 0 auto;
     width: auto;
     padding: 0 1rem;
@@ -203,103 +213,125 @@ button.swap, a.button.swap {
     text-decoration: none;
 }
 
-.botoes button:last-child, .botoes a.button:last-child {
+.botoes button:last-child, 
+.botoes a.button:last-child {
     margin-right: 0;
     margin-bottom: 0;
 }
 
 @media (min-width: 1024px) {
-    .botoes button, .botoes a.button {
+    .botoes button, 
+    .botoes a.button {
         height: 2.25rem;
         font-size: 0.8rem;
     }
 }
 
-.botoes button:hover, .botoes a.button:hover {
+.botoes button:hover, 
+.botoes a.button:hover {
     background: #52473b;
 }
 
-.botoes button:active, .botoes a.button:active {
+.botoes button:active, 
+.botoes a.button:active {
     background: #52473b;
 }
 
-.botoes button:focus, .botoes a.button:focus {
+.botoes button:focus, 
+.botoes a.button:focus {
     background: #807569;
     box-shadow: 0 0 0 0.1rem #52473b;
 }
 
-.botoes button.primario, .botoes a.button.primario {
+/* ===== VARIAÇÕES DE BOTÕES ===== */
+.botoes button.primario, 
+.botoes a.button.primario {
     background: #1a73e8;
     color: white;
 }
 
-
-.botoes button.desativado, .botoes a.button.desativado {
-    background: #807569;
-    color: white;
-}
-
-.botoes button.primario:hover, .botoes a.button.primario:hover {
+.botoes button.primario:hover, 
+.botoes a.button.primario:hover {
     background: #1766cf;
 }
 
-.botoes button.primario:active, .botoes a.button.primario:active {
+.botoes button.primario:active, 
+.botoes a.button.primario:active {
     background: #1458b3;
 }
 
-.botoes button.perigo, .botoes a.button.perigo {
+.botoes button.perigo, 
+.botoes a.button.perigo {
     background: #d60000;
     color: white;
 }
 
-.botoes button.perigo:hover, .botoes a.button.perigo:hover {
+.botoes button.perigo:hover, 
+.botoes a.button.perigo:hover {
     background: #9e1c1c;
 }
 
-.botoes button.perigo:active, .botoes a.button.perigo:active {
+.botoes button.perigo:active, 
+.botoes a.button.perigo:active {
     background: #9e1c1c;
 }
 
-.botoes button.perigo:focus, .botoes a.button.perigo:focus {
+.botoes button.perigo:focus, 
+.botoes a.button.perigo:focus {
     background: #d60000;
     box-shadow: 0 0 0 0.1rem #9e1c1c;
 }
 
-.botoes button.confirmacao, .botoes a.button.confirmacao {
+.botoes button.confirmacao, 
+.botoes a.button.confirmacao {
     background: #597340;
     color: white;
 }
 
-.botoes button.confirmacao:hover, .botoes a.button.confirmacao:hover {
+.botoes button.confirmacao:hover, 
+.botoes a.button.confirmacao:hover {
     background: #455e30;
 }
 
-.botoes button.confirmacao:active, .botoes a.button.confirmacao:active {
+.botoes button.confirmacao:active, 
+.botoes a.button.confirmacao:active {
     background: #455e30;
 }
 
-.botoes button.confirmacao:focus, .botoes a.button.confirmacao:focus {
+.botoes button.confirmacao:focus, 
+.botoes a.button.confirmacao:focus {
     background: #597340;
     box-shadow: 0 0 0 0.1rem #455e30;
 }
 
-.botoes button.link, .botoes a.button.link {
+.botoes button.link, 
+.botoes a.button.link {
     background: transparent;
     color: #202124;
 }
 
-.botoes button.link:hover, .botoes a.button.link:hover {
+.botoes button.link:hover, 
+.botoes a.button.link:hover {
     border: 1px solid #f2f2f2;
 }
 
-.botoes button.link:active, .botoes a.button.link:active {
+.botoes button.link:active, 
+.botoes a.button.link:active {
     border: 1px solid #d8d8d8;
 }
 
-.botoes button.link:focus, .botoes a.button.link:focus {
+.botoes button.link:focus, 
+.botoes a.button.link:focus {
     box-shadow: 0 0 0 0.1rem #d8d8d8;
 }
 
+.botoes button.desativado, 
+.botoes a.button.desativado {
+    background: #807569;
+    color: white;
+}
+
+/* ===== BOTÕES FLUTUANTES ===== */
 button.novo, a.button.novo,
 button.next, a.button.next {
     position: fixed;
@@ -316,11 +348,13 @@ button.next, a.button.next {
     background-color: #1a73e8;
 }
 
-button.novo:hover, a.button.novo:hover, button.next:hover, a.button.next:hover {
+button.novo:hover, a.button.novo:hover, 
+button.next:hover, a.button.next:hover {
     box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.4);
 }
 
-button.novo:active, a.button.novo:active, button.next:active, a.button.next:active {
+button.novo:active, a.button.novo:active, 
+button.next:active, a.button.next:active {
     background-color: #fbfbfb;
     box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.8);
 }
@@ -333,6 +367,7 @@ button.next:active, a.button.next:active {
     height: 3.5rem;
 }
 
+/* ===== BOTÕES TAG ===== */
 button.tag, a.button.tag {
     flex: 0 1 auto;
     width: auto;
@@ -349,6 +384,7 @@ button.tag.selected, a.button.tag.selected {
     border-color: transparent;
 }
 
+/* ===== DESKTOP RESPONSIVO ===== */
 @media (min-width: 1024px) {
     button.novo, a.button.novo,
     button.next, a.button.next {
@@ -358,8 +394,10 @@ button.tag.selected, a.button.tag.selected {
         bottom: 1.5rem;
     }
 
-    body.menu-aberto button.novo, body.menu-aberto a.button.novo,
-    body.menu-aberto button.next, body.menu-aberto a.button.next {
+    body.menu-aberto button.novo, 
+    body.menu-aberto a.button.novo,
+    body.menu-aberto button.next, 
+    body.menu-aberto a.button.next {
         margin-left: calc((-3.5rem + 15rem) / 2);
     }
 

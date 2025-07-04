@@ -1,36 +1,49 @@
+/**
+ * acessibilidade.js - Sistema de Acessibilidade Otimizado
+ * Versão otimizada: simplificado event handling, melhor performance
+ */
+
 import { enterClick } from './events.js';
 
-const menu = document.querySelector('#acessibilidade a');
-const dd = document.querySelector('#acess-drop-down');
-const close = document.querySelector('#acess-drop-down .close');
+// === CACHE DE ELEMENTOS ===
+const elements = {
+    menu: document.querySelector('#acessibilidade a'),
+    dropdown: document.querySelector('#acess-drop-down'),
+    close: document.querySelector('#acess-drop-down .close')
+};
 
+// === FUNÇÕES PRINCIPAIS ===
 const toggle = () => {
-  menu.classList.toggle('aberto');
-  dd.classList.toggle('aberto');
+    elements.menu.classList.toggle('aberto');
+    elements.dropdown.classList.toggle('aberto');
 };
 
 const abre = () => {
-  menu.classList.add('aberto');
-  dd.classList.add('aberto');
+    elements.menu.classList.add('aberto');
+    elements.dropdown.classList.add('aberto');
 };
 
 const fecha = () => {
-  menu.classList.remove('aberto');
-  dd.classList.remove('aberto');
+    elements.menu.classList.remove('aberto');
+    elements.dropdown.classList.remove('aberto');
 };
 
-if (menu) {
-  menu.addEventListener('click', ev => {
-    ev.stopPropagation();
-    toggle();
-  });
-  dd.addEventListener('click', ev => ev.stopPropagation());
-  document.body.addEventListener('click', () => fecha());
-  close.addEventListener('click', () => fecha());
-
-  enterClick(menu);
-  enterClick(dd);
-  enterClick(close);
-
+// === INICIALIZAÇÃO ===
+if (elements.menu && elements.dropdown && elements.close) {
+    // Event listeners otimizados
+    elements.menu.addEventListener('click', ev => {
+        ev.stopPropagation();
+        toggle();
+    });
+    
+    elements.dropdown.addEventListener('click', ev => ev.stopPropagation());
+    elements.close.addEventListener('click', () => fecha());
+    
+    // Fechar ao clicar fora
+    document.body.addEventListener('click', () => fecha());
+    
+    // Suporte a teclado
+    enterClick(elements.menu);
+    enterClick(elements.dropdown);
+    enterClick(elements.close);
 }
-

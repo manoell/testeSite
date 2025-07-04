@@ -1,14 +1,29 @@
-/* Paleta de cores */
+/* =================================================================
+   PALETA DE CORES - SISTEMA OTIMIZADO
+   Versão otimizada: variáveis consolidadas, gradientes organizados
+   ================================================================= */
+
 :root {
+    /* ===== CORES PRINCIPAIS ===== */
     --cor-azul-correios: #00416b;
     --cor-azul-claro: #0083ca;
     --cor-amarelo-correios: #ffd400;
     --cor-amarelo-escuro: #cd992b;
     --cor-amarelo-prisma: #ffe600;
     --cor-amarelo-prisma-escuro: #ffc20e;
+    
+    /* ===== TONS NEUTROS ===== */
     --cor-warmgray-claro: #d1ccc7;
     --cor-warmgray-escuro: #bdb4ab;
+    --cor-cinza-escuro: #807569;
+    --cor-cinza-mais: #52473b;
+    --cor-bege: #f5f3f0;
+    --cor-bege-mais: #efedea;
+    
+    /* ===== TIPOGRAFIA ===== */
     --cor-fonte: #222;
+    
+    /* ===== LINKS ===== */
     --cor-link: #0071ad;
     --cor-link-hover: #a65718;
     --cor-link-bg-azul: #1ebff0;
@@ -16,14 +31,14 @@
     --cor-link-visitado-bg-azul: #db9ac4;
     --cor-link-visitado-bg-amarelo: #a03478;
     --cor-link-contraste: #fff333;
-    --cor-cinza-escuro: #807569;
-    --cor-cinza-mais: #52473b;
-    --cor-bege: #f5f3f0;
-    --cor-bege-mais: #efedea;
+    
+    /* ===== ESTADOS ===== */
     --cor-alerta: #d50000;
     --cor-alerta-escuro: #9e1d1d;
     --cor-confirmacao: #587441;
     --cor-confirmacao-escuro: #455e31;
+    
+    /* ===== GRADIENTES ===== */
     --gradiente-azul: linear-gradient(
         135deg,
         var(--cor-azul-claro),
@@ -36,6 +51,7 @@
     );
 }
 
+/* ===== ALTO CONTRASTE ===== */
 body.alto-contraste {
     --cor-fonte: white;
 }

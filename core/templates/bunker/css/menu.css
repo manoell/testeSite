@@ -1,5 +1,11 @@
+/* =================================================================
+   SISTEMA DE MENU - OTIMIZADO
+   Versão otimizada: consolidadas regras, responsividade melhorada
+   ================================================================= */
+
+/* ===== MENU PRINCIPAL ===== */
 #menu {
-    font-family: 'Trebuchet MS', 'arial', 'helvetica', 'Open Sans', sans-serif;
+    font-family: 'Trebuchet MS', arial, helvetica, 'Open Sans', sans-serif;
     height: var(--altura-menu);
     z-index: 1;
     position: sticky;
@@ -12,14 +18,13 @@
     padding: 0.5rem 0.75rem;
     background: url("../img/logo-ect.svg") no-repeat center #f5f3f0;
     background-size: auto 50%;
-    /*background: url("../img/logo-Correios360.png") no-repeat center #f5f3f0 ;*/
-    /*background-size: auto 80%;    */
 }
 
 body.modo-foco #menu {
     position: fixed;
 }
 
+/* ===== HAMBURGER ===== */
 #menu .hamburger {
     flex: 0 0 2rem;
     margin-right: 1rem;
@@ -33,13 +38,13 @@ body.modo-foco #menu {
     background-size: 2rem;
 }
 
+/* ===== LOGO ===== */
 #menu .logo {
     flex: 1 1 auto;
     padding-left: 0;
 }
 
 @media (min-width: 1024px) {
-
     #menu {
         background-image: none;
     }
@@ -48,12 +53,10 @@ body.modo-foco #menu {
         background: url("../img/logo-ect.svg") no-repeat left;
         height: 1.75rem;
         background-size: auto 90%;
-        /*background: url("../img/logo-Correios360.png") no-repeat left;*/
-        /*height: 50px;        */
-        /*background-size: auto 90%;        */
     }
 }
 
+/* ===== LINKS DO MENU ===== */
 #menu > a {
     display: flex;
     align-items: center;
@@ -61,7 +64,9 @@ body.modo-foco #menu {
     height: 2rem;
 }
 
-#menu .pesquisar, #menu .entrar, #menu .nome {
+#menu .pesquisar, 
+#menu .entrar, 
+#menu .nome {
     padding-left: 3.5rem;
     background-size: 2rem;
     border-left: 1px solid #d1ccc7;
@@ -80,11 +85,13 @@ body.modo-foco #menu {
 }
 
 @media (min-width: 1024px) {
-    #menu .entrar, #menu .nome {
+    #menu .entrar, 
+    #menu .nome {
         display: flex;
     }
 }
 
+/* ===== ÍCONES ESPECÍFICOS ===== */
 #menu .pesquisar {
     background: url("../img/pesquisar.svg") no-repeat left 0.8rem center;
 }
@@ -99,13 +106,13 @@ body.modo-foco #menu {
 
 #menu .entrar:before {
     content: "Entrar";
-    /*font-weight: 600;*/
 }
 
 #menu .sair:before {
     content: "Sair";
 }
 
+/* ===== MENU LATERAL ===== */
 #menu > .menu {
     position: absolute;
     background-color: #f5f3f0;
@@ -131,13 +138,13 @@ body.modo-foco #menu {
     }
 }
 
+/* ===== LINKS DO MENU LATERAL ===== */
 #menu > .menu a {
     padding: 0.75rem 1rem;
     text-decoration: none;
     background: url("../img/arrow-right-blue.svg") no-repeat center right 0.75rem;
     user-select: none;
 }
-
 
 @media (min-width: 1024px) {
     #menu > .menu a:not(.voltar) {
@@ -155,6 +162,7 @@ body.modo-foco #menu {
     background: none;
 }
 
+/* ===== SUBMENUS ===== */
 #menu > .menu div {
     position: absolute;
     background-color: #f5f3f0;
@@ -170,6 +178,7 @@ body.modo-foco #menu {
     left: 0;
 }
 
+/* ===== SEÇÃO DO CABEÇALHO ===== */
 #menu > .menu section {
     padding: 1rem;
     border-bottom: 1px solid #d1ccc7;
@@ -219,7 +228,8 @@ body.modo-foco #menu {
         background: transparent;
     }
 
-    #menu > .menu section a, menu section p {
+    #menu > .menu section a, 
+    #menu > .menu section p {
         display: none;
     }
 
@@ -234,6 +244,7 @@ body.modo-foco #menu {
     }
 }
 
+/* ===== ÍCONES DOS MENUS ===== */
 #menu > .menu a.monitor,
 #menu > .menu a.find,
 #menu > .menu a.phone,
@@ -262,6 +273,7 @@ body.modo-foco #menu {
     padding-left: 2.75rem;
 }
 
+/* ===== ÍCONES ESPECÍFICOS COM HOVER ===== */
 #menu > .menu a.monitor {
     background-image: url("../img/monitor-blue.svg"), url("../img/arrow-right-blue.svg");
 }
@@ -390,6 +402,7 @@ body.modo-foco #menu {
     background-image: url("../img/expand-brown.svg");
 }
 
+/* ===== DROPDOWN DO USUÁRIO ===== */
 #menu > .dd {
     position: absolute;
     top: var(--altura-menu);
@@ -409,9 +422,9 @@ body.modo-foco #menu {
 #menu > .dd a {
     padding: 0.5rem 0.5rem;
     text-decoration: none;
-
 }
 
+/* ===== DROPDOWN MOBILE ===== */
 #menu .menu div.dd-mobile {
     display: none;
     flex-flow: column nowrap;

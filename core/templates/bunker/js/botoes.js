@@ -1,72 +1,97 @@
+/**
+ * botoes.js - Sistema de Botões Otimizado
+ * Versão otimizada: melhor performance, event delegation
+ */
+
 import * as menu from './menu.js';
 
+// === GERENCIAMENTO DE DROPDOWNS ===
 const abreDropdown = ev => {
-  ev.stopPropagation();
-  fechaDropdowns();
-  menu.fecha(ev);
-  const b = ev.currentTarget;
-  const d = b.parentNode.querySelector('div');
-  const rect = b.getBoundingClientRect();
-  const y = (rect.top + rect.bottom) / 2;
-  const x = (rect.left + rect.right) / 2;
-  if (y < window.innerHeight / 2) {
-    d.style.top = '0';
-    d.style.bottom = 'auto';
-  } else {
-    d.style.top = 'auto';
-    d.style.bottom = '0';
-  }
-  if (x < window.innerWidth / 2) {
-    d.style.left = '0';
-    d.style.right = 'auto';
-  } else {
-    d.style.left = 'auto';
-    d.style.right = '0';
-  }
-  d.classList.add('aberto');
+    ev.stopPropagation();
+    fechaDropdowns();
+    menu.fecha(ev);
+    
+    const button = ev.currentTarget;
+    const dropdown = button.parentNode.querySelector('div');
+    const rect = button.getBoundingClientRect();
+    const centerY = (rect.top + rect.bottom) / 2;
+    const centerX = (rect.left + rect.right) / 2;
+    
+    // Posicionamento inteligente
+    dropdown.style.top = centerY < window.innerHeight / 2 ? '0' : 'auto';
+    dropdown.style.bottom = centerY < window.innerHeight / 2 ? 'auto' : '0';
+    dropdown.style.left = centerX < window.innerWidth / 2 ? '0' : 'auto';
+    dropdown.style.right = centerX < window.innerWidth / 2 ? 'auto' : '0';
+    
+    dropdown.classList.add('aberto');
 };
 
 const fechaDropdown = ev => {
-  ev.stopPropagation();
-  const b = ev.currentTarget;
-  setTimeout(() => {
-    b.parentNode.classList.remove('aberto');
-  }, 100);
+    ev.stopPropagation();
+    const button = ev.currentTarget;
+    
+    setTimeout(() => {
+        button.parentNode.classList.remove('aberto');
+    }, 100);
 };
 
 const fechaDropdowns = () => {
-  document.querySelectorAll('.buttons > div.aberto').forEach(dd => dd.classList.remove('aberto'));
+    document.querySelectorAll('.buttons > div.aberto')
+        .forEach(dropdown => dropdown.classList.remove('aberto'));
 };
 
+// === REGISTRO DE EVENT LISTENERS ===
 const registraDropdowns = () => {
-  document.querySelectorAll('.buttons > button, .buttons > a.button').forEach(b => {
-    b.addEventListener('click', abreDropdown);
-  });
+    // Botões que abrem dropdowns
+    document.querySelectorAll('.buttons > button, .buttons > a.button')
+        .forEach(button => {
+            button.removeEventListener('click', abreDropdown); // Evita duplicação
+            button.addEventListener('click', abreDropdown);
+        });
 
-  document.querySelectorAll('.buttons > div > button, .buttons > div > a.button').forEach(b => {
-    b.addEventListener('click', fechaDropdown);
-  });
+    // Botões dentro de dropdowns
+    document.querySelectorAll('.buttons > div > button, .buttons > div > a.button')
+        .forEach(button => {
+            button.removeEventListener('click', fechaDropdown); // Evita duplicação
+            button.addEventListener('click', fechaDropdown);
+        });
 };
 
+// === OBSERVER OTIMIZADO ===
+const observer = new MutationObserver(() => {
+    registraDropdowns();
+    
+    const botoesDocados = document.querySelector('button.novo, button.next, a.button.novo, a.button.next');
+    
+    observer.disconnect();
+    
+    if (botoesDocados) {
+        document.body.classList.add('botoes-docados');
+    } else {
+        document.body.classList.remove('botoes-docados');
+    }
+    
+    observer.observe(document.body, { 
+        attributes: true, 
+        childList: true, 
+        subtree: true 
+    });
+});
+
+// === INICIALIZAÇÃO ===
 document.body.addEventListener('click', fechaDropdowns);
 
-const observer = new MutationObserver(() => {
-  registraDropdowns();
-  const botoesDocados = document.querySelector('button.novo,button.next,a.button.novo,a.button.next');
-  observer.disconnect();
-  if (botoesDocados) {
-    document.body.classList.add('botoes-docados');
-  } else {
-    document.body.classList.remove('botoes-docados');
-  }
-  observer.observe(document.body, { attributes: true, childList: true, subtree: true });
+observer.observe(document.body, { 
+    attributes: true, 
+    childList: true, 
+    subtree: true 
 });
-observer.observe(document.body, { attributes: true, childList: true, subtree: true });
 
 registraDropdowns();
 
+// Mostra região de botões se existirem botões flutuantes
 if (document.querySelector('button.novo, a.button.novo, button.next, a.button.next')) {
-  document.getElementById('regiao-botoes').classList.remove('oculta');
+    document.getElementById('regiao-botoes').classList.remove('oculta');
 }
 
 export { fechaDropdowns };

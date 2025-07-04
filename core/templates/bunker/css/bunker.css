@@ -1,3 +1,9 @@
+/* =================================================================
+   BUNKER CSS - SISTEMA PRINCIPAL OTIMIZADO
+   Versão otimizada: imports consolidados, reset melhorado
+   ================================================================= */
+
+/* ===== IMPORTS OTIMIZADOS ===== */
 @import "cores.css";
 @import "menu.css?2";
 @import "acessibilidade.css?2";
@@ -6,13 +12,12 @@
 @import "botoes.css?2";
 @import "modal.css?2";
 @import "alerta.css?2";
-/*@import "tabs.estilos?2";*/
-/*@import "tabs-tarcisio.estilos";*/
 @import "tabs-antonio.css";
 @import "tabelas.css?2";
 @import "tabelas-bunker.css";
 @import "suggest.css";
 
+/* ===== VARIÁVEIS GLOBAIS ===== */
 :root {
     --azul: #0071ad;
     --azul-escuro: #003157;
@@ -21,21 +26,21 @@
     --fundo: white;
 }
 
+/* ===== RESET GLOBAL OTIMIZADO ===== */
 * {
     margin: 0;
     padding: 0;
-    /*font-family: 'Roboto', 'Trebuchet MS', 'arial', 'helvetica', 'Open Sans', sans-serif;*/
-    font-family: 'Trebuchet MS', 'arial', 'helvetica', 'Open Sans', sans-serif;
+    font-family: 'Trebuchet MS', arial, helvetica, 'Open Sans', sans-serif;
     color: var(--cinza-escuro);
     box-sizing: border-box;
 }
 
+/* ===== LINKS ===== */
 a {
     color: var(--azul);
     cursor: default;
     outline: none;
     text-decoration: none;
-    /*font-weight: 600;*/
 }
 
 a:focus {
@@ -52,6 +57,7 @@ a:hover {
     text-decoration: none;
 }
 
+/* ===== HEADINGS ===== */
 h1, h2, h3, h4, h5, h6 {
     color: #00416b;
     margin-bottom: 1rem;
@@ -62,40 +68,25 @@ h1 {
 }
 
 @media (min-width: 1024px) {
-    h1 {
-        font-size: 1.802rem;
-    }
-
-    h2 {
-        font-size: 1.602rem;
-    }
-
-    h3 {
-        font-size: 1.424rem;
-    }
-
-    h4 {
-        font-size: 1.266rem;
-    }
-
-    h5 {
-        font-size: 1.125rem;
-    }
-
-    h6 {
-        font-size: 1rem;
-    }
+    h1 { font-size: 1.802rem; }
+    h2 { font-size: 1.602rem; }
+    h3 { font-size: 1.424rem; }
+    h4 { font-size: 1.266rem; }
+    h5 { font-size: 1.125rem; }
+    h6 { font-size: 1rem; }
 }
 
+/* ===== PARÁGRAFOS ===== */
 p {
     padding-bottom: 0.5rem;
 }
 
+/* ===== UTILITÁRIOS ===== */
 .oculto, .oculta {
     display: none !important;
 }
 
-
+/* ===== LAYOUT PRINCIPAL ===== */
 main {
     min-height: calc(100vh - 5.2rem);
     width: 100%;
@@ -103,12 +94,10 @@ main {
 }
 
 body.modo-foco main {
-    /* height: calc(100vh) !important; */
-    /* padding-top: calc(4rem); */
+    /* Modo foco para aplicações sem footer */
 }
 
 @media (min-width: 1024px) {
-
     body.modo-foco {
         overflow: hidden;
     }
@@ -118,11 +107,11 @@ body.modo-foco main {
         overflow: auto;
     }
 
-    body.menu-aberto main, body.menu-aberto footer {
-        font-family: 'Trebuchet MS', 'arial', 'helvetica', 'Open Sans', sans-serif;
+    body.menu-aberto main, 
+    body.menu-aberto footer {
+        font-family: 'Trebuchet MS', arial, helvetica, 'Open Sans', sans-serif;
         padding-left: 16rem;
     }
-
 }
 
 main > .docavel {
@@ -130,6 +119,7 @@ main > .docavel {
     top: var(--altura-menu);
 }
 
+/* ===== CARDS ===== */
 .cards {
     display: flex;
     flex-flow: row wrap;
@@ -142,6 +132,7 @@ main > .docavel {
     border-radius: 5px;
 }
 
+/* ===== CODE ===== */
 code {
     font-family: monospace;
     font-size: 1.1rem;
@@ -151,6 +142,7 @@ code {
     padding: 1px 3px;
 }
 
+/* ===== BREADCRUMB ===== */
 #trilha {
     display: flex;
     flex-flow: row wrap;
@@ -178,13 +170,10 @@ code {
     }
 }
 
+/* ===== LOADING OTIMIZADO ===== */
 @keyframes rotacao-loading {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(-360deg);
-    }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
 }
 
 #loading, .loading {
@@ -205,17 +194,7 @@ code {
     display: block;
 }
 
-@media (min-width: 1024px) {
-
-    #loading {
-        width: 2.5rem;
-        height: 2.5rem;
-    }
-
-}
-
 @media (min-width: 1200px) {
-
     #loading.visivel {
         display: none;
     }
@@ -229,11 +208,12 @@ code {
     animation: rotacao-loading 1s infinite;
 }
 
+/* ===== LISTAS ===== */
 ol, ul {
     margin: 0 1rem 0.5rem 1rem;
 }
 
+/* ===== AÇÕES ===== */
 .acoes {
     display: flex;
 }
-

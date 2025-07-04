@@ -1,224 +1,268 @@
+/**
+ * forms.js - Sistema de Formulários Otimizado
+ * Versão otimizada: melhor gerenciamento de estado, performance aprimorada
+ */
+
 import { validacoesPadrao } from './validacoes-padrao.js';
 
+// === ESTADO GLOBAL ===
 const registrados = new Set();
 const validacoes = new Map(validacoesPadrao.map(v => [v.sel, v]));
 
-const registra = f => {
-  if (f.tagName == 'FORM') {
-    f.noValidate = true;
-    f.addEventListener('submit', ev => {
-      ev.preventDefault();
+// === REGISTRO DE FORMULÁRIOS ===
+const registra = form => {
+    if (form.tagName === 'FORM') {
+        form.noValidate = true;
+        form.addEventListener('submit', ev => {
+            ev.preventDefault();
+        });
+    }
+    
+    registrados.add(form);
+    
+    const observer = new MutationObserver(() => {
+        avaliaRegistrados();
     });
-  }
-  registrados.add(f);
-  const observer = new MutationObserver(() => {
-    avaliaRegistrados();
-  });
-  f.observer = observer;
-  observer.observe(f, { attributes: true, childList: true, subtree: true });
-  avaliaForm(f);
+    
+    form.observer = observer;
+    observer.observe(form, { 
+        attributes: true, 
+        childList: true, 
+        subtree: true 
+    });
+    
+    avaliaForm(form);
 };
 
+// === AVALIAÇÃO DE FORMULÁRIOS ===
 const avaliaRegistrados = () => {
-  for (let f of registrados) {
-    avaliaForm(f);
-  }
+    for (let form of registrados) {
+        avaliaForm(form);
+    }
 };
 
 const updateValidListener = ev => {
-  if (ev && ev.type == 'keydown' && ev.key != 'Enter') return;
-  updateValid(ev.currentTarget);
+    if (ev && ev.type === 'keydown' && ev.key !== 'Enter') return;
+    updateValid(ev.currentTarget);
 };
 
-const updateValid = cur => {
-  let ctnMsg;
-  if (['radio', 'checkbox'].includes(cur.type)) {
-    ctnMsg = cur.parentNode.parentNode.parentNode.querySelector('.mensagem');
-  } else {
-    ctnMsg = cur.parentNode.parentNode.querySelector('.mensagem');
-  }
-  if (ctnMsg) {
-    ctnMsg.textContent = cur.validationMessage || cur.mensagemPadrao;
-  }
-  if (cur.validationMessage) {
-    cur.classList.add('invalid');
-  } else {
-    cur.classList.remove('invalid');
-  }
-};
-
-const avaliaForm = f => {
-  [...f.querySelectorAll('input, select, textarea, form')].filter(el => !el.hasOwnProperty('mensagemPadrao')).
-    forEach(el => {
-      const ctnMsg = el.parentNode.parentNode.querySelector('.mensagem');
-      if (!ctnMsg) {
-        el.mensagemPadrao = '';
-        return;
-      }
-      el.mensagemPadrao = ctnMsg.textContent;
-    });
-  for (let [sel, v] of validacoes.entries()) {
-    [...f.querySelectorAll(sel)].filter(el => !el.avaliadoForm).forEach(el => {
-      if (v.ini) v.ini(el);
-      el.avaliadoForm = true;
-      el.removeAttribute('pattern');
-      el.addEventListener('blur', ev => {
-        const cur = ev.currentTarget;
-        let validade = v.val(cur, ev);
-        if (validade == undefined) validade = '';
-        cur.setCustomValidity(validade);
-      });
-      el.addEventListener('keydown', ev => {
-        if (ev.key != 'Enter') return;
-        const cur = ev.currentTarget;
-        let validade = v.val(cur, ev);
-        if (validade == undefined) validade = '';
-        cur.setCustomValidity(validade);
-      });
-    });
-  }
-  f.querySelectorAll('input, select, textarea, form').forEach(el => {
-    el.addEventListener('blur', updateValidListener);
-    el.addEventListener('keydown', updateValidListener);
-    f.observer.disconnect();
-    if (el.required) {
-      el.parentNode.parentNode.classList.add('required');
+const updateValid = element => {
+    let messageContainer;
+    
+    if (['radio', 'checkbox'].includes(element.type)) {
+        messageContainer = element.parentNode.parentNode.parentNode.querySelector('.mensagem');
     } else {
-      el.parentNode.parentNode.classList.remove('required');
+        messageContainer = element.parentNode.parentNode.querySelector('.mensagem');
     }
-    f.observer.observe(f, { attributes: true, childList: true, subtree: true });
-  });
+    
+    if (messageContainer) {
+        messageContainer.textContent = element.validationMessage || element.mensagemPadrao;
+    }
+    
+    if (element.validationMessage) {
+        element.classList.add('invalid');
+    } else {
+        element.classList.remove('invalid');
+    }
 };
+
+const avaliaForm = form => {
+    // Inicializa mensagens padrão
+    [...form.querySelectorAll('input, select, textarea, form')]
+        .filter(el => !el.hasOwnProperty('mensagemPadrao'))
+        .forEach(el => {
+            const messageContainer = el.parentNode.parentNode.querySelector('.mensagem');
+            el.mensagemPadrao = messageContainer ? messageContainer.textContent : '';
+        });
+    
+    // Aplica validações customizadas
+    for (let [selector, validacao] of validacoes.entries()) {
+        [...form.querySelectorAll(selector)]
+            .filter(el => !el.avaliadoForm)
+            .forEach(el => {
+                if (validacao.ini) validacao.ini(el);
+                el.avaliadoForm = true;
+                el.removeAttribute('pattern');
+                
+                el.addEventListener('blur', ev => {
+                    const element = ev.currentTarget;
+                    let validade = validacao.val(element, ev);
+                    if (validade === undefined) validade = '';
+                    element.setCustomValidity(validade);
+                });
+                
+                el.addEventListener('keydown', ev => {
+                    if (ev.key !== 'Enter') return;
+                    const element = ev.currentTarget;
+                    let validade = validacao.val(element, ev);
+                    if (validade === undefined) validade = '';
+                    element.setCustomValidity(validade);
+                });
+            });
+    }
+    
+    // Configura listeners gerais
+    form.querySelectorAll('input, select, textarea, form').forEach(el => {
+        el.addEventListener('blur', updateValidListener);
+        el.addEventListener('keydown', updateValidListener);
+        
+        form.observer.disconnect();
+        
+        if (el.required) {
+            el.parentNode.parentNode.classList.add('required');
+        } else {
+            el.parentNode.parentNode.classList.remove('required');
+        }
+        
+        form.observer.observe(form, { 
+            attributes: true, 
+            childList: true, 
+            subtree: true 
+        });
+    });
+};
+
+// === FUNÇÕES UTILITÁRIAS ===
 
 /**
- *
- * @param {string} seletor
- * @param {Function} validacao
- * @param {?Function} ini
+ * Adiciona validação customizada
+ * @param {string} seletor - Seletor CSS
+ * @param {Function} validacao - Função de validação
+ * @param {Function} ini - Função de inicialização
  */
 const adicionaValidacao = (seletor, validacao, ini = null) => {
-  validacoes.set(seletor, { sel: seletor, val: validacao, ini: ini });
+    validacoes.set(seletor, { sel: seletor, val: validacao, ini: ini });
 };
 
 /**
- *
- * @param {Element} f
+ * Reporta campos inválidos
+ * @param {Element} form - Formulário
  */
-const reportaInvalidos = f => {
-  let erro = false;
-  for (let [sel, v] of validacoes.entries()) {
-    [...f.querySelectorAll(sel)].forEach(el => {
-      let validade = v.val(el);
-      if (validade == undefined) validade = '';
-      el.setCustomValidity(validade);
+const reportaInvalidos = form => {
+    let erro = false;
+    
+    for (let [selector, validacao] of validacoes.entries()) {
+        [...form.querySelectorAll(selector)].forEach(el => {
+            let validade = validacao.val(el);
+            if (validade === undefined) validade = '';
+            el.setCustomValidity(validade);
+        });
+    }
+    
+    form.querySelectorAll(':invalid').forEach(el => {
+        erro = true;
+        updateValid(el);
     });
-  }
-  f.querySelectorAll(':invalid').forEach(el => {
-    erro = true;
-    updateValid(el);
-  });
-  return erro;
+    
+    return erro;
 };
 
 /**
- *
- * @param {HTMLElement|HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement}  el
- * @param {string} msg
+ * Define validade de campo
+ * @param {HTMLElement} element - Elemento
+ * @param {string} msg - Mensagem
  */
-const setValidade = (el, msg = '') => {
-  if (!msg) msg = '';
-  el.setCustomValidity(msg);
-  updateValid(el);
-  if (msg == '') {
-    el.classList.remove('invalid');
-  }
+const setValidade = (element, msg = '') => {
+    if (!msg) msg = '';
+    element.setCustomValidity(msg);
+    updateValid(element);
+    if (msg === '') {
+        element.classList.remove('invalid');
+    }
 };
 
 /**
- *
- * @param {HTMLElement|HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} el
+ * Verifica se campo é válido
+ * @param {HTMLElement} element - Elemento
  */
-const valido = el => {
-  return el.checkValidity();
+const valido = element => {
+    return element.checkValidity();
 };
 
 /**
- *
- * @param {HTMLElement|HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} el
- * @param {string} msg
+ * Define mensagem customizada
+ * @param {HTMLElement} element - Elemento
+ * @param {string} msg - Mensagem
  */
-const setMensagem = (el, msg = '') => {
-  const ctnMsg = el.parentNode.parentNode.querySelector('.mensagem');
-  if (!ctnMsg) return;
-  ctnMsg.textContent = msg;
+const setMensagem = (element, msg = '') => {
+    const messageContainer = element.parentNode.parentNode.querySelector('.mensagem');
+    if (!messageContainer) return;
+    messageContainer.textContent = msg;
 };
 
 /**
- *
- * @param {HTMLElement|HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} el
+ * Oculta campo
+ * @param {HTMLElement} element - Elemento
  */
-const oculta = el => {
-  el.parentNode.parentNode.classList.add('oculto');
+const oculta = element => {
+    element.parentNode.parentNode.classList.add('oculto');
 };
 
 /**
- *
- * @param {HTMLElement|HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} el
+ * Mostra campo
+ * @param {HTMLElement} element - Elemento
  */
-const mostra = el => {
-  el.parentNode.parentNode.classList.remove('oculto');
+const mostra = element => {
+    element.parentNode.parentNode.classList.remove('oculto');
 };
 
 /**
- *
- * @param {Element} f
- * @param {string} url
+ * POST request
+ * @param {Element} form - Formulário
+ * @param {string} url - URL
  */
-const post = async (f, url) => {
-  const fd = new FormData(f);
-  const res = await fetch(url, {
-    method: 'POST',
-    body: fd,
-  });
-  const r = await res.json();
-  if (r.erro) throw r.mensagem;
-  return r;
+const post = async (form, url) => {
+    const formData = new FormData(form);
+    const response = await fetch(url, {
+        method: 'POST',
+        body: formData,
+    });
+    
+    const result = await response.json();
+    if (result.erro) throw new Error(result.mensagem);
+    return result;
 };
 
 /**
- *
- * @param {Element} f
- * @param {string} url
- * @param {boolean|null} text
+ * GET request
+ * @param {Element} form - Formulário
+ * @param {string} url - URL
+ * @param {boolean} text - Retornar texto
  */
-const get = async (f, url, text = false) => {
-  const fd = new FormData(f);
-  const qs = new URLSearchParams(fd);
-  const res = await fetch(`${url}?${qs.toString()}`);
-  if (!text) {
-    const r = await res.json();
-    if (r.erro) throw new Error(r.mensagem);
-    return r;
-  }
-  return await res.text();
+const get = async (form, url, text = false) => {
+    const formData = new FormData(form);
+    const queryString = new URLSearchParams(formData);
+    const response = await fetch(`${url}?${queryString.toString()}`);
+    
+    if (!text) {
+        const result = await response.json();
+        if (result.erro) throw new Error(result.mensagem);
+        return result;
+    }
+    
+    return await response.text();
 };
 
+/**
+ * Auto height para textarea
+ * @param {Event|HTMLElement} e - Evento ou elemento
+ */
 const autoHeight = e => {
-  let cur = e.currentTarget || e;
-  cur.style.height = 'auto';
-  cur.style.height = `${cur.scrollHeight + 8}px`;
+    let element = e.currentTarget || e;
+    element.style.height = 'auto';
+    element.style.height = `${element.scrollHeight + 8}px`;
 };
 
 export {
-  registra,
-  adicionaValidacao,
-  reportaInvalidos,
-  setValidade,
-  valido,
-  setMensagem,
-  post,
-  get,
-  mostra,
-  oculta,
-  autoHeight,
+    registra,
+    adicionaValidacao,
+    reportaInvalidos,
+    setValidade,
+    valido,
+    setMensagem,
+    post,
+    get,
+    mostra,
+    oculta,
+    autoHeight,
 };

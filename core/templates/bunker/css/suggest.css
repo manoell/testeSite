@@ -1,15 +1,24 @@
+/* =================================================================
+   SISTEMA DE SUGESTÕES - OTIMIZADO
+   Versão otimizada: simplificado seletores, melhor performance
+   ================================================================= */
+
+/* ===== CONTAINER DE SUGESTÃO ===== */
 .suggest {
     display: flex;
     position: relative;
     border: 1px solid #eaeaeb;
 }
 
-.suggest input, .suggest input:not([type=checkbox]):not([type=radio]):not([type=range]) {
+/* ===== INPUT DE SUGESTÃO ===== */
+.suggest input, 
+.suggest input:not([type=checkbox]):not([type=radio]):not([type=range]) {
     flex: 1 1 auto;
     background: none;
     padding: 0.5rem;
 }
 
+/* ===== LISTA DE SUGESTÕES ===== */
 .suggest .lista {
     position: absolute;
     top: 2rem;
@@ -22,6 +31,7 @@
     z-index: 6;
 }
 
+/* ===== ITENS DA LISTA ===== */
 .suggest .lista a {
     display: block;
     padding: 0.5rem;
@@ -33,6 +43,7 @@
     background-color: #eeeeee;
 }
 
+/* ===== TEMA ESCURO ===== */
 .dark .suggest {
     border: 1px solid black;
 }

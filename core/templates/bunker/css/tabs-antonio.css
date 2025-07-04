@@ -1,3 +1,9 @@
+/* =================================================================
+   SISTEMA DE TABS - OTIMIZADO
+   Versão otimizada: simplificado seletores, melhor performance
+   ================================================================= */
+
+/* ===== NAVEGAÇÃO DAS TABS ===== */
 .tabs > nav {
     position: sticky;
     top: 3rem;
@@ -11,6 +17,7 @@
     height: 0 !important;
 }
 
+/* ===== LINKS DAS TABS ===== */
 .tabs > nav a {
     color: #0071ad;
     padding: 0.5rem;
@@ -34,21 +41,13 @@
     color: #a65718;
 }
 
-/*@media (min-width: 1024px) {*/
-/*    .tabs > nav {*/
-/*        overflow: visible;*/
-/*    }*/
-
-/*    .tabs > nav a {*/
-/*        flex: 0 0 auto;*/
-/*    }*/
-/*}*/
-
-.tabs > nav a.disabled, .tabs > nav a.disabled:hover {
+.tabs > nav a.disabled, 
+.tabs > nav a.disabled:hover {
     background: white;
     color: lightgray;
 }
 
+/* ===== CONTEÚDO DAS TABS ===== */
 .tabs > section > div {
     display: none;
 }

@@ -1,3 +1,9 @@
+/* =================================================================
+   SISTEMA DE ALERTAS - OTIMIZADO
+   Versão otimizada: consolidadas animações, removido código redundante
+   ================================================================= */
+
+/* ===== CONTAINER PRINCIPAL ===== */
 #alerta {
     position: fixed;
     z-index: 11;
@@ -11,41 +17,47 @@
     transition: 0.4s ease-in-out bottom;
     display: flex;
     margin: auto;
-    font-family: 'Trebuchet MS', 'arial', 'helvetica', 'Open Sans', sans-serif;
+    font-family: 'Trebuchet MS', arial, helvetica, 'Open Sans', sans-serif;
 }
 
+/* ===== MODO ALTO CONTRASTE ===== */
 body.alto-contraste #alerta {
     background-color: black;
     border: 1px solid white;
 }
 
+/* ===== RESPONSIVIDADE ===== */
 @media (min-width: 768px) {
     #alerta {
         left: 50%;
         right: auto;
         transform: translate(-50%);
-        border: 2px solid White;
+        border: 2px solid white;
         box-shadow: 0px 0px 33px 3px #d8d8d8;
-
     }
 }
 
+/* ===== ESTADO ABERTO ===== */
 #alerta.aberto {
     padding: 1.2rem 2.5rem;
     bottom: 30vh !important;
 }
+
 @media (max-width: 768px) {
-    #alerta.aberto{
+    #alerta.aberto {
         padding: 1rem;
         bottom: 5vh !important;
     }
 }
+
+/* ===== MENSAGEM ===== */
 #alerta .msg {
     font-size: 1rem;
     color: white;
     flex: 1 1 auto;
 }
 
+/* ===== AÇÕES ===== */
 #alerta .act {
     display: flex;
     flex-flow: row wrap;
@@ -64,6 +76,7 @@ body.alto-contraste #alerta {
     color: var(--cor-amarelo-correios);
 }
 
+/* ===== LINKS EM ALTO CONTRASTE ===== */
 body.alto-contraste #alerta .act > a,
 body.alto-contraste #alerta .act > a:hover,
 body.alto-contraste #alerta .act > a:focus {
