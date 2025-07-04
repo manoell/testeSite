@@ -1,7 +1,7 @@
 # Estrutura do Projeto
 
 ```
-├── index.php
+│   index.php
 │
 ├───app
 │       .htaccess
@@ -30,46 +30,14 @@
 │   │       rastroUnico.js
 │   │
 │   ├───securimage
-│   │   │   .gitattributes
 │   │   │   AHGBold.ttf
-│   │   │   composer.json
-│   │   │   LICENSE.txt
-│   │   │   README.FONT.txt
-│   │   │   README.md
-│   │   │   README.txt
 │   │   │   securimage.css
 │   │   │   securimage.js
 │   │   │   securimage.php
-│   │   │   securimage_play.php
-│   │   │   securimage_play.swf
 │   │   │   securimage_show.php
-│   │   │   WavFile.php
 │   │   │
-│   │   ├───audio
-│   │   │       check-point-1.wav
-│   │   │       crowd-talking-1.wav
-│   │   │       crowd-talking-6.wav
-│   │   │       crowd-talking-7.wav
-│   │   │       kids-playing-1.wav
-│   │   │
-│   │   ├───backgrounds
-│   │   │       bg3.jpg
-│   │   │       bg4.jpg
-│   │   │       bg5.jpg
-│   │   │       bg6.png
-│   │   │
-│   │   ├───database
-│   │   │       .htaccess
-│   │   │       index.html
-│   │   │       securimage.sq3
-│   │   │
-│   │   ├───images
-│   │   │       audio_icon.png
-│   │   │       loading.png
-│   │   │       refresh.png
-│   │   │
-│   │   └───words
-│   │           words.txt
+│   │   └───images
+│   │           loading.png
 │   │
 │   └───templates
 │       │   index.php
@@ -137,34 +105,6 @@
 │                   modal.js
 │                   tabs.js
 │                   validacoes-padrao.js
-│
-├───lib
-│   │   .htaccess
-│   │   index.php
-│   │
-│   ├───bootstrap4
-│   │   ├───css
-│   │   │       bootstrap.min.css
-│   │   │
-│   │   └───js
-│   │           bootstrap.bundle.js
-│   │
-│   ├───font-awesome
-│   │   ├───css
-│   │   │       font-awesome.min.css
-│   │   │
-│   │   └───fonts
-│   │           fontawesome-webfont.woff2
-│   │
-│   ├───jquery
-│   │   │   jquery.js
-│   │   │
-│   │   └───js
-│   │           jquery.mask.min.js
-│   │
-│   └───maskedinput-1.3.1
-│       └───dist
-│               jquery.maskedinput.min.js
 │
 └───static
     │   .htaccess

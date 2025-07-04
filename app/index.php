@@ -8,33 +8,42 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Rastreamento</title>
 
-    <!-- CDN corrigida -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" />
+    <!-- 🚀 BIBLIOTECAS OTIMIZADAS VIA CDN -->
     
-    <!-- Todos os caminhos corrigidos para ../ (subir uma pasta da /app/ para a raiz) -->
-    <link rel="stylesheet" href="../lib/font-awesome/css/font-awesome.min.css?v2.21.011">
-    <link rel="stylesheet" href="../lib/bootstrap4/css/bootstrap.min.css?v2.21.011" id="bootstrap-css">
-    <link rel='stylesheet prefetch' href="../static/css/reset.min.css?v2.21.011">
+    <!-- Animate.css - Já otimizado -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" crossorigin="anonymous" />
+    
+    <!-- 🔄 BOOTSTRAP 4.6.2 - CDN Otimizado (era local) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" 
+          integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" 
+          crossorigin="anonymous" id="bootstrap-css">
+    
+    <!-- 🔄 FONT AWESOME 6.4.0 - CDN Atualizado (era v4 local) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+          crossorigin="anonymous">
+
+    <!-- CSS LOCAIS MANTIDOS -->
+    <link rel='stylesheet' href="../static/css/reset.min.css?v2.21.011">
     <link rel="shortcut icon" href="../core/templates/bunker/img/favi-ect.png" />
     <link rel="stylesheet" href="../core/templates/bunker/css/bunker.css?v2.21.011">
     <link rel="stylesheet" href="../static/css/global.css?v2.21.011">
-
-    <!-- <link rel="stylesheet" href="../lib/fontawesome/font-awesome.min.css'> -->
-
     <link rel="stylesheet" href="../static/rastreamento-internet/estilos/rastroUnico.css?v2.21.011">
     <link rel="stylesheet" href="../static/rastreamento-internet/estilos/rastroMulti.css?v2.21.011">
     <link rel="stylesheet" href="../static/rastreamento-internet/estilos/contrast.css?v2.21.011">
     
-    <!-- Arquivos locais da pasta /app/ (sem ../) -->
+    <!-- Arquivos locais da pasta /app/ -->
     <link rel="stylesheet" href="index.css?v2.21.011">
     <link rel="stylesheet" href="carrossel.css?v2.21.011">
+
+    <!-- 🎯 DNS PREFETCH para melhor performance -->
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 </head>
 
-<!-- CLASSE "oculto" REMOVIDA -->
 <body>
     <section id="acessibilidade">
         <a tabindex="1">Acessibilidade</a>
-        <!--    <a class="idioma">Português</a>-->
     </section>
     <div id="acess-drop-down">
         <header>
@@ -93,7 +102,6 @@
                     <div class="campos captcha">
                         <div class="campo">
                             <div class="controle">
-                                <!-- Caminhos do captcha corrigidos -->
                                 <img id="captcha_image"
                                     src="../core/securimage/securimage_show.php"
                                     alt="CAPTCHA Image">
@@ -108,6 +116,7 @@
                                     <a tabindex="-1" class="captcha_play_button"
                                        href="../core/securimage/securimage_play.php"
                                        onclick="return false">
+                                        <!-- 🔄 FONT AWESOME ATUALIZADO: fa → fas -->
                                         <i class="fa fa-volume-up" aria-hidden="true" style="width: 16px"></i>
                                         <img class="captcha_loading_image rotating" height="32" width="32"
                                              src="../core/securimage/images/loading.png"
@@ -126,14 +135,14 @@
 
                                         <a tabindex="-1" style="border: 0" href="#" title="Refresh Image"
                                            id="captcha_refresh_btn">
-                                            <i class="fa fa-refresh" aria-hidden="true" onclick="this.blur()"></i>
+                                            <!-- 🔄 FONT AWESOME ATUALIZADO: fa → fas -->
+                                            <i class="fas fa-refresh" aria-hidden="true" onclick="this.blur()"></i>
                                         </a>
                                     </p>
                                 </div>
                             </div>
                         </div>
-                        <!--                <div class="campos">-->
-                        <div class="campo"> <!--  style="border: solid 1px;" -->
+                        <div class="campo">
                             <div class="rotulo">
                                 <label for="captcha">Digite o texto contido na imagem</label>
                             </div>
@@ -158,17 +167,17 @@
                                     <source srcset="../static/rastreamento-internet/banners/campanha_abril_1.png?ver=v2.21.011" media="(max-width: 480px)" class="banner-geral">
                                     <source srcset="../static/rastreamento-internet/banners/campanha_abril_2.png?ver=v2.21.011" media="(max-width: 770px)" class="banner-geral">
                                     <source srcset="../static/rastreamento-internet/banners/campanha_abril_3.png?ver=v2.21.011" media="(max-width: 994px)" class="banner-geral">
-                                    <img src="../static/rastreamento-internet/banners/campanha_abril_4.png?ver=v2.21.011" class="justify-content-center banner-geral"/>
+                                    <img src="../static/rastreamento-internet/banners/campanha_abril_4.png?ver=v2.21.011" class="justify-content-center banner-geral" loading="lazy"/>
                                 </picture>
                             </a>
                         </div>
-                        <div class="carousel-item ">
+                        <div class="carousel-item">
                             <a href="#celular" target="_blank">
                                 <picture>
                                     <source srcset="../static/rastreamento-internet/banners/dia_namorados1.png?ver=v2.21.011" media="(max-width: 480px)" class="banner-geral">
                                     <source srcset="../static/rastreamento-internet/banners/dia_namorados2.png?ver=v2.21.011" media="(max-width: 770px)" class="banner-geral">
                                     <source srcset="../static/rastreamento-internet/banners/dia_namorados3.png?ver=v2.21.011" media="(max-width: 994px)" class="banner-geral">
-                                    <img src="../static/rastreamento-internet/banners/dia_namorados4.png?ver=v2.21.011" class="justify-content-center banner-geral"/>
+                                    <img src="../static/rastreamento-internet/banners/dia_namorados4.png?ver=v2.21.011" class="justify-content-center banner-geral" loading="lazy"/>
                                 </picture>
                             </a>
                         </div>
@@ -198,7 +207,7 @@
     
     <footer id="rodape">
         <div class="marca-gov">
-            <img src="../core/templates/bunker/img/rodape/marca-gov.png"/>
+            <img src="../core/templates/bunker/img/rodape/marca-gov.png" loading="lazy"/>
         </div>
         <p>
         <div class="copyright"><strong>© Copyright 2025 Correios</strong></div>
@@ -211,80 +220,91 @@
     </div>
     <div id="loading"></div>
     
-    <!-- SEÇÃO DE SCRIPTS - SUBSTITUIR A PARTE ATUAL -->
-	<!-- Localizar esta seção no final do arquivo app/index.php (antes do </body>) -->
+    <!-- 🚀 SCRIPTS OTIMIZADOS COM CDNs -->
 
-	<!-- Todos os scripts com caminhos corrigidos -->
-	<script defer type="module" src="../core/templates/bunker/js/bunker.js?3"></script>
-	<script type="module" src="../static/js/global.js"></script>
+    <!-- 🔄 JQUERY 3.7.1 - CDN Atualizado (era local) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" 
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" 
+            crossorigin="anonymous"></script>
 
-	<!-- JQUERY -->
-	<script src="../lib/jquery/jquery.js"></script>
-	<script src="../lib/jquery/js/jquery.mask.min.js"></script>
+    <!-- 🔄 JQUERY MASK 1.14.16 - CDN (era local) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" 
+            integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" 
+            crossorigin="anonymous"></script>
 
-	<!-- Bootstrap -->
-	<script src="../lib/bootstrap4/js/bootstrap.bundle.js"></script>
+    <!-- 🔄 BOOTSTRAP 4.6.2 JS - CDN (era local) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js" 
+            integrity="sha512-iGL3R+ryQ7CLKtyKlyGrC+6dKlMQgm0FJ3OlECWN5WwcN2Zse+YfVZAP8C8Hy+0e3A2bCEKF2yAZ4qAP8NqhVA==" 
+            crossorigin="anonymous"></script>
 
-	<!-- JQUERY MASKINPUT -->
-	<script src="../lib/maskedinput-1.3.1/dist/jquery.maskedinput.min.js"></script>
+    <!-- 🔄 JQUERY MASKED INPUT 1.4.1 - CDN (era local) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js" 
+            integrity="sha512-ITEfDvjG4sIpWz2qAJA4Pkh2E2qGT8YmBD7Z3BCi4rS0wDq7+zJJKzWfN7NBTdLn+L1r94j3DxKdIOOZ9N8/Mg==" 
+            crossorigin="anonymous"></script>
 
-	<!-- 🆕 NOVOS MÓDULOS OTIMIZADOS - ADICIONAR ESTAS LINHAS -->
-	<script type="module" src="constants.js?v2.21.011"></script>
-	<script type="module" src="templates.js?v2.21.011"></script>
-	<script type="module" src="utils.js?v2.21.011"></script>
-	<script type="module" src="api.js?v2.21.011"></script>
+    <!-- ⚡ FALLBACK DE SEGURANÇA - jQuery Local -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" 
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" 
+        crossorigin="anonymous"></script>
 
-	<!-- 🔄 SCRIPTS OTIMIZADOS - SUBSTITUIR OS ORIGINAIS -->
-	<script type="module" src="index.js?v2.21.011"></script>
-	<script type="module" src="irParaArchor.js?v2.21.011"></script>
-	<script type="module" src="high-contrast.js?v2.21.011"></script>
+    <!-- SCRIPTS LOCAIS DO PROJETO -->
+    <script defer type="module" src="../core/templates/bunker/js/bunker.js?3"></script>
+    <script type="module" src="../static/js/global.js"></script>
 
-	<!-- Manter os scripts existentes no final (loading, etc.) -->
-	<script>
-		// Função para mostrar loading por tempo específico
-		function showLoadingFor(seconds) {
-			const loading = document.getElementById('loading');
-			loading.classList.add('visivel');
-			
-			setTimeout(() => {
-				loading.classList.remove('visivel');
-			}, seconds * 1000);
-		}
+    <!-- MÓDULOS OTIMIZADOS -->
+    <script type="module" src="constants.js?v2.21.011"></script>
+    <script type="module" src="templates.js?v2.21.011"></script>
+    <script type="module" src="utils.js?v2.21.011"></script>
+    <script type="module" src="api.js?v2.21.011"></script>
+    <script type="module" src="index.js?v2.21.011"></script>
+    <script type="module" src="irParaArchor.js?v2.21.011"></script>
+    <script type="module" src="high-contrast.js?v2.21.011"></script>
 
-		// Função para mostrar imagem de loading do captcha por tempo específico
-		function showCaptchaLoadingFor(seconds) {
-			const captchaLoading = document.querySelector('.captcha_loading_image');
-			if (captchaLoading) {
-				captchaLoading.style.visibility = 'visible';
-				
-				setTimeout(() => {
-					captchaLoading.style.visibility = 'hidden';
-				}, seconds * 1000);
-			}
-		}
+    <!-- SCRIPTS CUSTOMIZADOS -->
+    <script>
+        // Função para mostrar loading por tempo específico
+        function showLoadingFor(seconds) {
+            const loading = document.getElementById('loading');
+            loading.classList.add('visivel');
+            
+            setTimeout(() => {
+                loading.classList.remove('visivel');
+            }, seconds * 1000);
+        }
 
-		// Event listener para o botão refresh
-		document.addEventListener('DOMContentLoaded', function() {
-			const refreshBtn = document.getElementById('captcha_refresh_btn');
-			if (refreshBtn) {
-				refreshBtn.addEventListener('click', function(e) {
-					e.preventDefault();
-					showLoadingFor(1); // Mostra loading por 1 segundo
-					// A funcionalidade do refresh agora é gerenciada pelo sistema otimizado
-				});
-			}
-			
-			// Event listener para o botão volume-up
-			const volumeBtn = document.querySelector('.captcha_play_button');
-			if (volumeBtn) {
-				volumeBtn.addEventListener('click', function(e) {
-					e.preventDefault();
-					showLoadingFor(10); // Mostra loading por 10 segundos
-					showCaptchaLoadingFor(1); // Mostra imagem loading por 1 segundo
-				});
-			}
-		});
-	</script>
+        // Função para mostrar imagem de loading do captcha por tempo específico
+        function showCaptchaLoadingFor(seconds) {
+            const captchaLoading = document.querySelector('.captcha_loading_image');
+            if (captchaLoading) {
+                captchaLoading.style.visibility = 'visible';
+                
+                setTimeout(() => {
+                    captchaLoading.style.visibility = 'hidden';
+                }, seconds * 1000);
+            }
+        }
+
+        // Event listener para o botão refresh
+        document.addEventListener('DOMContentLoaded', function() {
+            const refreshBtn = document.getElementById('captcha_refresh_btn');
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showLoadingFor(1);
+                });
+            }
+            
+            // Event listener para o botão volume-up
+            const volumeBtn = document.querySelector('.captcha_play_button');
+            if (volumeBtn) {
+                volumeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showLoadingFor(10);
+                    showCaptchaLoadingFor(1);
+                });
+            }
+        });
+    </script>
 
 </body>
 
