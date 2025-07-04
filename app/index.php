@@ -156,7 +156,7 @@
                 </div>
                 <button hidden type="button" id="b-invoked" name="b-invoked"></button>
             </form>
-            <div id="tabs-rastreamento">
+            <div id="tabs-rastreamento" class="oculto">
 				<div id="ver-rastro-unico" style="display: block;">
 				<div id="cabecalho-rastro" class="d-flex justify-content-between">
 					<ul class="cabecalho-rastro">                
