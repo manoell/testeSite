@@ -13,7 +13,6 @@
 │       index.css
 │       index.js
 │       index.php
-│       index.php.backup.072025_0109
 │       irParaArchor.js
 │       resultado.php
 │       templates.js
@@ -154,10 +153,26 @@
     │   │       dia_namorados3.png
     │   │       dia_namorados4.png
     │   │
-    │   └───estilos
-    │           contrast.css
-    │           rastroMulti.css
-    │           rastroUnico.css
+    │   ├───estilos
+    │   │       contrast.css
+    │   │       rastroMulti.css
+    │   │       rastroUnico.css
+    │   │
+    │   └───imgs
+    │       │   correios-sf.png
+    │       │
+    │       └───novos
+    │               agencia-relogio-stroke.svg
+    │               bandeira-brasil-stroke.svg
+    │               caixa-visto-stroke.svg
+    │               caixa-x-stroke.svg
+    │               caminhao-correndo-stroke.svg
+    │               documento-encaminhar-stroke.svg
+    │               documento-verificar-stroke.svg
+    │               documento-visto-stroke.svg
+    │               fatura-relogio-stroke.svg
+    │               fatura-visto-stroke.svg
+    │               postagem-stroke.svg
     │
     └───svg
             index.php
