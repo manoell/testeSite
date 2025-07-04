@@ -13,6 +13,7 @@
 │       index.css
 │       index.js
 │       index.php
+│       index.php.backup.072025_0109
 │       irParaArchor.js
 │       resultado.php
 │       templates.js
@@ -93,6 +94,38 @@
 │                   modal.js
 │                   tabs.js
 │                   validacoes-padrao.js
+│
+├───lib
+│   │   .htaccess
+│   │
+│   ├───animate
+│   │       animate.min.css
+│   │
+│   ├───bootstrap
+│   │   ├───css
+│   │   │       bootstrap.min.css
+│   │   │
+│   │   └───js
+│   │           bootstrap.bundle.min.js
+│   │
+│   ├───font-awesome
+│   │   ├───css
+│   │   │       font-awesome.min.css
+│   │   │
+│   │   └───fonts
+│   │           fontawesome-webfont.eot
+│   │           fontawesome-webfont.ttf
+│   │           fontawesome-webfont.woff
+│   │           fontawesome-webfont.woff2
+│   │
+│   ├───jquery
+│   │       jquery.min.js
+│   │
+│   ├───jquery-mask
+│   │       jquery.mask.min.js
+│   │
+│   └───jquery-maskedinput
+│           jquery.maskedinput.min.js
 │
 └───static
     │   .htaccess
