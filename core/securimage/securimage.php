@@ -428,7 +428,7 @@ class Securimage
      * The length of the captcha code
      * @var int
      */
-    public $code_length    = 6;
+    public $code_length    = 4;
 
     /**
      * Display random spaces in the captcha text on the image
@@ -473,7 +473,7 @@ class Securimage
      * The character set to use for generating the captcha code
      * @var string
      */
-    public $charset        = 'abcdefghijkmnopqrstuvwxzyABCDEFGHJKLMNPQRSTUVWXZY0123456789';
+    public $charset        = 'abcdefghijkmnopqrstuvwxzy0123456789';
 
     /**
      * How long in seconds a captcha remains valid, after this time it will be

