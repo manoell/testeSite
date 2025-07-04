@@ -1,25 +1,109 @@
-// modulo de operações/ interações com objetos
+/**
+ * botoes.js - Módulo de Botões Otimizado
+ * Versão otimizada: consolidadas constantes, simplificado template generation
+ */
 
-//Nacionais:
-//  SMS
-//  Suspensão de Entrega
-//  Ar Eletrônico
-//  Chat dos Carteiros
-//  Locker
+// === CONFIGURAÇÕES DE AMBIENTE ===
+const ENVIRONMENT_CONFIGS = {
+    D: { // Desenvolvimento
+        chat: 'https://chatdes.correios.com.br/app/index.php',
+        portal: 'https://jdes.correiosnet.int/portalimportador'
+    },
+    H: { // Homologação  
+        chat: 'https://chathom.correios.com.br/app/index.php',
+        portal: 'https://apphom.correios.com.br/portalimportador'
+    },
+    P: { // Produção (default)
+        chat: 'https://chat.correios.com.br/app/index.php',
+        portal: 'https://apps.correios.com.br/portalimportador'
+    }
+};
 
+// === TEMPLATES DE BOTÕES ===
+const BUTTON_TEMPLATES = {
+    suspenderEntrega: (codObjeto) => `
+        <a class="btn btn-outline-primary p-1 btn-rastro" href="suspensaoEntrega/index.php?objeto=${codObjeto}">
+            <i class="fa fa-hand-paper-o" aria-hidden="true"></i>
+            Suspender Entrega
+        </a>
+    `,
+    
+    chatCarteiros: (linkApp) => `
+        <a class="btn btn-outline-primary p-1 btn-rastro" href="${linkApp}" target="_blank">
+            <img src="../static/rastreamento-internet/imgs/iconeChatCarteiros.PNG" class="icone-btn" aria-hidden="true" />
+            Acompanhe a entrega
+        </a>
+    `,
+    
+    arEletronico: (codObjeto) => `
+        <a class="btn btn-outline-primary p-1 btn-rastro" href="arEletronico/index.php?objeto=${codObjeto}" target="_blank">
+            <img src="../static/rastreamento-internet/imgs/AR-eletronico.png" class="icone-btn" aria-hidden="true" />
+            AR Eletrônico
+        </a>
+    `,
+    
+    gerarBoleto: (link) => `
+        <a class="btn btn-outline-primary p-1 btn-rastro" href="${link}" target="_blank">
+            <i class="fa fa-credit-card" aria-hidden="true"></i>
+            Gerar boleto
+        </a>
+    `,
+    
+    informarDocumento: (link) => `
+        <a class="btn btn-outline-primary p-1 btn-rastro" href="${link}" target="_blank">
+            <img src="../static/rastreamento-internet/imgs/iconeVinculacao.PNG" class="icone-btn" aria-hidden="true" />
+            Informar Documento Fiscal
+        </a>
+    `
+};
 
-//Internacionais
-//  Despacho Postal
-//  Auto Declaração
-const is_validURL = (str) => {
-    const pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
-        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-        '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+/**
+ * Valida se URL é válida
+ */
+const isValidURL = (str) => {
+    const pattern = new RegExp('^(https?:\\/\\/)?' +
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' +
+        '((\\d{1,3}\\.){3}\\d{1,3}))' +
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' +
+        '(\\?[;&a-z\\d%_.~+=-]*)?' +
+        '(\\#[-a-z\\d_]*)?$', 'i');
     return !!pattern.test(str);
-}
+};
+
+/**
+ * Obtém configuração baseada no ambiente
+ */
+const getEnvironmentConfig = () => {
+    const ambiente = window.AMBIENTE_EXECUCAO || 'P';
+    return ENVIRONMENT_CONFIGS[ambiente] || ENVIRONMENT_CONFIGS.P;
+};
+
+/**
+ * Gera link do chat dos carteiros
+ */
+const getChatLink = (codObjeto, eventos) => {
+    const config = getEnvironmentConfig();
+    let linkApp = `${config.chat}?objeto=${codObjeto}`;
+    
+    // Verifica se existe URL customizada no comentário do primeiro evento
+    if (eventos && eventos[0] && eventos[0].comentario && isValidURL(eventos[0].comentario)) {
+        linkApp = eventos[0].comentario;
+    }
+    
+    return linkApp;
+};
+
+/**
+ * Gera link do portal do importador
+ */
+const getPortalLink = (codObjeto) => {
+    const config = getEnvironmentConfig();
+    return `${config.portal}/?encomenda=${codObjeto}`;
+};
+
+/**
+ * Gera botões nacionais para rastreamento único
+ */
 const btnsNacRastroUnico = ({
     codObjeto,
     bloqueioObjeto,
@@ -27,85 +111,52 @@ const btnsNacRastroUnico = ({
     percorridaCarteiro,
     eventos
 }) => {
-
     let btns = "";
+
+    // Suspender entrega
     if (bloqueioObjeto) {
-        //suspender entrega
-        btns += `
-				<a class="btn btn-outline-primary p-1 btn-rastro" href="suspensaoEntrega/index.php?objeto=${codObjeto}">
-                      <i class="fa fa-hand-paper-o" aria-hidden="true"></i>
-                      Suspender Entrega
-                </a>
-				`;
+        btns += BUTTON_TEMPLATES.suspenderEntrega(codObjeto);
     }
 
-    //Chat dos Carteiros
+    // Chat dos Carteiros
     if (percorridaCarteiro) {
-        //iconeChatCarteiros.PNG
-        let linkApp = `https://chat.correios.com.br/app/index.php?objeto=${codObjeto}`
-        if (AMBIENTE_EXECUCAO === 'D') {
-            linkApp = `https://chatdes.correios.com.br/app/index.php?objeto=${codObjeto}`
-        } else if (AMBIENTE_EXECUCAO === 'H') {
-            linkApp = `https://chathom.correios.com.br/app/index.php?objeto=${codObjeto}`
-        }
-
-        if (eventos[0].comentario !== null && is_validURL(eventos[0].comentario)) {
-            linkApp = eventos[0].comentario;
-        }
-        btns += `
-				<a class="btn btn-outline-primary p-1 btn-rastro" href="${linkApp}" target="_blank">
-                     <img src="../static/rastreamento-internet/imgs/iconeChatCarteiros.PNG" class="icone-btn" aria-hidden="true" />
-                     Acompanhe a entrega
-                </a>
-				`;
+        const linkApp = getChatLink(codObjeto, eventos);
+        btns += BUTTON_TEMPLATES.chatCarteiros(linkApp);
     }
+
+    // AR Eletrônico
     if (arEletronico) {
-        //iconeVinculacao.PNG
-        btns += `
-				<a class="btn btn-outline-primary p-1 btn-rastro" href="arEletronico/index.php?objeto=${codObjeto}" target="_blank">
-				 	<img src="../static/rastreamento-internet/imgs/AR-eletronico.png"  class="icone-btn" aria-hidden="true" />
-					AR Eletrônico
-				</a>
-				`;
+        btns += BUTTON_TEMPLATES.arEletronico(codObjeto);
     }
-    return btns;
 
-}
+    return btns;
+};
+
+/**
+ * Gera botões internacionais para rastreamento único
+ */
 const btnsIntRastroUnico = ({
     codObjeto,
     autoDeclaracao,
     encargoImportacao
 }) => {
-    let link = `https://apps.correios.com.br/portalimportador/?encomenda=${codObjeto}`;
-    if (AMBIENTE_EXECUCAO === 'H') {
-        link = `https://apphom.correios.com.br/portalimportador/?encomenda=${codObjeto}`;
-    } else if (AMBIENTE_EXECUCAO === 'D') {
-        link = `https://jdes.correiosnet.int/portalimportador/?encomenda=${codObjeto}`;
-    }
-
-
     let btns = "";
-    if (encargoImportacao) {
-        btns += `
-				<a class="btn btn-outline-primary p-1 btn-rastro" href="${link}" target="_blank">
-                    <i class="fa fa-credit-card" aria-hidden="true"></i>
-                    Gerar boleto
-                </a>
-				`;
-    }
-    if (autoDeclaracao) {
-        btns += `
-				<a class="btn btn-outline-primary p-1 btn-rastro" href="${link}" target="_blank">
-				 	<img src="../static/rastreamento-internet/imgs/iconeVinculacao.PNG"  class="icone-btn" aria-hidden="true" />
-					Informar Documento Fiscal
-				</a>
-				`;
-    }
-    return btns;
-}
+    const link = getPortalLink(codObjeto);
 
+    // Gerar boleto
+    if (encargoImportacao) {
+        btns += BUTTON_TEMPLATES.gerarBoleto(link);
+    }
+
+    // Informar documento fiscal
+    if (autoDeclaracao) {
+        btns += BUTTON_TEMPLATES.informarDocumento(link);
+    }
+
+    return btns;
+};
 
 export {
     btnsIntRastroUnico,
     btnsNacRastroUnico
-}
+};

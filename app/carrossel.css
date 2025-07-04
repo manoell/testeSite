@@ -1,6 +1,6 @@
 /* =================================================================
    CARROSSEL DE BANNERS - OTIMIZADO
-   Estilos para o carrossel de banners promocionais
+   Versão otimizada: removido código não utilizado
    ================================================================= */
 
 /* ===== CONTROLES DO CARROSSEL ===== */
@@ -37,8 +37,9 @@
     background-image: url("../static/svg/seta_next_cinza.svg");
 }
 
-/* ===== ITENS DO CARROSSEL ===== */
+/* ===== TRANSIÇÃO OTIMIZADA ===== */
 .carousel-item {
     transition: transform 0.5s ease;
-    backface-visibility: visible;
+    backface-visibility: hidden;
+    will-change: transform;
 }

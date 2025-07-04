@@ -1,14 +1,127 @@
+# ===== PASTA APP - CONFIGURAÇÃO OTIMIZADA =====
+
 # Desabilitar listagem de diretórios
 Options -Indexes
 
 # Index padrão
 DirectoryIndex index.php
 
+# ===== SEGURANÇA =====
+
 # Bloquear arquivos sensíveis
 <Files ".htaccess">
-    deny from all
+    Require all denied
 </Files>
 
 <Files "*.log">
-    deny from all
+    Require all denied
 </Files>
+
+<Files "*.bak">
+    Require all denied
+</Files>
+
+<Files "*.config">
+    Require all denied
+</Files>
+
+# ===== CACHE OTIMIZADO =====
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # CSS e JS com versioning - cache longo
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    
+    # Imagens - cache médio
+    ExpiresByType image/png "access plus 6 months"
+    ExpiresByType image/jpeg "access plus 6 months"
+    ExpiresByType image/gif "access plus 6 months"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/webp "access plus 6 months"
+    
+    # HTML sem cache para atualizações
+    ExpiresByType text/html "access plus 0 seconds"
+    
+    # JSON sem cache
+    ExpiresByType application/json "access plus 0 seconds"
+</IfModule>
+
+# ===== COMPRESSÃO GZIP =====
+
+<IfModule mod_deflate.c>
+    # Comprimir tipos de arquivo otimizados
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+    
+    # Não comprimir imagens já comprimidas
+    SetEnvIfNoCase Request_URI \
+        \.(?:gif|jpe?g|png|webp)$ no-gzip dont-vary
+    SetEnvIfNoCase Request_URI \
+        \.(?:exe|t?gz|zip|bz2|sit|rar)$ no-gzip dont-vary
+</IfModule>
+
+# ===== HEADERS DE PERFORMANCE =====
+
+<IfModule mod_headers.c>
+    # Cache headers para assets estáticos
+    <FilesMatch "\.(css|js|png|jpg|jpeg|gif|svg|webp|woff|woff2|ttf|eot)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+        Header unset ETag
+    </FilesMatch>
+    
+    # Sem cache para HTML e JSON
+    <FilesMatch "\.(html|htm|php|json)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+    
+    # Headers de segurança básicos
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options SAMEORIGIN
+    Header always set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# ===== MIME TYPES OTIMIZADOS =====
+
+<IfModule mod_mime.c>
+    # Tipos adicionais para performance
+    AddType application/javascript .js
+    AddType text/css .css
+    AddType image/webp .webp
+    AddType font/woff2 .woff2
+    
+    # Charset UTF-8 para texto
+    AddDefaultCharset UTF-8
+    AddCharset UTF-8 .html .htm .css .js .json .xml
+</IfModule>
+
+# ===== PREVENÇÃO DE HOTLINKING =====
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Permitir acesso direto e do próprio domínio
+    RewriteCond %{HTTP_REFERER} !^$
+    RewriteCond %{HTTP_REFERER} !^https?://(www\.)?yourdomain\.com [NC]
+    
+    # Bloquear hotlinking de imagens
+    RewriteRule \.(png|jpg|jpeg|gif|webp|svg)$ - [F,L]
+</IfModule>
+
+# ===== OTIMIZAÇÃO ETAG =====
+
+<IfModule mod_headers.c>
+    # Remove ETags para melhor cache
+    Header unset ETag
+</IfModule>
+
+FileETag None

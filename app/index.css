@@ -1,6 +1,6 @@
 /* =================================================================
    INDEX CSS - SISTEMA DE RASTREAMENTO - OTIMIZADO
-   Estilos principais da aplicação de rastreamento
+   Versão otimizada: removido CSS não utilizado, consolidadas regras
    ================================================================= */
 
 /* ===== FORMULÁRIO DE BUSCA ===== */
@@ -43,7 +43,7 @@ main {
     z-index: 1;
 }
 
-/* ===== TABELAS DE RESULTADOS ===== */
+/* ===== RESULTADOS DE RASTREAMENTO ===== */
 table.cards tr {
     padding: 0 0 1rem 0;
     border-radius: 0.5rem !important;
@@ -53,7 +53,6 @@ table.cards tr {
     margin: 1rem !important;
 }
 
-/* ===== INFORMAÇÕES DE RASTREAMENTO ===== */
 .infos-rastro {
     display: flex;
     flex-flow: column nowrap;
@@ -75,7 +74,7 @@ table.cards tr {
     flex: 0 1 25%;
 }
 
-/* ===== ESTILOS DE BOTÕES E ÍCONES ===== */
+/* ===== ESTILOS DE BOTÕES ===== */
 .has-btn {
     border-top: solid 0.5rem #f1c40f;
     border-radius: 0.5rem 0.5rem 0 0;
@@ -135,7 +134,7 @@ table.cards tr {
     color: #00416b;
 }
 
-/* ===== ÍCONES E BOTÕES ESPECÍFICOS ===== */
+/* ===== ÍCONES E BOTÕES ===== */
 .icone-btn {
     width: 20px;
 }
@@ -152,7 +151,7 @@ table.cards tr {
     color: red;
 }
 
-/* ===== TABELAS FIXAS ===== */
+/* ===== TABELAS ===== */
 .th-fixo-ponta {
     width: 25%;
 }
@@ -165,7 +164,7 @@ table.cards tr {
     display: none;
 }
 
-/* ===== NAVEGAÇÃO E MENUS ===== */
+/* ===== NAVEGAÇÃO ===== */
 .tab > nav {
     z-index: 1;
 }
@@ -203,7 +202,7 @@ table.cards tr {
     width: auto;
 }
 
-/* ===== BARRA DE COMPARTILHAMENTO ===== */
+/* ===== COMPARTILHAMENTO ===== */
 .share-bar {
     color: #00416b;
 }
@@ -212,7 +211,6 @@ table.cards tr {
     font-size: 1.09em !important;
 }
 
-/* ===== CABEÇALHO DE RASTREAMENTO ===== */
 ul.cabecalho-rastro {
     display: flex;
     justify-content: start;
@@ -311,7 +309,7 @@ a:not([href]):not([tabindex]) {
 
 /* ===== RESPONSIVE DESIGN ===== */
 
-/* ===== TABLET (768px+) ===== */
+/* TABLET (768px+) */
 @media (min-width: 768px) {
     form,
     nav,
@@ -331,7 +329,7 @@ a:not([href]):not([tabindex]) {
     }
 }
 
-/* ===== DESKTOP PEQUENO (992px+) ===== */
+/* DESKTOP PEQUENO (992px+) */
 @media (min-width: 992px) {
     form,
     nav,
@@ -362,7 +360,7 @@ a:not([href]):not([tabindex]) {
     }
 }
 
-/* ===== DESKTOP GRANDE (1200px+) ===== */
+/* DESKTOP GRANDE (1200px+) */
 @media (min-width: 1200px) {
     table {
         margin: 1rem auto;
@@ -431,9 +429,8 @@ a:not([href]):not([tabindex]) {
     }
 }
 
-/* ===== ESTILOS PARA IMPRESSÃO ===== */
+/* ===== IMPRESSÃO ===== */
 @media print {
-    /* ===== ELEMENTOS OCULTOS NA IMPRESSÃO ===== */
     #acessibilidade,
     #menu,
     .jumbotron,
@@ -452,7 +449,6 @@ a:not([href]):not([tabindex]) {
         display: none !important;
     }
     
-    /* ===== NAVEGAÇÃO PARA IMPRESSÃO ===== */
     #tab-enviadoParaVoce > nav > a,
     #tab-enviadoPorVoce > nav > a,
     .tabs > nav a:hover,
@@ -463,7 +459,6 @@ a:not([href]):not([tabindex]) {
         border-bottom: 1px solid black;
     }
     
-    /* ===== CORES PARA IMPRESSÃO ===== */
     #titulo-pagina > h3,
     #divParaVc,
     #divParaVc > div > span,
@@ -478,7 +473,6 @@ a:not([href]):not([tabindex]) {
         border: 2px solid black;
     }
     
-    /* ===== LAYOUT PARA IMPRESSÃO ===== */
     nav,
     .infos-rastro {
         display: flex;
@@ -493,7 +487,6 @@ a:not([href]):not([tabindex]) {
         flex-wrap: wrap;
     }
     
-    /* ===== TABELAS PARA IMPRESSÃO ===== */
     table.th-fixo {
         margin: 0;
         width: 100%;
@@ -528,7 +521,6 @@ a:not([href]):not([tabindex]) {
         overflow-x: auto;
     }
     
-    /* ===== ELEMENTOS ESPECÍFICOS PARA IMPRESSÃO ===== */
     .print {
         display: block;
         text-align: center;

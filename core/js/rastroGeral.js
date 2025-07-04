@@ -1,43 +1,70 @@
-//const {alerta} = require("../templates/bunker/js/alerta.js");
+/**
+ * rastroGeral.js - Validações Gerais Otimizadas
+ * Versão otimizada: consolidadas validações, regex otimizados, código duplicado removido
+ */
 
+// === CONSTANTES OTIMIZADAS ===
+const VALIDATION_CONFIG = {
+    MAX_OBJECTS: 20,
+    OBJECT_LENGTH: 13,
+    CPF_LENGTH: 11,
+    CNPJ_LENGTH: 14,
+    
+    PATTERNS: {
+        CLEAN_INPUT: /[-,;. ]/g,
+        TRACKING_CODE: /^[A-Z]{2}[0-9]{9}[A-Z]{2}$/,
+        ONLY_NUMBERS: /^\d+$/
+    },
+    
+    MESSAGES: {
+        INVALID: 'Código de objeto, CPF ou CNPJ informado não está válido',
+        MAX_20: 'Por favor, informe no máximo 20 objetos',
+        EMPTY: 'Favor informar 1 código de objeto ou um CPF ou um CNPJ válido',
+        CPF_INVALID: 'O CPF informado está inválido',
+        CNPJ_INVALID: 'O CNPJ informado está inválido'
+    },
+    
+    INVALID_DOCS: {
+        CPF: [
+            '00000000000', '11111111111', '22222222222', '33333333333',
+            '44444444444', '55555555555', '66666666666', '77777777777',
+            '88888888888', '99999999999'
+        ],
+        CNPJ: [
+            '00000000000000', '11111111111111', '22222222222222', '33333333333333',
+            '44444444444444', '55555555555555', '66666666666666', '77777777777777',
+            '88888888888888', '99999999999999'
+        ]
+    }
+};
+
+/**
+ * Limpa string de entrada removendo caracteres especiais
+ */
 const limparObjetos = (strObjetos) => {
-    let objetos = '';
-    let retorno = '';
+    if (!strObjetos) return '';
+    
     try {
-        objetos = strObjetos.replace(new RegExp(';', 'g'), '');
-        objetos = objetos.replace(/(\r\n|\n|\r)/gm, '');
-        objetos = objetos.replace(new RegExp('[,]', 'g'), '');
-        objetos = objetos.replace(new RegExp('[.]', 'g'), '');
-        objetos = objetos.replace(new RegExp('[/]', 'g'), '');
-        objetos = objetos.replace(new RegExp('[ ]', 'g'), '');
-        objetos = objetos.replace(new RegExp('[:]', 'g'), '');
-        objetos = objetos.replace(new RegExp('[|]', 'g'), '');
-        objetos = objetos.replace(new RegExp('[-]', 'g'), '');
-        objetos = objetos.replace(new RegExp('[-,;. ]', 'g'), '');
-        //Retirar duplicados
-        retorno = removeDuplos(objetos);
+        let objetos = strObjetos
+            .replace(/(\r\n|\n|\r)/gm, '')
+            .replace(VALIDATION_CONFIG.PATTERNS.CLEAN_INPUT, '');
+            
+        return removeDuplos(objetos);
     } catch (e) {
-        return retorno;
+        return '';
     }
-    return retorno;
-}
+};
 
-const testarTrack = (strTrack) => {
-    let patt = new RegExp(/[a-zA-Z]{2}[0-9]{9}[a-zA-Z]{2}/);
-    for (let i = 0; i < strTrack.length; i = i + 13) {
-        if (!patt.test(strTrack.substr(i, 13))) {
-            return false;
-        }
-    }
-    return true;
-}
-
+/**
+ * Remove códigos duplicados
+ */
 const removeDuplos = (gut) => {
-    let arrayFromList = [];
+    const arrayFromList = [];
+    const { OBJECT_LENGTH } = VALIDATION_CONFIG;
 
-    for (let i = 0; i < gut.length; i = i + 13) {
-        let piece = gut.substr(i, 13);
-
+    for (let i = 0; i < gut.length; i += OBJECT_LENGTH) {
+        const piece = gut.substr(i, OBJECT_LENGTH);
+        
         if (arrayFromList.indexOf(piece) === -1) {
             arrayFromList.push(piece);
         }
@@ -46,175 +73,163 @@ const removeDuplos = (gut) => {
     return arrayFromList.join('');
 };
 
-
-const validarCodigoObjeto = (objetos, captcha) => {
-
-    const msgInvalido = 'Código de objeto, CPF ou CNPJ  informado não está válido';
-    const msgMax20 = 'Por favor, informe no máximo 20 objetos';
-    const msgVazio = 'Favor informar 1 código de objeto ou um CPF ou um CNPJ válido';
-    const msgCPFinvalido = 'O CPF informado está inválido';
-    const msgCNPJinvalido = 'O CNPJ informado está inválido';
-    let ret = {
-        'erro': false,
-        'mensagem': '',
-        'objetosLimpos': ''
-    };
-
-
-
-    const objetos_limpos = limparObjetos(objetos);
-    ret = {
-        'erro': false,
-        'mensagem': '',
-        'objetosLimpos': objetos_limpos
-    };
-    if (objetos_limpos.length === 0) {
-        ret['mensagem'] = msgVazio;
-        ret['erro'] = true;
-        return ret;
-    }
-    if (objetos_limpos.length > 260) {
-        ret['mensagem'] = msgMax20;
-        ret['erro'] = true;
-        return ret;
-    }
-    if (objetos_limpos.length === 13) {
-        if (!testarTrack(objetos_limpos)) {
-            ret['mensagem'] = msgInvalido;
-            ret['erro'] = true;
-            return ret;
+/**
+ * Testa se todos os códigos de rastreamento são válidos
+ */
+const testarTrack = (strTrack) => {
+    const { PATTERNS, OBJECT_LENGTH } = VALIDATION_CONFIG;
+    
+    for (let i = 0; i < strTrack.length; i += OBJECT_LENGTH) {
+        const codigo = strTrack.substr(i, OBJECT_LENGTH);
+        if (!PATTERNS.TRACKING_CODE.test(codigo)) {
+            return false;
         }
     }
-    if (objetos_limpos.length === 11) {
-        if (!testarCPF(objetos_limpos)) {
-            ret['mensagem'] = msgCPFinvalido;
-            ret['erro'] = true;
-            return ret;
-        }
-    }
-    if (objetos_limpos.length === 14) {
-        if (!testarCNPJ(objetos_limpos)) {
-            ret['mensagem'] = msgCNPJinvalido;
-            ret['erro'] = true;
-            return ret;
-        }
-    }
-    if ((objetos_limpos.length !== 11) && (objetos_limpos.length !== 13) && (objetos_limpos.length !== 14)) {
-        if (objetos_limpos.length % 13) {
-            ret['mensagem'] = msgInvalido;
-            ret['erro'] = true;
-            return ret;
-        } else {
-            if (testarTrack(objetos_limpos) === false) {
-                ret['mensagem'] = msgInvalido;
-                ret['erro'] = true;
-                return ret;
-            }
-        }
-    }
-    return ret;
+    return true;
+};
 
-
-
-    //limpar objetos
-}
-
-//Verifica se CPF é válido acrescido em 28/12/2017 por Taiguara Lobo.
+/**
+ * Valida dígito verificador do CPF
+ */
 const testarCPF = (strCPF) => {
-    let Soma = 0;
-    let Resto;
-
-    //strCPF  = RetiraCaracteresInvalidos(strCPF,11);
-    if (strCPF === "00000000000" ||
-        strCPF === "11111111111" ||
-        strCPF === "22222222222" ||
-        strCPF === "33333333333" ||
-        strCPF === "44444444444" ||
-        strCPF === "55555555555" ||
-        strCPF === "66666666666" ||
-        strCPF === "77777777777" ||
-        strCPF === "88888888888" ||
-        strCPF === "99999999999")
-        return false;
-    for (let i = 1; i <= 9; i++)
-        Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (11 - i);
-    Resto = (Soma * 10) % 11;
-    if ((Resto === 10) || (Resto === 11))
-        Resto = 0;
-    if (Resto !== parseInt(strCPF.substring(9, 10)))
-        return false;
-    Soma = 0;
-    for (let i = 1; i <= 10; i++)
-        Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (12 - i);
-    Resto = (Soma * 10) % 11;
-    if ((Resto === 10) || (Resto === 11))
-        Resto = 0;
-    if (Resto !== parseInt(strCPF.substring(10, 11))) {
+    const { INVALID_DOCS, CPF_LENGTH } = VALIDATION_CONFIG;
+    
+    if (strCPF.length !== CPF_LENGTH || INVALID_DOCS.CPF.includes(strCPF)) {
         return false;
     }
-    return true;
-}
 
+    // Valida primeiro dígito
+    let soma = 0;
+    for (let i = 1; i <= 9; i++) {
+        soma += parseInt(strCPF.substring(i - 1, i)) * (11 - i);
+    }
+    
+    let resto = (soma * 10) % 11;
+    if (resto === 10 || resto === 11) resto = 0;
+    if (resto !== parseInt(strCPF.substring(9, 10))) return false;
+
+    // Valida segundo dígito
+    soma = 0;
+    for (let i = 1; i <= 10; i++) {
+        soma += parseInt(strCPF.substring(i - 1, i)) * (12 - i);
+    }
+    
+    resto = (soma * 10) % 11;
+    if (resto === 10 || resto === 11) resto = 0;
+    
+    return resto === parseInt(strCPF.substring(10, 11));
+};
+
+/**
+ * Valida dígito verificador do CNPJ
+ */
 const testarCNPJ = (strCNPJ) => {
-
-    let tamanho;
-    let numeros;
-    let digitos;
-    let soma;
-    let pos;
-    let resultado;
-
-    strCNPJ = strCNPJ.replace(/[^\d]+/g, '');
-
-    if (strCNPJ === '') return false;
-
-    if (strCNPJ.length !== 14)
+    const { INVALID_DOCS, CNPJ_LENGTH } = VALIDATION_CONFIG;
+    
+    // Remove caracteres não numéricos
+    const cnpj = strCNPJ.replace(/[^\d]+/g, '');
+    
+    if (cnpj.length !== CNPJ_LENGTH || INVALID_DOCS.CNPJ.includes(cnpj)) {
         return false;
+    }
 
-    // Elimina CNPJs invalidos conhecidos
-    if (strCNPJ === "00000000000000" ||
-        strCNPJ === "11111111111111" ||
-        strCNPJ === "22222222222222" ||
-        strCNPJ === "33333333333333" ||
-        strCNPJ === "44444444444444" ||
-        strCNPJ === "55555555555555" ||
-        strCNPJ === "66666666666666" ||
-        strCNPJ === "77777777777777" ||
-        strCNPJ === "88888888888888" ||
-        strCNPJ === "99999999999999")
-        return false;
-
-    // Valida DVs
-    tamanho = strCNPJ.length - 2
-    numeros = strCNPJ.substring(0, tamanho);
-    digitos = strCNPJ.substring(tamanho);
-    soma = 0;
-    pos = tamanho - 7;
+    // Valida primeiro dígito verificador
+    let tamanho = cnpj.length - 2;
+    let numeros = cnpj.substring(0, tamanho);
+    let digitos = cnpj.substring(tamanho);
+    let soma = 0;
+    let pos = tamanho - 7;
+    
     for (let i = tamanho; i >= 1; i--) {
         soma += numeros.charAt(tamanho - i) * pos--;
-        if (pos < 2)
-            pos = 9;
+        if (pos < 2) pos = 9;
     }
-    resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-    if (resultado !== parseInt(digitos.charAt(0))) {
-        return false;
-    }
+    
+    let resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+    if (resultado !== parseInt(digitos.charAt(0))) return false;
+
+    // Valida segundo dígito verificador
     tamanho = tamanho + 1;
-    numeros = strCNPJ.substring(0, tamanho);
+    numeros = cnpj.substring(0, tamanho);
     soma = 0;
     pos = tamanho - 7;
+    
     for (let i = tamanho; i >= 1; i--) {
         soma += numeros.charAt(tamanho - i) * pos--;
-        if (pos < 2)
-            pos = 9;
+        if (pos < 2) pos = 9;
     }
+    
     resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-    if (resultado !== parseInt(digitos.charAt(1))) {
-        return false;
+    return resultado === parseInt(digitos.charAt(1));
+};
+
+/**
+ * Função principal de validação otimizada
+ */
+const validarCodigoObjeto = (objetos, captcha) => {
+    const { MESSAGES, OBJECT_LENGTH, CPF_LENGTH, CNPJ_LENGTH, MAX_OBJECTS } = VALIDATION_CONFIG;
+    
+    const objetosLimpos = limparObjetos(objetos);
+    const ret = {
+        erro: false,
+        mensagem: '',
+        objetosLimpos: objetosLimpos
+    };
+
+    // Validações básicas
+    if (objetosLimpos.length === 0) {
+        ret.mensagem = MESSAGES.EMPTY;
+        ret.erro = true;
+        return ret;
     }
-    return true;
-}
+    
+    if (objetosLimpos.length > MAX_OBJECTS * OBJECT_LENGTH) {
+        ret.mensagem = MESSAGES.MAX_20;
+        ret.erro = true;
+        return ret;
+    }
+
+    // Validação por tipo baseado no comprimento
+    switch (objetosLimpos.length) {
+        case OBJECT_LENGTH:
+            if (!testarTrack(objetosLimpos)) {
+                ret.mensagem = MESSAGES.INVALID;
+                ret.erro = true;
+            }
+            break;
+            
+        case CPF_LENGTH:
+            if (!testarCPF(objetosLimpos)) {
+                ret.mensagem = MESSAGES.CPF_INVALID;
+                ret.erro = true;
+            }
+            break;
+            
+        case CNPJ_LENGTH:
+            if (!testarCNPJ(objetosLimpos)) {
+                ret.mensagem = MESSAGES.CNPJ_INVALID;
+                ret.erro = true;
+            }
+            break;
+            
+        default:
+            // Múltiplos códigos de rastreamento
+            if (objetosLimpos.length % OBJECT_LENGTH !== 0) {
+                ret.mensagem = MESSAGES.INVALID;
+                ret.erro = true;
+            } else if (!testarTrack(objetosLimpos)) {
+                ret.mensagem = MESSAGES.INVALID;
+                ret.erro = true;
+            }
+    }
+
+    return ret;
+};
 
 export {
-    validarCodigoObjeto
+    validarCodigoObjeto,
+    limparObjetos,
+    testarTrack,
+    testarCPF,
+    testarCNPJ
 };
