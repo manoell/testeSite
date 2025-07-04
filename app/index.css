@@ -182,16 +182,16 @@ table.cards tr {
 }
 
 /* ===== CAPTCHA ===== */
-#captcha_image {
-    margin-right: 0.5em;
-    margin-bottom: 0.5em;
-    width: 80%;
+#captcha_image{
+	margin-right: 0.5em;
+	margin-bottom: 0.5em;
+	width: 80%;
 }
 
-.captcha {
-    display: flex;
-    flex-flow: column;
-    flex-wrap: nowrap;
+.captcha{
+	display: flex;
+	flex-flow: column;
+	flex-wrap: nowrap;
 }
 
 /* ===== LOCKER ===== */
@@ -328,8 +328,8 @@ a:not([href]):not([tabindex]) {
     }
     
     .captcha {
-        flex-flow: row;
-    }
+		flex-flow: row;
+	}
     
     .fa-volume-up,
     .fa-refresh {
