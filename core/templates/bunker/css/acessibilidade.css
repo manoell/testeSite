@@ -30,21 +30,18 @@
 
 /* ===== DROPDOWN ===== */
 #acess-drop-down {
-    position: absolute;
-    top: 2.25rem;
-    left: 0;
-    width: calc(100vw - 17px);
+    position: relative;
+    width: 100%;
     z-index: 2;
     background: #efedea;
     padding: 1rem;
-    max-height: calc(100vh - 2.25rem);
-    overflow: auto;
     box-shadow: 0 2px 2px #cccccc;
     display: none;
+    transition: all 0.3s ease; /* ← Animação suave */
 }
 
 body.touch #acess-drop-down {
-    width: 100vw;
+    width: 100%;
 }
 
 #acess-drop-down.aberto {

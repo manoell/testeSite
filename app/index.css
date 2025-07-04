@@ -6,6 +6,8 @@
 /* ===== FORMULÁRIO DE BUSCA ===== */
 #objeto {
     text-transform: uppercase;
+    min-height: 2.65rem; /* ← ADICIONAR ESTA LINHA */
+    line-height: normal; /* ← GARANTIR ALTURA CONSISTENTE */
 }
 
 /* ===== SEÇÃO DE BANNERS ===== */
@@ -132,6 +134,7 @@ table.cards tr {
     font-weight: bold;
     text-align: justify;
     color: #00416b;
+    margin-bottom: 0;
 }
 
 /* ===== ÍCONES E BOTÕES ===== */

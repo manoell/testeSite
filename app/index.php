@@ -18,10 +18,9 @@
           integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" 
           crossorigin="anonymous" id="bootstrap-css">
     
-    <!-- 🔄 FONT AWESOME 6.4.0 - CDN Atualizado (era v4 local) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
-          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" 
+      integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" 
+      crossorigin="anonymous">
 
     <!-- CSS LOCAIS MANTIDOS -->
     <link rel='stylesheet' href="../static/css/reset.min.css?v2.21.011">
@@ -144,7 +143,7 @@
                                         <a tabindex="-1" style="border: 0" href="#" title="Refresh Image"
                                            id="captcha_refresh_btn">
                                             <!-- 🔄 FONT AWESOME ATUALIZADO: fa → fas -->
-                                            <i class="fas fa-refresh" aria-hidden="true" onclick="this.blur()"></i>
+                                            <i class="fa fa-refresh" aria-hidden="true" onclick="this.blur()"></i>
                                         </a>
                                     </p>
                                 </div>

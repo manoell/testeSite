@@ -34,7 +34,10 @@ const showLoading = () => {
 };
 
 const registraLoading = () => {
-    document.querySelectorAll('a[href]:not([target="_blank"])')
+    // Seleciona apenas links que NÃO estão no menu lateral
+    const selector = 'a[href]:not([target="_blank"]):not(#menu .menu a)';
+    
+    document.querySelectorAll(selector)
         .forEach(link => {
             // Remove listener anterior para evitar duplicação
             link.removeEventListener('click', showLoading);

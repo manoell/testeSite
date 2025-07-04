@@ -252,6 +252,8 @@ function init() {
         }
         enterClick(link);
     });
+	
+	setupLinkClickHandlers();
     
     // PopState handler
     window.addEventListener('popstate', ev => {
@@ -305,6 +307,24 @@ function init() {
         
         enterClick(elements.menuUsuario);
     }
+}
+
+// === FECHAR MENU AO CLICAR EM LINKS ===
+function setupLinkClickHandlers() {
+    // Seleciona todos os links do menu que têm href (são clicáveis)
+    const menuLinks = elements.container.querySelectorAll('a[href]');
+    
+    menuLinks.forEach(link => {
+        link.addEventListener('click', (ev) => {
+            // Só fecha se não for link para submenu
+            if (!link.nextSibling || !link.nextSibling.nextSibling || 
+                link.nextSibling.nextSibling.tagName !== 'DIV') {
+                
+                // Fecha o menu
+                fecha();
+            }
+        });
+    });
 }
 
 init();
