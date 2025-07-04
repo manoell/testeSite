@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR">
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -8,45 +8,54 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Rastreamento</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="assets/css/reset.css">
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/contrast.css">
+    <!-- 🚀 TODAS AS BIBLIOTECAS AGORA SÃO LOCAIS - SEM CDNs EXTERNOS -->
     
-    <link rel="shortcut icon" href="assets/images/favi-ect.png" />
+    <!-- Animate.css - VERSÃO LOCAL -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap 4.6.2 - VERSÃO LOCAL -->
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+    
+    <!-- Font Awesome - VERSÃO LOCAL -->
+    <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+
+    <!-- 🎯 CSS REORGANIZADOS - NOVA ESTRUTURA OTIMIZADA -->
+    <link rel="shortcut icon" href="imgs/favi-ect.png" />
+    <link rel="stylesheet" href="css/acessibilidade.css?v2.21.011">
+    <link rel="stylesheet" href="css/topo.css?v2.21.011">
+    <link rel="stylesheet" href="css/menu.css?v2.21.011">
+    <link rel="stylesheet" href="css/container.css?v2.21.011">
+    <link rel="stylesheet" href="css/rodape.css?v2.21.011">
+
+    <!-- 🎯 DNS PREFETCH REMOVIDO - NÃO PRECISAMOS MAIS -->
 </head>
 
 <body>
-    <!-- Menu de Acessibilidade -->
     <section id="acessibilidade">
         <a tabindex="1">Acessibilidade</a>
     </section>
-    
     <div id="acess-drop-down">
         <header>
             <a class="close" tabindex="1"></a>
         </header>
         <section>
             <a tabindex="1" href="javascript:irPara.jumpTo('tabs-rastreamento');" class="conteudo numero" data-numero="1">Ir para o conteúdo</a>
-            <a tabindex="1" href="https://vlibras.gov.br" class="libras" target="_blank">Libras</a>
             <a tabindex="1" href="javascript:irPara.jumpTo('menu');" class="menu numero" data-numero="2">Ir para o menu</a>
-            <a tabindex="1" class="saiba-mais">Saiba mais sobre acessibilidade</a>
             <a tabindex="1" href="javascript:irPara.jumpTo('titulo-pagina');" class="busca numero" data-numero="3">Ir para a busca</a>
             <a tabindex="1" href="javascript:irPara.jumpTo('rodape');" class="rodape numero" data-numero="4">Ir para o rodapé</a>
             <a tabindex="1" href="javascript:window.toggleContrast();irPara.fechaMenuAcessibilidade()" class="contraste">Alto contraste</a>
+            <a tabindex="1" href="https://vlibras.gov.br" class="libras">Libras</a>
+            <a tabindex="1" class="saiba-mais">Saiba mais sobre acessibilidade</a>
         </section>
     </div>
     
-    <!-- Menu Principal -->
     <section id="menu">
         <a class="hamburger" tabindex="1"></a>
         <a class="logo" href="#"></a>
         
-        <div class="menu oculto">
+        <div class="menu">
             <section>
-                <h1>Rastreamento</h1>
+                <h1>Rastreamento <!-- 1.4.6.013 - v2.21.011 --></h1>
             </section>
             
             <a href="#">Rastreamento em outros países</a>
@@ -59,26 +68,21 @@
         </div>
     </section>
     
-    <!-- Conteúdo Principal -->
     <main>
-        <div class="container">
-            <!-- Breadcrumb -->
+      <input type="hidden" id="documento" name="documento" value="">
+	  <div class="container">
             <nav aria-label="breadcrumb">
                 <div id="trilha">
                     <a>Portal Correios</a>
                     <a>Rastreamento</a>
                 </div>
             </nav>
-            
-            <!-- Título da Página -->
-            <div class="d-flex flex-row justify-content-between" id="titulo-pagina">
-                <h3>Rastreamento</h3>
-            </div>
+            <form>
+                <div class="d-flex flex-row justify-content-between" id="titulo-pagina">
+                    <h3>Rastreamento</h3>
+                </div>
 
-            <!-- Formulário -->
-            <div class="jumbotron">
-                <form id="form-rastreamento">
-                    <!-- Campo de entrada -->
+                <div class="jumbotron">
                     <div class="campos">
                         <div class="campo">
                             <div class="rotulo">
@@ -92,35 +96,47 @@
                         </div>
                     </div>
 
-                    <!-- CAPTCHA -->
                     <div class="campos captcha">
-                        <!-- PRIMEIRA LINHA: Imagem CAPTCHA + Controles de áudio -->
                         <div class="campo">
                             <div class="controle">
-                                <img id="captcha_image" src="api/securimage/securimage_show.php" alt="CAPTCHA Image">
-                                
-                                <!-- Controles de áudio -->
+                                <img id="captcha_image"
+                                    src="../core/securimage/securimage_show.php"
+                                    alt="CAPTCHA Image">
                                 <div id="captcha_image_audio_div">
                                     <audio id="captcha_image_audio" preload="none" style="display: none">
-                                        <source id="captcha_image_source_wav" src="api/securimage/securimage_play.php" type="audio/wav">
+                                        <source id="captcha_image_source_wav"
+                                                src="../core/securimage/securimage_play.php"
+                                                type="audio/wav">
                                     </audio>
                                 </div>
-                                
                                 <div id="captcha_image_audio_controls">
-                                    <a tabindex="-1" class="captcha_play_button" href="api/securimage/securimage_play.php" onclick="return false">
-                                        <i class="fa fa-volume-up" aria-hidden="true"></i>
+                                    <a tabindex="-1" class="captcha_play_button"
+                                       href="../core/securimage/securimage_play.php"
+                                       onclick="return false">
+                                        <i class="fa fa-volume-up" aria-hidden="true" style="width: 16px"></i>
                                         <img class="captcha_loading_image rotating" height="32" width="32"
-                                             src="api/securimage/images/loading.png" alt="Loading audio" style="display: none">
+                                             src="../core/securimage/images/loading.png"
+                                             alt="Loading audio"
+                                             style="display: none">
                                     </a>
-                                    
-                                    <a tabindex="-1" style="border: 0" href="#" title="Refresh Image" id="captcha_refresh_btn">
-                                        <i class="fa fa-refresh" aria-hidden="true" onclick="this.blur()"></i>
-                                    </a>
+                                    <noscript>Enable Javascript for audio controls</noscript>
+                                    <p>
+                                        <script type="text/javascript" src="../core/securimage/securimage.js"></script>
+                                        <script type="text/javascript">
+                                            captcha_image_audioObj = new SecurimageAudio(
+                                                { audioElement: 'captcha_image_audio',
+                                                    controlsElement: 'captcha_image_audio_controls'
+                                                });
+                                        </script>
+
+                                        <a tabindex="-1" style="border: 0" href="#" title="Refresh Image"
+                                           id="captcha_refresh_btn">
+                                            <i class="fa fa-refresh" aria-hidden="true" onclick="this.blur()"></i>
+                                        </a>
+                                    </p>
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- SEGUNDA LINHA: Campo CAPTCHA + Botão -->
                         <div class="campo">
                             <div class="rotulo">
                                 <label for="captcha">Digite o texto contido na imagem</label>
@@ -132,35 +148,142 @@
                             <div class="mensagem"></div>
                         </div>
                     </div>
-                </form>
-            </div>
-            
-            <!-- Área de resultados -->
-            <div id="tabs-rastreamento"></div>
-            
+                </div>
+                <button hidden type="button" id="b-invoked" name="b-invoked"></button>
+            </form>
+            <div id="tabs-rastreamento">
+				<div id="ver-rastro-unico" style="display: block;">
+				<div id="cabecalho-rastro" class="d-flex justify-content-between">
+					<ul class="cabecalho-rastro">                
+						<div class="arrow-dashed justify-content-start">
+							<div class="circle">
+								<img class="circle-logo" src="../static/rastreamento-internet/imgs/correios-sf.png" width="35px" height="35px">
+							</div>
+						</div>
+						<div class="cabecalho-content">
+							<p class="text text-content">PREVISÃO DE ENTREGA</p>                    	
+
+						<p class="text text-content">1 a 5 dias úteis após pagamento confirmado</p><p class="text text-content"></p></div>                                                
+					</ul>        
+					<div class="share-bar noPrint">
+						<a title="Compartilhar" class="btn btn-light" href="#">
+							<i class="fa fa-share-alt" aria-hidden="true"></i>
+						</a>
+					</div>
+				</div>		
+
+
+				<ul class="ship-steps">
+					<li class="step">
+
+				<div class="arrow-current">
+					<div class="circle">
+					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/fatura-relogio-stroke.svg">            
+					</div>
+				</div>
+
+
+				<div class="step-content">
+					<p class="text text-head">Importação autorizada  pela autoridade competente - aguardando pagamento</p>
+					<p class="text text-content">CURITIBA - PR</p>
+					  <p class="text text-head"><a href="#btnRealizarPagamento"><u>REALIZAR PAGAMENTO</u></a></p>
+					<p class="text text-content"></p>
+				</div>
+
+			</li><li class="step">
+
+				<div class="arrow-current">
+					<div class="circle">
+					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/bandeira-brasil-stroke.svg">            
+					</div>
+				</div>
+
+
+				<div class="step-content">
+					<p class="text text-head">Objeto recebido pelos Correios do Brasil</p>
+					<p class="text text-content">CURITIBA - PR</p>
+
+					<p class="text text-content"></p>
+				</div>
+
+			</li><li class="step">
+
+				<div class="arrow-current">
+					<div class="circle">
+					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/documento-visto-stroke.svg">            
+					</div>
+				</div>
+
+
+				<div class="step-content">
+					<p class="text text-head">Análise concluída - importação autorizada</p>
+					<p class="text text-content">CURITIBA - PR</p>
+					  <p class="text text-head"></p>
+					<p class="text text-content"></p>
+				</div>
+
+			</li><li class="step">
+
+				<div class="arrow-current">
+					<div class="circle">
+					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/documento-encaminhar-stroke.svg">            
+					</div>
+				</div>
+
+
+				<div class="step-content">
+					<p class="text text-head">Informações enviadas para análise da autoridade aduaneira/órgãos anuentes</p>
+					<p class="text text-content">CURITIBA - PR</p>
+					  <p class="text text-head"></p>
+					<p class="text text-content"></p>
+				</div>
+
+			</li><li class="step">
+
+				<div class="arrow-none">
+					<div class="circle">
+					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/postagem-stroke.svg">            
+					</div>
+				</div>
+
+
+
+				<div class="step-content">
+					<p class="text text-head">Objeto postado</p>
+					<p class="text text-content">CHINA</p>
+
+					<p class="text text-content"></p>
+				</div>
+
+			</li>
+				</ul>
+
+					</div>
+
+
+
+					</div>
             <br>
-            
-            <!-- Carrossel de banners -->
             <div class="bannersro">
                 <div id="carouselExampleControls" class="carousel" data-ride="carousel" data-interval="10000">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <a href="#seguro" target="_blank">
                                 <picture>
-                                    <source srcset="assets/images/banners/campanha_abril_1.png" media="(max-width: 480px)" class="banner-geral">
-                                    <source srcset="assets/images/banners/campanha_abril_2.png" media="(max-width: 770px)" class="banner-geral">
-                                    <source srcset="assets/images/banners/campanha_abril_3.png" media="(max-width: 994px)" class="banner-geral">
-                                    <img src="assets/images/banners/campanha_abril_4.png" class="justify-content-center banner-geral" loading="lazy"/>
+                                    <source srcset="../static/rastreamento-internet/banners/campanha_abril_1.png?ver=v2.21.011" media="(max-width: 480px)" class="banner-geral">
+                                    <source srcset="../static/rastreamento-internet/banners/campanha_abril_2.png?ver=v2.21.011" media="(max-width: 770px)" class="banner-geral">
+                                    <source srcset="../static/rastreamento-internet/banners/campanha_abril_3.png?ver=v2.21.011" media="(max-width: 994px)" class="banner-geral">
+                                    <img src="../static/rastreamento-internet/banners/campanha_abril_4.png?ver=v2.21.011" class="justify-content-center banner-geral" loading="lazy"/>
                                 </picture>
                             </a>
                         </div>
                         <div class="carousel-item">
                             <a href="#celular" target="_blank">
                                 <picture>
-                                    <source srcset="assets/images/banners/dia_namorados1.png" media="(max-width: 480px)" class="banner-geral">
-                                    <source srcset="assets/images/banners/dia_namorados2.png" media="(max-width: 770px)" class="banner-geral">
-                                    <source srcset="assets/images/banners/dia_namorados3.png" media="(max-width: 994px)" class="banner-geral">
-                                    <img src="assets/images/banners/dia_namorados4.png" class="justify-content-center banner-geral" loading="lazy"/>
+                                    <source srcset="../static/rastreamento-internet/banners/dia_namorados1.png?ver=v2.21.011" media="(max-width: 480px)" class="banner-geral">
+                                    <source srcset="../static/rastreamento-internet/banners/dia_namorados2.png?ver=v2.21.011" media="(max-width: 770px)" class="banner-geral">
+                                    <source srcset="../static/rastreamento-internet/banners/dia_namorados3.png?ver=v2.21.011" media="(max-width: 994px)" class="banner-geral">
+                                    <img src="../static/rastreamento-internet/banners/dia_namorados4.png?ver=v2.21.011" class="justify-content-center banner-geral" loading="lazy"/>
                                 </picture>
                             </a>
                         </div>
@@ -176,53 +299,106 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Modal de compartilhamento -->
-        <div class="modal" id="modalshare" data-esc="">
-            <section>
+	  <div class="modal" id="modalshare" data-esc="">
+      <section>
                 <div class="social-media-modal noPrint">
                     <div class="social-media-modal-arrow" style="align-self: center; left: 0px;"></div>
                     <div id="msharebuttons" class="social-media-modal-wrapper" data-objeto=""></div>
                 </div>
-            </section>
-        </div>
+    </section>
+      </div>
+
+        <div id="regiao-botoes" class="oculta"></div>
     </main>
     
-    <!-- Rodapé -->
     <footer id="rodape">
         <div class="marca-gov">
-            <img src="assets/images/marca-gov.png" loading="lazy"/>
+            <img src="imgs/marca-gov.png" loading="lazy"/>
         </div>
         <p>
-            <div class="copyright"><strong>© Copyright 2025 Correios</strong></div>
+        <div class="copyright"><strong>© Copyright 2025 Correios</strong></div>
         </p>
     </footer>
     
-    <!-- Alertas e Loading -->
     <div id="alerta">
         <div class="msg"></div>
         <div class="act"></div>
     </div>
     <div id="loading"></div>
     
-    <!-- Scripts -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/securimage.js"></script>
-    <script src="assets/js/main.js"></script>
-    
-    <!-- Inicialização do CAPTCHA -->
+    <!-- 🚀 SCRIPTS LOCAIS - SEM CDNs EXTERNOS -->
+
+    <!-- jQuery 3.7.1 - VERSÃO LOCAL -->
+    <script src="lib/jquery/jquery.min.js"></script>
+
+    <!-- jQuery Mask 1.14.16 - VERSÃO LOCAL -->
+    <script src="lib/jquery-mask/jquery.mask.min.js"></script>
+
+    <!-- Bootstrap 4.6.2 JS - VERSÃO LOCAL -->
+    <script src="lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- jQuery Masked Input 1.4.1 - VERSÃO LOCAL -->
+    <script src="lib/jquery-maskedinput/jquery.maskedinput.min.js"></script>
+
+    <!-- SCRIPTS LOCAIS DO PROJETO -->
+    <script defer type="module" src="js/bunker.js?3"></script>
+    <script type="module" src="js/global.js"></script>
+
+    <!-- MÓDULOS OTIMIZADOS -->
+    <script type="module" src="js/constants.js?v2.21.011"></script>
+    <script type="module" src="js/templates.js?v2.21.011"></script>
+    <script type="module" src="js/utils.js?v2.21.011"></script>
+    <script type="module" src="js/api.js?v2.21.011"></script>
+    <script type="module" src="js/index.js?v2.21.011"></script>
+    <script type="module" src="js/irParaArchor.js?v2.21.011"></script>
+    <script type="module" src="js/high-contrast.js?v2.21.011"></script>
+
+    <!-- SCRIPTS CUSTOMIZADOS -->
     <script>
-        // Inicializa o sistema de áudio do CAPTCHA
+        // Função para mostrar loading por tempo específico
+        function showLoadingFor(seconds) {
+            const loading = document.getElementById('loading');
+            loading.classList.add('visivel');
+            
+            setTimeout(() => {
+                loading.classList.remove('visivel');
+            }, seconds * 1000);
+        }
+
+        // Função para mostrar imagem de loading do captcha por tempo específico
+        function showCaptchaLoadingFor(seconds) {
+            const captchaLoading = document.querySelector('.captcha_loading_image');
+            if (captchaLoading) {
+                captchaLoading.style.visibility = 'visible';
+                
+                setTimeout(() => {
+                    captchaLoading.style.visibility = 'hidden';
+                }, seconds * 1000);
+            }
+        }
+
+        // Event listener para o botão refresh
         document.addEventListener('DOMContentLoaded', function() {
-            if (typeof SecurimageAudio !== 'undefined') {
-                captcha_image_audioObj = new SecurimageAudio({
-                    audioElement: 'captcha_image_audio',
-                    controlsElement: 'captcha_image_audio_controls'
+            const refreshBtn = document.getElementById('captcha_refresh_btn');
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showLoadingFor(1);
+                });
+            }
+            
+            // Event listener para o botão volume-up
+            const volumeBtn = document.querySelector('.captcha_play_button');
+            if (volumeBtn) {
+                volumeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showLoadingFor(10);
+                    showCaptchaLoadingFor(1);
                 });
             }
         });
     </script>
+
 </body>
 
 </html>
