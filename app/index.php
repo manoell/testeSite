@@ -171,7 +171,7 @@
 						<p class="text text-content">1 a 5 dias úteis após pagamento confirmado</p><p class="text text-content"></p></div>                                                
 					</ul>        
 					<div class="share-bar noPrint">
-						<a title="Compartilhar" class="btn btn-light" data-objeto="ND575882651BR">
+						<a title="Compartilhar" class="btn btn-light" href="#">
 							<i class="fa fa-share-alt" aria-hidden="true"></i>
 						</a>
 					</div>
