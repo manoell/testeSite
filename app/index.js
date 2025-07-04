@@ -135,7 +135,7 @@ class TrackingSystem {
         const tipoEntrada = this.determinarTipoEntrada(valorLimpo);
         
         if (!tipoEntrada) {
-            forms.setValidade(trackingInput, 'Formato inválido. Digite um código de rastreio (13 caracteres), CPF (11 dígitos) ou CNPJ (14 dígitos)');
+            forms.setValidade(trackingInput, 'Código de objeto, CPF ou CNPJ informado não está válido');
             return;
         }
 
