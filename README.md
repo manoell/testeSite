@@ -1,9 +1,7 @@
 # Estrutura do Projeto
 
 ```
-projeto/
 ├── index.php
-├── ruxitagentjs_ICA7NVfgqrux_10315250519065025.js
 │
 ├───app
 │       .htaccess
