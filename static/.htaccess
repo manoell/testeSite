@@ -1,4 +1,4 @@
-# ===== PASTA STATIC - CONFIGURAÇÃO OTIMIZADA E COMPATÍVEL =====
+# ===== PASTA STATIC - SEM CACHE PARA DESENVOLVIMENTO =====
 
 # Desabilitar listagem de diretórios
 Options -Indexes
@@ -6,54 +6,34 @@ Options -Indexes
 # Index padrão
 DirectoryIndex index.php
 
-# ===== CACHE PARA ASSETS ESTÁTICOS =====
+# ===== DESABILITAR CACHE PARA DESENVOLVIMENTO =====
 
 <IfModule mod_expires.c>
-    ExpiresActive On
-    
-    # CSS e JS - cache longo
-    ExpiresByType text/css "access plus 6 months"
-    ExpiresByType application/javascript "access plus 6 months"
-    
-    # Imagens - cache médio para não conflitar
-    ExpiresByType image/png "access plus 3 months"
-    ExpiresByType image/jpeg "access plus 3 months"
-    ExpiresByType image/jpg "access plus 3 months"
-    ExpiresByType image/gif "access plus 3 months"
-    ExpiresByType image/svg+xml "access plus 3 months"
-    ExpiresByType image/webp "access plus 3 months"
-    ExpiresByType image/ico "access plus 3 months"
-    
-    # Fontes
-    ExpiresByType font/woff "access plus 1 year"
-    ExpiresByType font/woff2 "access plus 1 year"
-    ExpiresByType application/font-woff "access plus 1 year"
-    ExpiresByType application/font-woff2 "access plus 1 year"
-    ExpiresByType font/ttf "access plus 1 year"
-    ExpiresByType font/eot "access plus 1 year"
+    ExpiresActive Off
 </IfModule>
 
-# ===== COMPRESSÃO GZIP =====
-
-<IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/css
-    AddOutputFilterByType DEFLATE application/javascript
-    AddOutputFilterByType DEFLATE text/javascript
-    AddOutputFilterByType DEFLATE image/svg+xml
-</IfModule>
-
-# ===== HEADERS BÁSICOS =====
+# ===== HEADERS ANTI-CACHE =====
 
 <IfModule mod_headers.c>
-    # Cache headers para assets estáticos
-    <FilesMatch "\.(css|js|woff|woff2|ttf|eot)$">
-        Header set Cache-Control "public, max-age=15552000"
+    # Forçar recarregamento para JS e CSS
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
         Header unset ETag
     </FilesMatch>
     
-    # Headers mais permissivos para imagens
+    # Cache mínimo para imagens (apenas para não sobrecarregar)
     <FilesMatch "\.(png|jpg|jpeg|gif|svg|webp|ico)$">
-        Header set Cache-Control "public, max-age=7776000"
+        Header set Cache-Control "no-cache, must-revalidate, max-age=60"
+        Header set Expires "Thu, 01 Jan 1970 00:00:00 GMT"
+    </FilesMatch>
+    
+    # Fontes sem cache
+    <FilesMatch "\.(woff|woff2|ttf|eot)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
     </FilesMatch>
     
     # Segurança básica
@@ -86,11 +66,13 @@ DirectoryIndex index.php
     Require all denied
 </Files>
 
-# ===== ACESSO TOTAL PARA ASSETS =====
+# ===== ACESSO PARA ASSETS =====
 
-# Permitir todos os assets estáticos sem restrições
+# Permitir todos os assets estáticos
 <FilesMatch "\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|webp)$">
     Require all granted
-    # Permitir acesso de qualquer origem para imagens
     Header always set Access-Control-Allow-Origin "*"
 </FilesMatch>
+
+# ===== DESABILITAR ETAG =====
+FileETag None

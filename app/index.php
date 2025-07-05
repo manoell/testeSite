@@ -1,3 +1,13 @@
+<?php
+// Gerar timestamp único para evitar cache
+$timestamp = time();
+$version = "v" . $timestamp;
+
+// Headers anti-cache para a página HTML
+header('Cache-Control: no-cache, no-store, must-revalidate');
+header('Pragma: no-cache');
+header('Expires: 0');
+?>
 <!doctype html>
 <html>
 
@@ -6,33 +16,37 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta name="mobile-web-app-capable" content="yes">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- Meta tags anti-cache -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
     <title>Rastreamento</title>
 
-    <!-- 🚀 TODAS AS BIBLIOTECAS AGORA SÃO LOCAIS - SEM CDNs EXTERNOS -->
+    <!-- TODAS AS BIBLIOTECAS AGORA SÃO LOCAIS - SEM CDNs EXTERNOS -->
     
     <!-- Animate.css - VERSÃO LOCAL -->
-    <link href="../lib/animate/animate.min.css" rel="stylesheet">
+    <link href="../lib/animate/animate.min.css?<?php echo $version; ?>" rel="stylesheet">
     
     <!-- Bootstrap 4.6.2 - VERSÃO LOCAL -->
-    <link rel="stylesheet" href="../lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../lib/bootstrap/css/bootstrap.min.css?<?php echo $version; ?>">
     
     <!-- Font Awesome - VERSÃO LOCAL -->
-    <link rel="stylesheet" href="../lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../lib/font-awesome/css/font-awesome.min.css?<?php echo $version; ?>">
 
-    <!-- CSS LOCAIS MANTIDOS -->
-    <link rel='stylesheet' href="../static/css/reset.min.css?v2.21.011">
-    <link rel="shortcut icon" href="../core/templates/bunker/img/favi-ect.png" />
-    <link rel="stylesheet" href="../core/templates/bunker/css/bunker.css?v2.21.011">
-    <link rel="stylesheet" href="../static/css/global.css?v2.21.011">
-    <link rel="stylesheet" href="../static/rastreamento-internet/estilos/rastroUnico.css?v2.21.011">
-    <link rel="stylesheet" href="../static/rastreamento-internet/estilos/rastroMulti.css?v2.21.011">
-    <link rel="stylesheet" href="../static/rastreamento-internet/estilos/contrast.css?v2.21.011">
+    <!-- CSS LOCAIS COM TIMESTAMP -->
+    <link rel='stylesheet' href="../static/css/reset.min.css?<?php echo $version; ?>">
+    <link rel="shortcut icon" href="../core/templates/bunker/img/favi-ect.png?<?php echo $version; ?>" />
+    <link rel="stylesheet" href="../core/templates/bunker/css/bunker.css?<?php echo $version; ?>">
+    <link rel="stylesheet" href="../static/css/global.css?<?php echo $version; ?>">
+    <link rel="stylesheet" href="../static/rastreamento-internet/estilos/rastroUnico.css?<?php echo $version; ?>">
+    <link rel="stylesheet" href="../static/rastreamento-internet/estilos/rastroMulti.css?<?php echo $version; ?>">
+    <link rel="stylesheet" href="../static/rastreamento-internet/estilos/contrast.css?<?php echo $version; ?>">
     
     <!-- Arquivos locais da pasta /app/ -->
-    <link rel="stylesheet" href="index.css?v2.21.011">
-    <link rel="stylesheet" href="carrossel.css?v2.21.011">
-
-    <!-- 🎯 DNS PREFETCH REMOVIDO - NÃO PRECISAMOS MAIS -->
+    <link rel="stylesheet" href="index.css?<?php echo $version; ?>">
+    <link rel="stylesheet" href="carrossel.css?<?php echo $version; ?>">
 </head>
 
 <body>
@@ -60,7 +74,7 @@
         
         <div class="menu">
             <section>
-                <h1>Rastreamento <!-- 1.4.6.013 - v2.21.011 --></h1>
+                <h1>Rastreamento <!-- <?php echo $version; ?> --></h1>
             </section>
             
             <a href="#">Rastreamento em outros países</a>
@@ -88,12 +102,6 @@
                 </div>
 
                 <div class="jumbotron">
-					
-					
-					
-					
-					
-					
                     <div class="campos">
                         <div class="campo">
                             <div class="rotulo">
@@ -111,28 +119,28 @@
                         <div class="campo">
                             <div class="controle">
                                 <img id="captcha_image"
-                                    src="../core/securimage/securimage_show.php"
+                                    src="../core/securimage/securimage_show.php?<?php echo $timestamp; ?>"
                                     alt="CAPTCHA Image">
                                 <div id="captcha_image_audio_div">
                                     <audio id="captcha_image_audio" preload="none" style="display: none">
                                         <source id="captcha_image_source_wav"
-                                                src="../core/securimage/securimage_play.php"
+                                                src="../core/securimage/securimage_play.php?<?php echo $timestamp; ?>"
                                                 type="audio/wav">
                                     </audio>
                                 </div>
                                 <div id="captcha_image_audio_controls">
                                     <a tabindex="-1" class="captcha_play_button"
-                                       href="../core/securimage/securimage_play.php"
+                                       href="../core/securimage/securimage_play.php?<?php echo $timestamp; ?>"
                                        onclick="return false">
                                         <i class="fa fa-volume-up" aria-hidden="true" style="width: 16px"></i>
                                         <img class="captcha_loading_image rotating" height="32" width="32"
-                                             src="../core/securimage/images/loading.png"
+                                             src="../core/securimage/images/loading.png?<?php echo $timestamp; ?>"
                                              alt="Loading audio"
                                              style="display: none">
                                     </a>
                                     <noscript>Enable Javascript for audio controls</noscript>
                                     <p>
-                                        <script type="text/javascript" src="../core/securimage/securimage.js"></script>
+                                        <script type="text/javascript" src="../core/securimage/securimage.js?<?php echo $version; ?>"></script>
                                         <script type="text/javascript">
                                             captcha_image_audioObj = new SecurimageAudio(
                                                 { audioElement: 'captcha_image_audio',
@@ -159,10 +167,6 @@
                             <div class="mensagem"></div>
                         </div>
                     </div>
-					
-					
-					
-					
                 </div>
                 <button hidden type="button" id="b-invoked" name="b-invoked"></button>
             </form>
@@ -172,7 +176,7 @@
 					<ul class="cabecalho-rastro">                
 						<div class="arrow-dashed justify-content-start">
 							<div class="circle">
-								<img class="circle-logo" src="../static/rastreamento-internet/imgs/correios-sf.png" width="35px" height="35px">
+								<img class="circle-logo" src="../static/rastreamento-internet/imgs/correios-sf.png?<?php echo $timestamp; ?>" width="35px" height="35px">
 							</div>
 						</div>
 						<div class="cabecalho-content">
@@ -193,7 +197,7 @@
 
 				<div class="arrow-current">
 					<div class="circle">
-					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/fatura-relogio-stroke.svg">            
+					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/fatura-relogio-stroke.svg?<?php echo $timestamp; ?>">            
 					</div>
 				</div>
 
@@ -209,7 +213,7 @@
 
 				<div class="arrow-current">
 					<div class="circle">
-					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/bandeira-brasil-stroke.svg">            
+					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/bandeira-brasil-stroke.svg?<?php echo $timestamp; ?>">            
 					</div>
 				</div>
 
@@ -225,7 +229,7 @@
 
 				<div class="arrow-current">
 					<div class="circle">
-					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/documento-visto-stroke.svg">            
+					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/documento-visto-stroke.svg?<?php echo $timestamp; ?>">            
 					</div>
 				</div>
 
@@ -241,7 +245,7 @@
 
 				<div class="arrow-current">
 					<div class="circle">
-					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/documento-encaminhar-stroke.svg">            
+					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/documento-encaminhar-stroke.svg?<?php echo $timestamp; ?>">            
 					</div>
 				</div>
 
@@ -257,7 +261,7 @@
 
 				<div class="arrow-none">
 					<div class="circle">
-					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/postagem-stroke.svg">            
+					<img class="circle-img" src="../static/rastreamento-internet/imgs/novos/postagem-stroke.svg?<?php echo $timestamp; ?>">            
 					</div>
 				</div>
 
@@ -284,20 +288,20 @@
                         <div class="carousel-item active">
                             <a href="#seguro" target="_blank">
                                 <picture>
-                                    <source srcset="../static/rastreamento-internet/banners/campanha_abril_1.png?ver=v2.21.011" media="(max-width: 480px)" class="banner-geral">
-                                    <source srcset="../static/rastreamento-internet/banners/campanha_abril_2.png?ver=v2.21.011" media="(max-width: 770px)" class="banner-geral">
-                                    <source srcset="../static/rastreamento-internet/banners/campanha_abril_3.png?ver=v2.21.011" media="(max-width: 994px)" class="banner-geral">
-                                    <img src="../static/rastreamento-internet/banners/campanha_abril_4.png?ver=v2.21.011" class="justify-content-center banner-geral" loading="lazy"/>
+                                    <source srcset="../static/rastreamento-internet/banners/campanha_abril_1.png?<?php echo $version; ?>" media="(max-width: 480px)" class="banner-geral">
+                                    <source srcset="../static/rastreamento-internet/banners/campanha_abril_2.png?<?php echo $version; ?>" media="(max-width: 770px)" class="banner-geral">
+                                    <source srcset="../static/rastreamento-internet/banners/campanha_abril_3.png?<?php echo $version; ?>" media="(max-width: 994px)" class="banner-geral">
+                                    <img src="../static/rastreamento-internet/banners/campanha_abril_4.png?<?php echo $version; ?>" class="justify-content-center banner-geral" loading="lazy"/>
                                 </picture>
                             </a>
                         </div>
                         <div class="carousel-item">
                             <a href="#celular" target="_blank">
                                 <picture>
-                                    <source srcset="../static/rastreamento-internet/banners/dia_namorados1.png?ver=v2.21.011" media="(max-width: 480px)" class="banner-geral">
-                                    <source srcset="../static/rastreamento-internet/banners/dia_namorados2.png?ver=v2.21.011" media="(max-width: 770px)" class="banner-geral">
-                                    <source srcset="../static/rastreamento-internet/banners/dia_namorados3.png?ver=v2.21.011" media="(max-width: 994px)" class="banner-geral">
-                                    <img src="../static/rastreamento-internet/banners/dia_namorados4.png?ver=v2.21.011" class="justify-content-center banner-geral" loading="lazy"/>
+                                    <source srcset="../static/rastreamento-internet/banners/dia_namorados1.png?<?php echo $version; ?>" media="(max-width: 480px)" class="banner-geral">
+                                    <source srcset="../static/rastreamento-internet/banners/dia_namorados2.png?<?php echo $version; ?>" media="(max-width: 770px)" class="banner-geral">
+                                    <source srcset="../static/rastreamento-internet/banners/dia_namorados3.png?<?php echo $version; ?>" media="(max-width: 994px)" class="banner-geral">
+                                    <img src="../static/rastreamento-internet/banners/dia_namorados4.png?<?php echo $version; ?>" class="justify-content-center banner-geral" loading="lazy"/>
                                 </picture>
                             </a>
                         </div>
@@ -327,7 +331,7 @@
     
     <footer id="rodape">
         <div class="marca-gov">
-            <img src="../core/templates/bunker/img/rodape/marca-gov.png" loading="lazy"/>
+            <img src="../core/templates/bunker/img/rodape/marca-gov.png?<?php echo $timestamp; ?>" loading="lazy"/>
         </div>
         <p>
         <div class="copyright"><strong>© Copyright 2025 Correios</strong></div>
@@ -340,32 +344,32 @@
     </div>
     <div id="loading"></div>
     
-    <!-- 🚀 SCRIPTS LOCAIS - SEM CDNs EXTERNOS -->
+    <!-- SCRIPTS LOCAIS COM TIMESTAMP ANTI-CACHE -->
 
     <!-- jQuery 3.7.1 - VERSÃO LOCAL -->
-    <script src="../lib/jquery/jquery.min.js"></script>
+    <script src="../lib/jquery/jquery.min.js?<?php echo $version; ?>"></script>
 
     <!-- jQuery Mask 1.14.16 - VERSÃO LOCAL -->
-    <script src="../lib/jquery-mask/jquery.mask.min.js"></script>
+    <script src="../lib/jquery-mask/jquery.mask.min.js?<?php echo $version; ?>"></script>
 
     <!-- Bootstrap 4.6.2 JS - VERSÃO LOCAL -->
-    <script src="../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../lib/bootstrap/js/bootstrap.bundle.min.js?<?php echo $version; ?>"></script>
 
     <!-- jQuery Masked Input 1.4.1 - VERSÃO LOCAL -->
-    <script src="../lib/jquery-maskedinput/jquery.maskedinput.min.js"></script>
+    <script src="../lib/jquery-maskedinput/jquery.maskedinput.min.js?<?php echo $version; ?>"></script>
 
     <!-- SCRIPTS LOCAIS DO PROJETO -->
-    <script defer type="module" src="../core/templates/bunker/js/bunker.js?3"></script>
-    <script type="module" src="../static/js/global.js"></script>
+    <script defer type="module" src="../core/templates/bunker/js/bunker.js?<?php echo $version; ?>"></script>
+    <script type="module" src="../static/js/global.js?<?php echo $version; ?>"></script>
 
-    <!-- MÓDULOS OTIMIZADOS -->
-    <script type="module" src="constants.js?v2.21.011"></script>
-    <script type="module" src="templates.js?v2.21.011"></script>
-    <script type="module" src="utils.js?v2.21.011"></script>
-    <script type="module" src="api.js?v2.21.011"></script>
-    <script type="module" src="index.js?v2.21.011"></script>
-    <script type="module" src="irParaArchor.js?v2.21.011"></script>
-    <script type="module" src="high-contrast.js?v2.21.011"></script>
+    <!-- MÓDULOS OTIMIZADOS COM TIMESTAMP -->
+    <script type="module" src="constants.js?<?php echo $version; ?>"></script>
+    <script type="module" src="templates.js?<?php echo $version; ?>"></script>
+    <script type="module" src="utils.js?<?php echo $version; ?>"></script>
+    <script type="module" src="api.js?<?php echo $version; ?>"></script>
+    <script type="module" src="index.js?<?php echo $version; ?>"></script>
+    <script type="module" src="irParaArchor.js?<?php echo $version; ?>"></script>
+    <script type="module" src="high-contrast.js?<?php echo $version; ?>"></script>
 
     <!-- SCRIPTS CUSTOMIZADOS -->
     <script>

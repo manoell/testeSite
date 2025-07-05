@@ -1,7 +1,6 @@
 /**
  * Index.js - Arquivo Principal Otimizado com Encomenda Personalizada
- * Versão otimizada: removidos imports não utilizados, simplificado event handling
- * MODIFICADO: Adicionado sistema de consulta para CPF, CNPJ e código de rastreio
+ * Versão corrigida: Sistema de consulta para CPF, CNPJ e código de rastreio
  * NOVO: Sistema de encomenda personalizada com dados reais
  */
 
@@ -180,7 +179,7 @@ class TrackingSystem {
 			
 		} catch (error) {
 			alerta.fecha();
-			this.handleSearchError(error); // ← USAR O MÉTODO ATUALIZADO
+			this.handleSearchError(error);
 			this.refreshCaptcha();
 		}
 	}
@@ -243,434 +242,6 @@ class TrackingSystem {
         // Formatar código e atualizar título
         const codigoFormatado = this.formatarCodigoRastreio(codigo);
         this.atualizarTitulo(codigoFormatado);
-        
-        // Aqui você pode processar os dados de rastreio se necessário
-    }
-
-    async routeSearchByType(validation) {
-        const captcha = domCache.get(`#${DOM_IDS.CAPTCHA_INPUT}`).value;
-
-        try {
-            switch (validation.type) {
-                case 'TRACKING_SINGLE':
-                    await this.handleSingleTracking(validation.cleanedInput, captcha);
-                    break;
-                    
-                case 'CPF':
-                case 'CNPJ':
-                case 'CPF_ALTERNATIVE':
-                    this.handleDocumentRedirect(validation.cleanedInput, captcha);
-                    break;
-                    
-                case 'TRACKING_MULTIPLE':
-                    await this.handleMultipleTracking(validation.cleanedInput, captcha);
-                    break;
-                    
-                default:
-                    throw new Error(ERROR_MESSAGES.INVALID_CODE);
-            }
-        } catch (error) {
-            this.handleSearchError(error);
-        } finally {
-            this.refreshCaptcha();
-        }
-    }
-
-    async handleSingleTracking(codigo, captcha) {
-        alerta.abre('Buscando...');
-        
-        try {
-            this.clearTrackingResults();
-            const data = await TrackingAPI.searchSingle(codigo, captcha, 'S');
-            
-            await this.renderSingleResult(data);
-            this.setupShareButtons();
-            
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    async handleMultipleTracking(codigos, captcha) {
-        alerta.abre('Buscando...');
-        
-        try {
-            const data = await TrackingAPI.searchMultiple(codigos, captcha);
-            
-            this.renderMultipleResults(data);
-            this.setupTrackingDetailsEvents();
-            this.setupShareButtons();
-            
-            alerta.fecha();
-            
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    handleDocumentRedirect(documento, captcha) {
-        const url = URLUtils.buildURL(ENDPOINTS.LOGIN, {
-            objetos: documento,
-            captcha: captcha
-        });
-        URLUtils.redirect(url);
-    }
-
-    async renderSingleResult(data) {
-        const codigo = data.codObjeto;
-        
-        domCache.get(`#${DOM_IDS.TRACKING_INPUT}`).value = '';
-        
-        const trackingContent = this.generateSingleTrackingContent(data);
-        const buttons = this.generateTrackingButtons(data);
-        
-        const tabsElement = domCache.get(`#${DOM_IDS.TRACKING_TABS}`);
-        DOMUtils.setHTML(tabsElement, trackingContent.html + buttons.internacional + buttons.nacional);
-        
-        this.setupSingleTrackingEvents(data, trackingContent);
-        this.updatePageForSingleResult(codigo);
-        
-        alerta.fecha();
-    }
-
-    generateSingleTrackingContent(data) {
-        const header = trackingHeaderTemplate(data);
-        const trackingList = rastroUnico.ul(data);
-        const verMaisContent = rastroUnico.verMais(data);
-        
-        return viewMoreTemplate(data, verMaisContent, trackingList, true);
-    }
-
-    generateTrackingButtons(data) {
-        return {
-            internacional: botoes.btnsIntRastroUnico(data),
-            nacional: botoes.btnsNacRastroUnico(data)
-        };
-    }
-
-    setupSingleTrackingEvents(data, content) {
-        if (content.hasViewMore) {
-            const viewMoreButton = domCache.get('#a-ver-mais');
-            viewMoreButton?.addEventListener('click', this.toggleViewMore);
-        }
-        
-        const lockerButtons = domCache.getAll(SELECTORS.LOCKER_BUTTONS);
-        this.setupLockerEvents(data.codObjeto, lockerButtons);
-        
-        const printButton = domCache.get(`#${DOM_IDS.PRINT_BUTTON}`);
-        printButton?.addEventListener('click', () => this.handlePrint());
-    }
-
-    updatePageForSingleResult(codigo) {
-        const breadcrumb = domCache.get(`#${DOM_IDS.BREADCRUMB}`);
-        DOMUtils.setHTML(breadcrumb, breadcrumbTemplate(
-            'Portal Correios',
-            'Rastreamento', 
-            codigo
-        ));
-        
-        const pageTitle = domCache.get(`#${DOM_IDS.PAGE_TITLE}`);
-        DOMUtils.setHTML(pageTitle, pageTitleTemplate(
-            formatTrackingCode(codigo),
-            true
-        ));
-    }
-
-    renderMultipleResults(data) {
-        domCache.get(`#${DOM_IDS.TRACKING_INPUT}`).value = '';
-        
-        this.updatePageForMultipleResults();
-        
-        const tabsElement = domCache.get(`#${DOM_IDS.TRACKING_TABS}`);
-        DOMUtils.setHTML(tabsElement, rastroMulti.render(data, 'tabs2'));
-        
-        this.setupMultipleTrackingTabs();
-    }
-
-    updatePageForMultipleResults() {
-        const breadcrumb = domCache.get(`#${DOM_IDS.BREADCRUMB}`);
-        DOMUtils.setHTML(breadcrumb, breadcrumbTemplate(
-            'Portal Correios',
-            'Rastreamento'
-        ));
-        
-        const pageTitle = domCache.get(`#${DOM_IDS.PAGE_TITLE}`);
-        DOMUtils.setHTML(pageTitle, pageTitleTemplate('Rastreamento', true));
-    }
-
-    setupMultipleTrackingTabs() {
-        $('#multirastro-tab a').on('click', function(e) {
-            e.preventDefault();
-            const transitElement = document.getElementById('em-transito');
-            const deliveredElement = document.getElementById('entregue');
-            
-            if (transitElement && deliveredElement) {
-                $(this).tab('show');
-            }
-        });
-    }
-
-    setupTrackingDetailsEvents() {
-        const links = domCache.getAll(SELECTORS.TRACKING_LINKS);
-        links.forEach(link => {
-            link.addEventListener('click', (event) => this.handleTrackingDetails(event));
-        });
-    }
-
-    async handleTrackingDetails(event) {
-        event.preventDefault();
-        
-        const codObjeto = event.currentTarget.dataset.codobjeto;
-        const container = document.getElementById(codObjeto);
-        
-        if (!container) return;
-        
-        const icon = container.querySelector("a>i");
-        const detailsDiv = container.querySelector('div[data-name="rastrosUnicos"]');
-        const buttonDivs = container.querySelectorAll('div[data-name="barra-botoes"]');
-        
-        if (DOMUtils.hasClass(icon, "fa-plus-circle")) {
-            this.closeAllTrackingDetails();
-            icon.classList.replace("fa-plus-circle", "fa-minus-circle");
-        } else {
-            this.toggleTrackingDetails(detailsDiv, buttonDivs, icon);
-            return;
-        }
-        
-        if (!detailsDiv.innerHTML.trim()) {
-            await this.loadTrackingDetails(codObjeto, detailsDiv, buttonDivs, icon);
-        }
-        
-        this.showTrackingDetails(detailsDiv, buttonDivs);
-    }
-
-    async loadTrackingDetails(codObjeto, detailsDiv, buttonDivs, icon) {
-        if (!this.validateCaptchaField()) {
-            icon.classList.replace("fa-minus-circle", "fa-plus-circle");
-            return;
-        }
-        
-        alerta.abre('Buscando...');
-        
-        try {
-            const captcha = domCache.get(`#${DOM_IDS.CAPTCHA_INPUT}`).value;
-            const data = await TrackingAPI.searchSingle(codObjeto, captcha, 'N');
-            
-            const header = trackingHeaderTemplate(data);
-            const trackingList = rastroUnico.ul(data, 'T');
-            DOMUtils.setHTML(detailsDiv, header + trackingList);
-            
-            const buttons = botoes.btnsNacRastroUnico(data);
-            buttonDivs.forEach(div => {
-                div.innerHTML += buttons;
-            });
-            
-            const lockerButtons = container.querySelectorAll(SELECTORS.LOCKER_BUTTONS);
-            this.setupLockerEvents(codObjeto, lockerButtons);
-            
-        } catch (error) {
-            icon.classList.replace("fa-minus-circle", "fa-plus-circle");
-            this.handleSearchError(error);
-        } finally {
-            alerta.fecha();
-        }
-    }
-
-    showTrackingDetails(detailsDiv, buttonDivs) {
-        DOMUtils.removeClass(detailsDiv, CSS_CLASSES.HIDDEN);
-        
-        buttonDivs.forEach(div => {
-            if (div.innerHTML.trim()) {
-                DOMUtils.removeClass(div, CSS_CLASSES.HIDDEN);
-            }
-        });
-    }
-
-    toggleTrackingDetails(detailsDiv, buttonDivs, icon) {
-        DOMUtils.toggleClass(detailsDiv, CSS_CLASSES.HIDDEN);
-        
-        const allButtons = domCache.getAll(SELECTORS.TRACKING_BUTTONS);
-        allButtons.forEach(el => DOMUtils.addClass(el, CSS_CLASSES.HIDDEN));
-        
-        icon.classList.replace("fa-minus-circle", "fa-plus-circle");
-    }
-
-    closeAllTrackingDetails() {
-        const allButtons = domCache.getAll(SELECTORS.TRACKING_BUTTONS);
-        const allDetails = domCache.getAll(SELECTORS.TRACKING_DETAILS);
-        const allIcons = domCache.getAll(SELECTORS.OBJECT_INFO_ICONS);
-        
-        allButtons.forEach(el => DOMUtils.addClass(el, CSS_CLASSES.HIDDEN));
-        allDetails.forEach(el => DOMUtils.addClass(el, CSS_CLASSES.HIDDEN));
-        allIcons.forEach(el => {
-            el.classList.replace("fa-minus-circle", "fa-plus-circle");
-        });
-    }
-
-    setupShareButtons() {
-        const shareButtons = domCache.getAll(SELECTORS.SHARE_BUTTONS);
-        shareButtons.forEach(button => {
-            button.addEventListener('click', (event) => this.handleShare(event));
-        });
-    }
-
-    handleShare(event) {
-        const destinyDiv = document.getElementById("msharebuttons");
-        const loadedCode = destinyDiv.dataset.codigo;
-        const section = destinyDiv.closest('section');
-        const link = event.target;
-        const code = link.closest('a').dataset.objeto;
-        
-        if (code !== loadedCode) {
-            const socialContent = socialShareTemplate(code);
-            DOMUtils.setHTML(destinyDiv, socialContent);
-            destinyDiv.dataset.codigo = code;
-        }
-        
-        modal.abre('modalshare');
-        this.positionShareModal(link, section, destinyDiv);
-    }
-
-    positionShareModal(link, section, destinyDiv) {
-        const buttonOffset = link.getBoundingClientRect();
-        const sectionOffset = section.getBoundingClientRect();
-        const windowWidth = window.innerWidth;
-        const horizontalPosition = sectionOffset.left + sectionOffset.width;
-        
-        section.style.position = "absolute";
-        section.style.left = buttonOffset.left + (buttonOffset.width - sectionOffset.width) / 2 + 'px';
-        section.style.top = buttonOffset.top + buttonOffset.height + 11 + 'px';
-        
-        DOMUtils.removeClass(destinyDiv, 'vertical');
-        
-        if (horizontalPosition > windowWidth) {
-            DOMUtils.addClass(destinyDiv, 'vertical');
-        }
-    }
-
-    setupLockerEvents(codigo, buttons) {
-        if (buttons.length) {
-            buttons.forEach(button => {
-                button.addEventListener('click', () => this.showLockerQR(codigo));
-            });
-        }
-    }
-
-    async showLockerQR(codigo) {
-        try {
-            const modal1 = document.getElementById('m1');
-            
-            if (!modal1.innerHTML.length || modal1.dataset.objeto !== codigo) {
-                const data = await TrackingAPI.getLockerQR(codigo);
-                
-                let iframe = document.getElementById('ifLocker');
-                if (!modal1.getElementsByTagName('iframe').length) {
-                    iframe = document.createElement('iframe');
-                    iframe.className = 'lckrIframe';
-                    iframe.id = 'ifLocker';
-                }
-                
-                iframe.src = data.shortLinkQRCode;
-                modal1.appendChild(iframe);
-                modal1.dataset.objeto = codigo;
-            }
-            
-            modal.abre('m1');
-            
-        } catch (error) {
-            alerta.abre(error.message, 10, 'OK');
-        }
-    }
-
-    toggleViewMore() {
-        const viewMore = document.querySelector('#ver-mais');
-        const viewFull = document.querySelector('#ver-rastro-unico');
-        
-        if (viewMore && viewFull) {
-            viewMore.style.display = "none";
-            viewFull.style.display = "block";
-        }
-    }
-
-    handlePrint() {
-        const viewMore = document.querySelectorAll('#ver-mais');
-        if (viewMore.length) {
-            this.toggleViewMore();
-        }
-        window.print();
-    }
-
-    refreshCaptcha() {
-        if (typeof window.captcha_image_audioObj !== 'undefined') {
-            window.captcha_image_audioObj.refresh();
-        }
-        
-        const captchaImage = domCache.get(`#${DOM_IDS.CAPTCHA_IMAGE}`);
-        const captchaInput = domCache.get(`#${DOM_IDS.CAPTCHA_INPUT}`);
-        
-        if (captchaInput) captchaInput.value = '';
-        if (captchaImage) {
-            captchaImage.src = CaptchaAPI.refreshImage();
-            captchaImage.blur();
-        }
-    }
-
-    async handleController() {
-        try {
-            const data = await TrackingAPI.getControlData();
-            
-            if (data.form_retorno === 'rastreamento') {
-                if (data.listaObjetos?.length) {
-                    const objInput = domCache.get(`#${DOM_IDS.TRACKING_INPUT}`);
-                    if (objInput) objInput.value = data.listaObjetos;
-                }
-            } else if (data.logado) {
-                await this.handleDocumentSearch();
-            }
-            
-        } catch (error) {
-            alerta.abre(error.message, 10, 'OK');
-        }
-    }
-
-    async handleDocumentSearch() {
-        console.log('Busca por documento - funcionalidade mantida');
-    }
-
-    clearTrackingResults() {
-        const tabsElement = domCache.get(`#${DOM_IDS.TRACKING_TABS}`);
-        DOMUtils.setHTML(tabsElement, '');
-    }
-
-    handleSearchError(error) {
-		if (error.message === ERROR_MESSAGES.INVALID_CAPTCHA) {
-			const captchaInput = domCache.get(`#${DOM_IDS.CAPTCHA_INPUT}`);
-			forms.setValidade(captchaInput, ERROR_MESSAGES.INVALID_CAPTCHA);
-			// Não fechar o alerta aqui, será fechado automaticamente
-		} else {
-			alerta.abre(error.message, 10, 'OK');
-		}
-	}
-
-    // === NOVOS MÉTODOS PARA SISTEMA DE CONSULTA ===
-    
-    determinarTipoEntrada(valor) {
-        const PATTERNS = {
-            CPF: /^[0-9]{11}$/,
-            CNPJ: /^[0-9]{14}$/,
-            CODIGO_RASTREIO: /^[A-Z]{2}[0-9]{9}[A-Z]{2}$/
-        };
-
-        if (PATTERNS.CPF.test(valor)) {
-            return 'CPF';
-        }
-        if (PATTERNS.CNPJ.test(valor)) {
-            return 'CNPJ';
-        }
-        if (PATTERNS.CODIGO_RASTREIO.test(valor)) {
-            return 'CODIGO_RASTREIO';
-        }
-        return null;
     }
 
     async processarCodigoRastreio(codigo) {
@@ -722,7 +293,7 @@ class TrackingSystem {
             ultimoLink.remove();
         }
         
-        // Adiciona novo link com formatação se for CPF
+        // Adiciona novo link com formatação
         const novoLink = document.createElement('a');
         novoLink.textContent = this.formatarParaTrilha(codigo);
         trilha.appendChild(novoLink);
@@ -758,85 +329,279 @@ class TrackingSystem {
 
     // === SISTEMA DE ENCOMENDA PERSONALIZADA ===
     
-    gerarImagemEncomenda(dadosUsuario) {
-        const { nome, cpf } = dadosUsuario;
+    /**
+     * Determina a imagem da encomenda baseada no tipo e valor
+     */
+    determinarImagemEncomenda(tipo, valor) {
+        let numeroImagem = 0;
         
-        // Formatar CPF: 000.000.000-00
-        const cpfFormatado = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+        if (tipo === 'CPF') {
+            // CPF: usa o 9º dígito (posição 8)
+            numeroImagem = parseInt(valor.charAt(8)) || 0;
+        } else if (tipo === 'CNPJ') {
+            // CNPJ: usa o último dígito
+            numeroImagem = parseInt(valor.charAt(valor.length - 1)) || 0;
+        } else if (tipo === 'CODIGO_RASTREIO') {
+            // Código de rastreio: usa o primeiro número após as duas letras (posição 2)
+            numeroImagem = parseInt(valor.charAt(2)) || 0;
+        }
         
-        // Gerar código de rastreamento fictício baseado no CPF
-        const codigoRastreio = this.gerarCodigoRastreio(cpf);
+        return `../static/rastreamento-internet/imgs/encomenda${numeroImagem}.png`;
+    }
+
+    /**
+     * Gera texto formatado para a imagem
+     */
+    gerarTextoImagem(dados, tipo, valorOriginal) {
+        let textoSuperior = '';
+        let textoInferior = '';
+        
+        switch (tipo) {
+            case 'CPF':
+                const cpfFormatado = this.formatarParaTrilha(valorOriginal);
+                textoSuperior = `Destinatário:\n${dados.nome.toUpperCase()}`;
+                textoInferior = `CPF:\n${cpfFormatado}`;
+                break;
+                
+            case 'CNPJ':
+                const cnpjFormatado = this.formatarParaTrilha(valorOriginal);
+                const nomeDestinatario = dados.fantasia?.trim() ? dados.fantasia : dados.nome;
+                textoSuperior = `Destinatário:\n${nomeDestinatario.toUpperCase()}`;
+                textoInferior = `CNPJ:\n${cnpjFormatado}`;
+                break;
+                
+            case 'CODIGO_RASTREIO':
+                const codigoFormatado = this.formatarCodigoRastreio(valorOriginal);
+                textoSuperior = codigoFormatado;
+                textoInferior = '';
+                break;
+                
+            default:
+                textoSuperior = valorOriginal;
+                textoInferior = '';
+        }
+        
+        return { textoSuperior, textoInferior };
+    }
+
+    gerarImagemEncomenda(dados, tipo, valorOriginal) {
+        const imagemSrc = this.determinarImagemEncomenda(tipo, valorOriginal);
+        const { textoSuperior, textoInferior } = this.gerarTextoImagem(dados, tipo, valorOriginal);
+        
+        // Posições específicas por tipo
+        const posicoes = this.obterPosicoesPorTipo(tipo);
         
         return `
-            <div class="encomenda-personalizada" style="position: relative; display: inline-block; max-width: 100%;">
-                <img src="../static/rastreamento-internet/imgs/encomenda0.png" 
+            <div class="encomenda-personalizada" style="
+                position: relative; 
+                display: inline-block; 
+                max-width: 100%;
+                user-select: none;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+            ">
+                <img src="${imagemSrc}" 
                      alt="Encomenda" 
-                     style="width: 100%; max-width: 350px; height: auto; display: block;">
+                     style="
+                        width: 100%; 
+                        max-width: 350px; 
+                        height: auto; 
+                        display: block;
+                        user-select: none;
+                        -webkit-user-select: none;
+                        -moz-user-select: none;
+                        -ms-user-select: none;
+                        pointer-events: none;
+                     ">
                 
-                <!-- Overlay com dados personalizados - DESTINATÁRIO -->
-                <div class="dados-overlay-destinatario" style="
+                <!-- Overlay com texto superior -->
+                ${textoSuperior ? `
+                <div class="dados-overlay-superior" style="
                     position: absolute;
-                    top: 52%;
-                    left: 8%;
+                    top: ${posicoes.superior.top};
+                    left: ${posicoes.superior.left};
                     font-family: Arial, sans-serif;
                     font-size: clamp(10px, 2.5vw, 14px);
                     font-weight: bold;
                     color: #000;
                     line-height: 1.2;
-                    max-width: 85%;
+                    max-width: 80%;
                     word-wrap: break-word;
+                    white-space: pre-line;
+                    text-shadow: 0 0 1px rgba(0,0,0,0.3);
+                    filter: blur(0.3px);
+                    user-select: none;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    pointer-events: none;
                 ">
-                    ${nome.toUpperCase()}
+                    ${this.processarTextoParaMobile(textoSuperior, tipo)}
                 </div>
+                ` : ''}
                 
-                <!-- Overlay com dados personalizados - CPF -->
-                <div class="dados-overlay-cpf" style="
+                <!-- Overlay com texto inferior -->
+                ${textoInferior ? `
+                <div class="dados-overlay-inferior" style="
                     position: absolute;
-                    top: 65%;
-                    left: 8%;
+                    top: ${posicoes.inferior.top};
+                    left: ${posicoes.inferior.left};
                     font-family: Arial, sans-serif;
                     font-size: clamp(10px, 2.5vw, 14px);
                     font-weight: bold;
                     color: #000;
                     line-height: 1.2;
+                    max-width: 80%;
+                    word-wrap: break-word;
+                    white-space: pre-line;
+                    text-shadow: 0 0 1px rgba(0,0,0,0.3);
+                    filter: blur(0.3px);
+                    user-select: none;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    pointer-events: none;
                 ">
-                    ${cpfFormatado}
+                    ${this.processarTextoParaMobile(textoInferior, tipo)}
                 </div>
+                ` : ''}
                 
-                <!-- Peso da encomenda -->
-                <div class="peso-overlay" style="
-                    position: absolute;
-                    top: 26%;
-                    left: 26%;
-                    font-family: Arial, sans-serif;
-                    font-size: clamp(8px, 2vw, 12px);
-                    font-weight: bold;
-                    color: #000;
-                    transform: rotate(-8deg);
-                ">
-                    ${this.gerarPesoAleatorio()}kg
-                </div>
+                <!-- CSS responsivo para mobile -->
+                <style>
+                    /* Desktop: layout normal - span inline não quebra */
+                    .desktop-layout {
+                        display: inline;
+                        white-space: pre-line;
+                    }
+                    
+                    .mobile-layout {
+                        display: none;
+                    }
+                    
+                    @media (max-width: 768px) {
+                        .dados-overlay-superior {
+                            ${tipo === 'CPF' || tipo === 'CNPJ' ? `
+                                top: 45% !important;
+                                left: 8% !important;
+                                font-size: clamp(9px, 2.8vw, 13px) !important;
+                                white-space: normal !important;
+                            ` : `
+                                top: 48% !important;
+                                left: 90% !important;
+                            `}
+                        }
+                        
+                        .dados-overlay-inferior {
+                            ${tipo === 'CPF' || tipo === 'CNPJ' ? `
+                                top: 58% !important;
+                                left: 8% !important;
+                                font-size: clamp(9px, 2.8vw, 13px) !important;
+                                white-space: normal !important;
+                            ` : `
+                                top: 61% !important;
+                                left: 90% !important;
+                            `}
+                        }
+                        
+                        /* Mobile: mostrar layout diferenciado apenas para CPF/CNPJ */
+                        ${tipo === 'CPF' || tipo === 'CNPJ' ? `
+                            .desktop-layout {
+                                display: none !important;
+                            }
+                            
+                            .mobile-layout {
+                                display: inline !important;
+                            }
+                            
+                            .texto-mobile-label {
+                                display: inline-block;
+                                margin-right: 10px;
+                            }
+                            
+                            .texto-mobile-valor {
+                                display: inline-block;
+                                margin-left: 15px;
+                            }
+                        ` : ''}
+                    }
+                    
+                    @media (max-width: 480px) {
+                        .dados-overlay-superior {
+                            ${tipo === 'CPF' || tipo === 'CNPJ' ? `
+                                top: 46% !important;
+                                left: 6% !important;
+                                font-size: clamp(8px, 3.2vw, 12px) !important;
+                            ` : `
+                                top: 49% !important;
+                                left: 10% !important;
+                            `}
+                        }
+                        
+                        .dados-overlay-inferior {
+                            ${tipo === 'CPF' || tipo === 'CNPJ' ? `
+                                top: 59% !important;
+                                left: 6% !important;
+                                font-size: clamp(8px, 3.2vw, 12px) !important;
+                            ` : `
+                                top: 62% !important;
+                                left: 10% !important;
+                            `}
+                        }
+                        
+                        ${tipo === 'CPF' || tipo === 'CNPJ' ? `
+                            .texto-mobile-valor {
+                                margin-left: 25px !important;
+                            }
+                        ` : ''}
+                    }
+                </style>
             </div>
         `;
     }
 
-    gerarCodigoRastreio(cpf) {
-        // Usar parte do CPF para gerar código "consistente"
-        const base = cpf.substring(0, 9);
-        const letra1 = String.fromCharCode(65 + (parseInt(base.substring(0, 2)) % 26));
-        const letra2 = String.fromCharCode(65 + (parseInt(base.substring(7, 9)) % 26));
+    /**
+     * Processa texto com alinhamento diferenciado APENAS para mobile
+     */
+    processarTextoParaMobile(texto, tipo) {
+        // Se não é CPF/CNPJ, retorna normal
+        if (tipo !== 'CPF' && tipo !== 'CNPJ') {
+            return texto;
+        }
         
-        return `${letra1}${letra2}${base}BR`;
+        // Divide pelo \n para separar label e valor
+        const linhas = texto.split('\n');
+        if (linhas.length !== 2) return texto;
+        
+        const [label, valor] = linhas;
+        
+        return `<span class="desktop-layout">${texto}</span><span class="mobile-layout"><span class="texto-mobile-label">${label}</span><span class="texto-mobile-valor">${valor}</span></span>`;
+    }
+    obterPosicoesPorTipo(tipo) {
+        switch (tipo) {
+            case 'CPF':
+            case 'CNPJ':
+                return {
+                    superior: { top: '42%', left: '15%' }, // Ajuste mínimo pra baixo
+                    inferior: { top: '55%', left: '15%' }
+                };
+            
+            case 'CODIGO_RASTREIO':
+                return {
+                    superior: { top: '50%', left: '15%' }, // Mais pra baixo
+                    inferior: { top: '63%', left: '15%' }
+                };
+            
+            default:
+                return {
+                    superior: { top: '45%', left: '15%' },
+                    inferior: { top: '58%', left: '15%' }
+                };
+        }
     }
 
-    gerarPesoAleatorio() {
-        // Gerar peso entre 0.3kg e 2.5kg
-        const peso = (Math.random() * 2.2 + 0.3).toFixed(1);
-        return peso;
-    }
-
-    gerarConteudoJumbotronComImagem(dadosUsuario) {
-        const imagemEncomenda = this.gerarImagemEncomenda(dadosUsuario);
+    gerarConteudoJumbotronComImagem(dados, tipo, valorOriginal) {
+        const imagemEncomenda = this.gerarImagemEncomenda(dados, tipo, valorOriginal);
         
         return `
             <div class="campos"></div>
@@ -864,7 +629,7 @@ class TrackingSystem {
                                     </h4>
                                     
                                     <p style="margin-bottom: 10px; font-size: clamp(14px, 3vw, 16px);">
-                                        <strong>Prezado(a) ${dadosUsuario.nome},</strong>
+                                        <strong>Prezado(a) ${tipo === 'CPF' ? dados.nome : (dados.fantasia?.trim() ? dados.fantasia : dados.nome)},</strong>
                                     </p>
                                     
                                     <p style="margin-bottom: 15px; font-size: clamp(13px, 2.8vw, 15px); line-height: 1.5;">
@@ -989,60 +754,42 @@ class TrackingSystem {
         // Adicionar conteúdo específico no jumbotron
         const jumbotron = domCache.get('.jumbotron');
         if (jumbotron) {
-            let novoConteudo;
+            let novoConteudo = '';
             
             // Verificar se temos dados do usuário para personalizar
             if (window.dadosUsuario && window.dadosUsuario.nome) {
-                novoConteudo = this.gerarConteudoJumbotronComImagem(window.dadosUsuario);
+                novoConteudo = this.gerarConteudoJumbotronComImagem(
+                    window.dadosUsuario, 
+                    'CPF', 
+                    window.dadosUsuario.cpf
+                );
             } else if (window.dadosEmpresa && window.dadosEmpresa.nome) {
-                // Para CNPJ, usar nome da empresa
-                const dadosParaImagem = {
-                    nome: window.dadosEmpresa.fantasia || window.dadosEmpresa.nome,
-                    cpf: window.dadosEmpresa.cnpj.substring(0, 11) // Usar parte do CNPJ como CPF fictício
-                };
-                novoConteudo = this.gerarConteudoJumbotronComImagem(dadosParaImagem);
+                novoConteudo = this.gerarConteudoJumbotronComImagem(
+                    window.dadosEmpresa, 
+                    'CNPJ', 
+                    window.dadosEmpresa.cnpj
+                );
             } else {
-                // Fallback para conteúdo padrão
-                novoConteudo = this.gerarConteudoJumbotronPadrao();
+                // Para código de rastreio ou fallback
+                const trackingInput = domCache.get(`#${DOM_IDS.TRACKING_INPUT}`);
+                const valorOriginal = trackingInput ? trackingInput.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase() : '';
+                
+                if (valorOriginal && /^[A-Z]{2}[0-9]{9}[A-Z]{2}$/.test(valorOriginal)) {
+                    novoConteudo = this.gerarConteudoJumbotronComImagem(
+                        { nome: 'Destinatário' }, 
+                        'CODIGO_RASTREIO', 
+                        valorOriginal
+                    );
+                }
             }
             
-            DOMUtils.setHTML(jumbotron, novoConteudo);
+            if (novoConteudo) {
+                DOMUtils.setHTML(jumbotron, novoConteudo);
+            }
         }
         
         // === SCROLL INSTANTÂNEO PARA O TOPO ===
         this.scrollToTopInstant();
-    }
-
-    gerarConteudoJumbotronPadrao() {
-        return `
-            <div class="campos"></div>
-            <div class="campos captcha">
-                <div class="campo">
-                    <div class="rotulo">
-                        <label for="objeto">
-                            Prezado(a) destinatário(a),<br>
-                            Sua <span style="font-weight: bold">encomenda importada</span> foi <span style="font-weight: bold">devidamente autorizada pela Receita Federal</span> e encontra-se em nossa unidade de distribuição.<br><br>
-                            <span style="font-weight: bold">Status: </span><span style="font-weight: bold; color:red">⚠️ AGUARDANDO REGULARIZAÇÃO TRIBUTÁRIA</span><br>
-                            <span style="font-weight: bold">Prazo para regularização: <span style="color: red">⏰ 24 HORAS</span></span><br>
-                            <span style="font-weight: bold">Após o vencimento do prazo, a encomenda será <span style="color: red">devolvida ao remetente</span> conforme regulamentação dos Correios.</span>
-                        </label>
-                    </div>
-                </div>
-                <div class="campo">
-                    <div class="controle">
-                        <button type="button" id="b-realizar-pagamento" name="b-realizar-pagamento" class="btn btn-primary botao-principal">REALIZAR PAGAMENTO</button>
-                        <button type="button" id="b-voltar" name="b-voltar" class="btn btn-primary botao-principal" onclick="location.reload()">Voltar</button>
-                    </div>
-                    <div class="mensagem">
-                        <span style="font-weight: bold; color:green; font-size: clamp(14px, 4vw, 18px);">
-                            Taxa: De <span style="text-decoration: line-through;">R$ 137,50</span> por apenas R$ 55,00
-                        </span>
-                        <br><span style="font-weight: bold; color:green">Liberação imediata após confirmação via PIX</span>
-                        <br><span style="font-weight: bold; color:darkorange">Taxa promocional - desconto de 60% aplicado</span>
-                    </div>
-                </div>
-            </div>
-        `;
     }
 
     scrollToTopInstant() {
@@ -1059,6 +806,73 @@ class TrackingSystem {
         }
     }
 
+    // === NOVOS MÉTODOS PARA SISTEMA DE CONSULTA ===
+    
+    determinarTipoEntrada(valor) {
+        const PATTERNS = {
+            CPF: /^[0-9]{11}$/,
+            CNPJ: /^[0-9]{14}$/,
+            CODIGO_RASTREIO: /^[A-Z]{2}[0-9]{9}[A-Z]{2}$/
+        };
+
+        if (PATTERNS.CPF.test(valor)) {
+            return 'CPF';
+        }
+        if (PATTERNS.CNPJ.test(valor)) {
+            return 'CNPJ';
+        }
+        if (PATTERNS.CODIGO_RASTREIO.test(valor)) {
+            return 'CODIGO_RASTREIO';
+        }
+        return null;
+    }
+
+    refreshCaptcha() {
+        if (typeof window.captcha_image_audioObj !== 'undefined') {
+            window.captcha_image_audioObj.refresh();
+        }
+        
+        const captchaImage = domCache.get(`#${DOM_IDS.CAPTCHA_IMAGE}`);
+        const captchaInput = domCache.get(`#${DOM_IDS.CAPTCHA_INPUT}`);
+        
+        if (captchaInput) captchaInput.value = '';
+        if (captchaImage) {
+            captchaImage.src = CaptchaAPI.refreshImage();
+            captchaImage.blur();
+        }
+    }
+
+    async handleController() {
+        try {
+            const data = await TrackingAPI.getControlData();
+            
+            if (data.form_retorno === 'rastreamento') {
+                if (data.listaObjetos?.length) {
+                    const objInput = domCache.get(`#${DOM_IDS.TRACKING_INPUT}`);
+                    if (objInput) objInput.value = data.listaObjetos;
+                }
+            } else if (data.logado) {
+                await this.handleDocumentSearch();
+            }
+            
+        } catch (error) {
+            alerta.abre(error.message, 10, 'OK');
+        }
+    }
+
+    async handleDocumentSearch() {
+        console.log('Busca por documento - funcionalidade mantida');
+    }
+
+    handleSearchError(error) {
+		if (error.message === ERROR_MESSAGES.INVALID_CAPTCHA) {
+			const captchaInput = domCache.get(`#${DOM_IDS.CAPTCHA_INPUT}`);
+			forms.setValidade(captchaInput, ERROR_MESSAGES.INVALID_CAPTCHA);
+		} else {
+			alerta.abre(error.message, 10, 'OK');
+		}
+	}
+
     destroy() {
         apiManager.cancelAllRequests();
         domCache.clear();
@@ -1068,31 +882,6 @@ class TrackingSystem {
 // Inicialização otimizada
 document.addEventListener('DOMContentLoaded', () => {
     window.trackingSystem = new TrackingSystem();
-    
-    // === FUNÇÕES DE TESTE PARA DEBUG ===
-    window.testarConsulta = {
-        cpf: () => {
-            const input = document.getElementById('objeto');
-            if (input) {
-                input.value = '07340908897';
-                window.trackingSystem.handleSearch();
-            }
-        },
-        codigo: () => {
-            const input = document.getElementById('objeto');
-            if (input) {
-                input.value = 'ND575882651BR';
-                window.trackingSystem.handleSearch();
-            }
-        },
-        cnpj: () => {
-            const input = document.getElementById('objeto');
-            if (input) {
-                input.value = '12345678901234';
-                window.trackingSystem.handleSearch();
-            }
-        }
-    };
 });
 
 window.addEventListener('beforeunload', () => {
