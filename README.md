@@ -160,6 +160,16 @@
     │   │
     │   └───imgs
     │       │   correios-sf.png
+    │       │   encomenda0.png
+    │       │   encomenda1.png
+    │       │   encomenda2.png
+    │       │   encomenda3.png
+    │       │   encomenda4.png
+    │       │   encomenda5.png
+    │       │   encomenda6.png
+    │       │   encomenda7.png
+    │       │   encomenda8.png
+    │       │   encomenda9.png
     │       │
     │       └───novos
     │               agencia-relogio-stroke.svg
