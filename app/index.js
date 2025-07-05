@@ -353,37 +353,38 @@ class TrackingSystem {
      * Gera texto formatado para a imagem
      */
     gerarTextoImagem(dados, tipo, valorOriginal) {
-			let textoSuperior = '';
-			let textoInferior = '';
-			
-			switch (tipo) {
-				case 'CPF':
-					const cpfFormatado = this.formatarParaTrilha(valorOriginal);
-					textoSuperior = `Destinatário:\n${dados.nome.toUpperCase()}`;
-					textoInferior = `CPF:\n${cpfFormatado}`;
-					break;
-					
-				case 'CNPJ':
-					const cnpjFormatado = this.formatarParaTrilha(valorOriginal);
-					const nomeDestinatario = dados.fantasia?.trim() ? dados.fantasia : dados.nome;
-					textoSuperior = `Destinatário:\n${nomeDestinatario.toUpperCase()}`;
-					textoInferior = `CNPJ:\n${cnpjFormatado}`;
-					break;
-					
-				case 'CODIGO_RASTREIO':
-					const codigoFormatado = this.formatarCodigoRastreio(valorOriginal);
-					textoSuperior = codigoFormatado;
-					textoInferior = '';
-					break;
-					
-				default:
-					textoSuperior = valorOriginal;
-					textoInferior = '';
-			}
-			
-			return { textoSuperior, textoInferior };
+		let textoSuperior = '';
+		let textoInferior = '';
+		
+		switch (tipo) {
+			case 'CPF':
+				const cpfFormatado = this.formatarParaTrilha(valorOriginal);
+				// DESKTOP E MOBILE: Destinatário em cima, CPF embaixo
+				textoSuperior = `Destinatário:\n${dados.nome.toUpperCase()}`;
+				textoInferior = `CPF:\n${cpfFormatado}`;
+				break;
+				
+			case 'CNPJ':
+				const cnpjFormatado = this.formatarParaTrilha(valorOriginal);
+				const nomeDestinatario = dados.fantasia?.trim() ? dados.fantasia : dados.nome;
+				// DESKTOP E MOBILE: Destinatário em cima, CNPJ embaixo
+				textoSuperior = `Destinatário:\n${nomeDestinatario.toUpperCase()}`;
+				textoInferior = `CNPJ:\n${cnpjFormatado}`;
+				break;
+				
+			case 'CODIGO_RASTREIO':
+				const codigoFormatado = this.formatarCodigoRastreio(valorOriginal);
+				textoSuperior = codigoFormatado;
+				textoInferior = '';
+				break;
+				
+			default:
+				textoSuperior = valorOriginal;
+				textoInferior = '';
 		}
-
+		
+		return { textoSuperior, textoInferior };
+	}
 
 	gerarImagemEncomenda(dados, tipo, valorOriginal) {
 		const imagemSrc = this.determinarImagemEncomenda(tipo, valorOriginal);
@@ -418,7 +419,7 @@ class TrackingSystem {
 				
 				<!-- Overlay com texto superior -->
 				${textoSuperior ? `
-				<div class="dados-overlay-superior" style="
+				<div class="dados-overlay-superior texto-overlay" data-tipo="${tipo}" style="
 					position: absolute;
 					top: ${posicoes.superior.top};
 					left: ${posicoes.superior.left};
@@ -431,10 +432,6 @@ class TrackingSystem {
 					word-wrap: break-word;
 					white-space: pre-line;
 					text-shadow: 0 0 1px rgba(0,0,0,0.3);
-					filter: blur(1px) !important;
-					-webkit-filter: blur(1px) !important;
-					-moz-filter: blur(1px) !important;
-					-ms-filter: blur(1px) !important;
 					user-select: none;
 					-webkit-user-select: none;
 					-moz-user-select: none;
@@ -447,7 +444,7 @@ class TrackingSystem {
 				
 				<!-- Overlay com texto inferior -->
 				${textoInferior ? `
-				<div class="dados-overlay-inferior" style="
+				<div class="dados-overlay-inferior texto-overlay" data-tipo="${tipo}" style="
 					position: absolute;
 					top: ${posicoes.inferior.top};
 					left: ${posicoes.inferior.left};
@@ -460,10 +457,6 @@ class TrackingSystem {
 					word-wrap: break-word;
 					white-space: pre-line;
 					text-shadow: 0 0 1px rgba(0,0,0,0.3);
-					filter: blur(1px) !important;
-					-webkit-filter: blur(1px) !important;
-					-moz-filter: blur(1px) !important;
-					-ms-filter: blur(1px) !important;
 					user-select: none;
 					-webkit-user-select: none;
 					-moz-user-select: none;
@@ -474,9 +467,18 @@ class TrackingSystem {
 				</div>
 				` : ''}
 				
-				<!-- CSS QUE VOCÊ JÁ TINHA NO MOBILE - SEM ALTERAÇÃO -->
+				<!-- CSS CORRIGIDO COM LAYOUT MOBILE -->
 				<style>
-					/* === MOBILE MANTIDO EXATAMENTE IGUAL AO QUE FUNCIONAVA === */
+					/* === DESKTOP: layout padrão === */
+					.dados-overlay-superior,
+					.dados-overlay-inferior {
+						filter: blur(1px) !important;
+						-webkit-filter: blur(1px) !important;
+						-moz-filter: blur(1px) !important;
+						-ms-filter: blur(1px) !important;
+					}
+					
+					/* === MOBILE: layout invertido === */
 					@media (max-width: 768px) {
 						.encomenda-personalizada {
 							max-width: 100% !important;
@@ -487,32 +489,51 @@ class TrackingSystem {
 							max-width: 300px !important;
 						}
 
-						.dados-overlay-superior {
-							top: 53% !important;
-							left: 12% !important;
+						/* MOBILE: Agora não precisa trocar posições - ordem já está correta */
+						.dados-overlay-superior[data-tipo="CPF"],
+						.dados-overlay-superior[data-tipo="CNPJ"] {
+							top: 46% !important; /* Destinatário em cima */
+							left: 14% !important;
 							font-size: clamp(7px, 2.2vw, 10px) !important;
-							max-width: 76% !important;
+							max-width: 82% !important;
 							line-height: 1.1 !important;
-							white-space: nowrap !important;
-							overflow: hidden !important;
-							text-overflow: ellipsis !important;
-							/* MOBILE: blur 0.3px */
+							white-space: pre-line !important;
+							overflow: visible !important;
+							text-overflow: clip !important;
+							text-align: left !important;
 							filter: blur(0.3px) !important;
 							-webkit-filter: blur(0.3px) !important;
 							-moz-filter: blur(0.3px) !important;
 							-ms-filter: blur(0.3px) !important;
 						}
 						
-						.dados-overlay-inferior {
-							top: 63% !important;
+						.dados-overlay-inferior[data-tipo="CPF"],
+						.dados-overlay-inferior[data-tipo="CNPJ"] {
+							top: 62% !important; /* CPF/CNPJ embaixo */
+							left: 14% !important;
+							font-size: clamp(7px, 2.2vw, 10px) !important;
+							max-width: 82% !important;
+							line-height: 1.1 !important;
+							white-space: pre-line !important;
+							overflow: visible !important;
+							text-overflow: clip !important;
+							text-align: left !important;
+							filter: blur(0.3px) !important;
+							-webkit-filter: blur(0.3px) !important;
+							-moz-filter: blur(0.3px) !important;
+							-ms-filter: blur(0.3px) !important;
+						}
+
+						/* MOBILE: Código de rastreio mantém posição normal */
+						.dados-overlay-superior[data-tipo="CODIGO_RASTREIO"] {
+							top: 53% !important;
 							left: 12% !important;
 							font-size: clamp(7px, 2.2vw, 10px) !important;
 							max-width: 76% !important;
 							line-height: 1.1 !important;
-							white-space: nowrap !important;
+							white-space: nowrap !important; /* Mantém uma linha para código */
 							overflow: hidden !important;
 							text-overflow: ellipsis !important;
-							/* MOBILE: blur 0.3px */
 							filter: blur(0.3px) !important;
 							-webkit-filter: blur(0.3px) !important;
 							-moz-filter: blur(0.3px) !important;
@@ -525,40 +546,134 @@ class TrackingSystem {
 							max-width: 250px !important;
 						}
 
-						.dados-overlay-superior {
+						/* CPF e CNPJ: ordem natural mantida */
+						.dados-overlay-superior[data-tipo="CPF"],
+						.dados-overlay-superior[data-tipo="CNPJ"] {
+							top: 48% !important; /* Destinatário em cima */
+							left: 16% !important;
+							font-size: clamp(6px, 2vw, 9px) !important;
+							max-width: 78% !important;
+							line-height: 1.1 !important;
+							white-space: pre-line !important;
+							overflow: visible !important;
+							text-overflow: clip !important;
+							text-align: left !important;
+							filter: blur(0.3px) !important;
+							-webkit-filter: blur(0.3px) !important;
+							-moz-filter: blur(0.3px) !important;
+							-ms-filter: blur(0.3px) !important;
+						}
+						
+						.dados-overlay-inferior[data-tipo="CPF"],
+						.dados-overlay-inferior[data-tipo="CNPJ"] {
+							top: 60% !important; /* CPF/CNPJ embaixo */
+							left: 16% !important;
+							font-size: clamp(6px, 2vw, 9px) !important;
+							max-width: 78% !important;
+							line-height: 1.1 !important;
+							white-space: pre-line !important;
+							overflow: visible !important;
+							text-overflow: clip !important;
+							text-align: left !important;
+							filter: blur(0.3px) !important;
+							-webkit-filter: blur(0.3px) !important;
+							-moz-filter: blur(0.3px) !important;
+							-ms-filter: blur(0.3px) !important;
+						}
+
+						/* Código de rastreio: posição normal */
+						.dados-overlay-superior[data-tipo="CODIGO_RASTREIO"] {
 							top: 53.5% !important;
 							left: 14% !important;
 							font-size: clamp(6px, 2vw, 9px) !important;
 							max-width: 72% !important;
-						}
-						
-						.dados-overlay-inferior {
-							top: 63.5% !important;
-							left: 14% !important;
-							font-size: clamp(6px, 2vw, 9px) !important;
-							max-width: 72% !important;
+							white-space: nowrap !important; /* Mantém uma linha para código */
+							overflow: hidden !important;
+							text-overflow: ellipsis !important;
+							filter: blur(0.3px) !important;
+							-webkit-filter: blur(0.3px) !important;
+							-moz-filter: blur(0.3px) !important;
+							-ms-filter: blur(0.3px) !important;
 						}
 					}
 
 					@media (max-width: 360px) {
-						.dados-overlay-superior {
+						/* CPF e CNPJ: ordem natural mantida */
+						.dados-overlay-superior[data-tipo="CPF"],
+						.dados-overlay-superior[data-tipo="CNPJ"] {
+							top: 50% !important; /* Destinatário em cima */
+							left: 18% !important;
+							font-size: clamp(5px, 1.8vw, 8px) !important;
+							max-width: 76% !important;
+							line-height: 1.1 !important;
+							white-space: pre-line !important;
+							overflow: visible !important;
+							text-overflow: clip !important;
+							text-align: left !important;
+							filter: blur(0.3px) !important;
+							-webkit-filter: blur(0.3px) !important;
+							-moz-filter: blur(0.3px) !important;
+							-ms-filter: blur(0.3px) !important;
+						}
+						
+						.dados-overlay-inferior[data-tipo="CPF"],
+						.dados-overlay-inferior[data-tipo="CNPJ"] {
+							top: 58% !important; /* CPF/CNPJ embaixo */
+							left: 18% !important;
+							font-size: clamp(5px, 1.8vw, 8px) !important;
+							max-width: 76% !important;
+							line-height: 1.1 !important;
+							white-space: pre-line !important;
+							overflow: visible !important;
+							text-overflow: clip !important;
+							text-align: left !important;
+							filter: blur(0.3px) !important;
+							-webkit-filter: blur(0.3px) !important;
+							-moz-filter: blur(0.3px) !important;
+							-ms-filter: blur(0.3px) !important;
+						}
+
+						/* Código de rastreio: posição normal */
+						.dados-overlay-superior[data-tipo="CODIGO_RASTREIO"] {
 							top: 54% !important;
 							left: 16% !important;
 							font-size: clamp(5px, 1.8vw, 8px) !important;
 							max-width: 68% !important;
+							white-space: nowrap !important; /* Mantém uma linha para código */
+							overflow: hidden !important;
+							text-overflow: ellipsis !important;
+							filter: blur(0.3px) !important;
+							-webkit-filter: blur(0.3px) !important;
+							-moz-filter: blur(0.3px) !important;
+							-ms-filter: blur(0.3px) !important;
 						}
-						
+					}
+					
+					/* === DESKTOP MÉDIO E GRANDE === */
+					@media (min-width: 769px) {
+						.dados-overlay-superior,
 						.dados-overlay-inferior {
-							top: 64% !important;
-							left: 16% !important;
-							font-size: clamp(5px, 1.8vw, 8px) !important;
-							max-width: 68% !important;
+							filter: blur(1px) !important;
+							-webkit-filter: blur(1px) !important;
+							-moz-filter: blur(1px) !important;
+							-ms-filter: blur(1px) !important;
+						}
+					}
+					
+					@media (min-width: 1024px) {
+						.dados-overlay-superior,
+						.dados-overlay-inferior {
+							filter: blur(1.2px) !important;
+							-webkit-filter: blur(1.2px) !important;
+							-moz-filter: blur(1.2px) !important;
+							-ms-filter: blur(1.2px) !important;
 						}
 					}
 				</style>
 			</div>
 		`;
 	}
+
     /**
      * Processa texto com alinhamento diferenciado APENAS para mobile
      */
