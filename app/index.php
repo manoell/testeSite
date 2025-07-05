@@ -88,6 +88,12 @@
                 </div>
 
                 <div class="jumbotron">
+					
+					
+					
+					
+					
+					
                     <div class="campos">
                         <div class="campo">
                             <div class="rotulo">
@@ -153,6 +159,10 @@
                             <div class="mensagem"></div>
                         </div>
                     </div>
+					
+					
+					
+					
                 </div>
                 <button hidden type="button" id="b-invoked" name="b-invoked"></button>
             </form>
@@ -171,7 +181,7 @@
 						<p class="text text-content">1 a 5 dias úteis após pagamento confirmado</p><p class="text text-content"></p></div>                                                
 					</ul>        
 					<div class="share-bar noPrint">
-						<a title="Compartilhar" class="btn btn-light" href="#">
+						<a title="Compartilhar" class="btn btn-light">
 							<i class="fa fa-share-alt" aria-hidden="true"></i>
 						</a>
 					</div>

