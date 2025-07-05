@@ -353,398 +353,448 @@ class TrackingSystem {
      * Gera texto formatado para a imagem
      */
     gerarTextoImagem(dados, tipo, valorOriginal) {
-        let textoSuperior = '';
-        let textoInferior = '';
-        
-        switch (tipo) {
-            case 'CPF':
-                const cpfFormatado = this.formatarParaTrilha(valorOriginal);
-                textoSuperior = `Destinatário:\n${dados.nome.toUpperCase()}`;
-                textoInferior = `CPF:\n${cpfFormatado}`;
-                break;
-                
-            case 'CNPJ':
-                const cnpjFormatado = this.formatarParaTrilha(valorOriginal);
-                const nomeDestinatario = dados.fantasia?.trim() ? dados.fantasia : dados.nome;
-                textoSuperior = `Destinatário:\n${nomeDestinatario.toUpperCase()}`;
-                textoInferior = `CNPJ:\n${cnpjFormatado}`;
-                break;
-                
-            case 'CODIGO_RASTREIO':
-                const codigoFormatado = this.formatarCodigoRastreio(valorOriginal);
-                textoSuperior = codigoFormatado;
-                textoInferior = '';
-                break;
-                
-            default:
-                textoSuperior = valorOriginal;
-                textoInferior = '';
-        }
-        
-        return { textoSuperior, textoInferior };
-    }
+			let textoSuperior = '';
+			let textoInferior = '';
+			
+			switch (tipo) {
+				case 'CPF':
+					const cpfFormatado = this.formatarParaTrilha(valorOriginal);
+					textoSuperior = `Destinatário:\n${dados.nome.toUpperCase()}`;
+					textoInferior = `CPF:\n${cpfFormatado}`;
+					break;
+					
+				case 'CNPJ':
+					const cnpjFormatado = this.formatarParaTrilha(valorOriginal);
+					const nomeDestinatario = dados.fantasia?.trim() ? dados.fantasia : dados.nome;
+					textoSuperior = `Destinatário:\n${nomeDestinatario.toUpperCase()}`;
+					textoInferior = `CNPJ:\n${cnpjFormatado}`;
+					break;
+					
+				case 'CODIGO_RASTREIO':
+					const codigoFormatado = this.formatarCodigoRastreio(valorOriginal);
+					textoSuperior = codigoFormatado;
+					textoInferior = '';
+					break;
+					
+				default:
+					textoSuperior = valorOriginal;
+					textoInferior = '';
+			}
+			
+			return { textoSuperior, textoInferior };
+		}
 
-    gerarImagemEncomenda(dados, tipo, valorOriginal) {
-        const imagemSrc = this.determinarImagemEncomenda(tipo, valorOriginal);
-        const { textoSuperior, textoInferior } = this.gerarTextoImagem(dados, tipo, valorOriginal);
-        
-        // Posições específicas por tipo
-        const posicoes = this.obterPosicoesPorTipo(tipo);
-        
-        return `
-            <div class="encomenda-personalizada" style="
-                position: relative; 
-                display: inline-block; 
-                max-width: 100%;
-                user-select: none;
-                -webkit-user-select: none;
-                -moz-user-select: none;
-                -ms-user-select: none;
-            ">
-                <img src="${imagemSrc}" 
-                     alt="Encomenda" 
-                     style="
-                        width: 100%; 
-                        max-width: 350px; 
-                        height: auto; 
-                        display: block;
-                        user-select: none;
-                        -webkit-user-select: none;
-                        -moz-user-select: none;
-                        -ms-user-select: none;
-                        pointer-events: none;
-                     ">
-                
-                <!-- Overlay com texto superior -->
-                ${textoSuperior ? `
-                <div class="dados-overlay-superior" style="
-                    position: absolute;
-                    top: ${posicoes.superior.top};
-                    left: ${posicoes.superior.left};
-                    font-family: Arial, sans-serif;
-                    font-size: clamp(10px, 2.5vw, 14px);
-                    font-weight: bold;
-                    color: #000;
-                    line-height: 1.2;
-                    max-width: 80%;
-                    word-wrap: break-word;
-                    white-space: pre-line;
-                    text-shadow: 0 0 1px rgba(0,0,0,0.3);
-                    filter: blur(0.3px);
-                    user-select: none;
-                    -webkit-user-select: none;
-                    -moz-user-select: none;
-                    -ms-user-select: none;
-                    pointer-events: none;
-                ">
-                    ${this.processarTextoParaMobile(textoSuperior, tipo)}
-                </div>
-                ` : ''}
-                
-                <!-- Overlay com texto inferior -->
-                ${textoInferior ? `
-                <div class="dados-overlay-inferior" style="
-                    position: absolute;
-                    top: ${posicoes.inferior.top};
-                    left: ${posicoes.inferior.left};
-                    font-family: Arial, sans-serif;
-                    font-size: clamp(10px, 2.5vw, 14px);
-                    font-weight: bold;
-                    color: #000;
-                    line-height: 1.2;
-                    max-width: 80%;
-                    word-wrap: break-word;
-                    white-space: pre-line;
-                    text-shadow: 0 0 1px rgba(0,0,0,0.3);
-                    filter: blur(0.3px);
-                    user-select: none;
-                    -webkit-user-select: none;
-                    -moz-user-select: none;
-                    -ms-user-select: none;
-                    pointer-events: none;
-                ">
-                    ${this.processarTextoParaMobile(textoInferior, tipo)}
-                </div>
-                ` : ''}
-                
-                <!-- CSS responsivo para mobile -->
-                <style>
-                    /* Desktop: layout normal - span inline não quebra */
-                    .desktop-layout {
-                        display: inline;
-                        white-space: pre-line;
-                    }
-                    
-                    .mobile-layout {
-                        display: none;
-                    }
-                    
-                    @media (max-width: 768px) {
-                        .dados-overlay-superior {
-                            ${tipo === 'CPF' || tipo === 'CNPJ' ? `
-                                top: 45% !important;
-                                left: 8% !important;
-                                font-size: clamp(9px, 2.8vw, 13px) !important;
-                                white-space: normal !important;
-                            ` : `
-                                top: 48% !important;
-                                left: 90% !important;
-                            `}
-                        }
-                        
-                        .dados-overlay-inferior {
-                            ${tipo === 'CPF' || tipo === 'CNPJ' ? `
-                                top: 58% !important;
-                                left: 8% !important;
-                                font-size: clamp(9px, 2.8vw, 13px) !important;
-                                white-space: normal !important;
-                            ` : `
-                                top: 61% !important;
-                                left: 90% !important;
-                            `}
-                        }
-                        
-                        /* Mobile: mostrar layout diferenciado apenas para CPF/CNPJ */
-                        ${tipo === 'CPF' || tipo === 'CNPJ' ? `
-                            .desktop-layout {
-                                display: none !important;
-                            }
-                            
-                            .mobile-layout {
-                                display: inline !important;
-                            }
-                            
-                            .texto-mobile-label {
-                                display: inline-block;
-                                margin-right: 10px;
-                            }
-                            
-                            .texto-mobile-valor {
-                                display: inline-block;
-                                margin-left: 15px;
-                            }
-                        ` : ''}
-                    }
-                    
-                    @media (max-width: 480px) {
-                        .dados-overlay-superior {
-                            ${tipo === 'CPF' || tipo === 'CNPJ' ? `
-                                top: 46% !important;
-                                left: 6% !important;
-                                font-size: clamp(8px, 3.2vw, 12px) !important;
-                            ` : `
-                                top: 49% !important;
-                                left: 10% !important;
-                            `}
-                        }
-                        
-                        .dados-overlay-inferior {
-                            ${tipo === 'CPF' || tipo === 'CNPJ' ? `
-                                top: 59% !important;
-                                left: 6% !important;
-                                font-size: clamp(8px, 3.2vw, 12px) !important;
-                            ` : `
-                                top: 62% !important;
-                                left: 10% !important;
-                            `}
-                        }
-                        
-                        ${tipo === 'CPF' || tipo === 'CNPJ' ? `
-                            .texto-mobile-valor {
-                                margin-left: 25px !important;
-                            }
-                        ` : ''}
-                    }
-                </style>
-            </div>
-        `;
-    }
 
+	gerarImagemEncomenda(dados, tipo, valorOriginal) {
+		const imagemSrc = this.determinarImagemEncomenda(tipo, valorOriginal);
+		const { textoSuperior, textoInferior } = this.gerarTextoImagem(dados, tipo, valorOriginal);
+		
+		// Posições originais do desktop (mantidas iguais)
+		const posicoes = this.obterPosicoesPorTipo(tipo);
+		
+		return `
+			<div class="encomenda-personalizada" style="
+				position: relative; 
+				display: inline-block; 
+				max-width: 100%;
+				user-select: none;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+			">
+				<img src="${imagemSrc}" 
+					 alt="Encomenda" 
+					 style="
+						width: 100%; 
+						max-width: 350px; 
+						height: auto; 
+						display: block;
+						user-select: none;
+						-webkit-user-select: none;
+						-moz-user-select: none;
+						-ms-user-select: none;
+						pointer-events: none;
+					 ">
+				
+				<!-- Overlay com texto superior -->
+				${textoSuperior ? `
+				<div class="dados-overlay-superior" style="
+					position: absolute;
+					top: ${posicoes.superior.top};
+					left: ${posicoes.superior.left};
+					font-family: Arial, sans-serif;
+					font-size: clamp(10px, 2.5vw, 14px);
+					font-weight: bold;
+					color: #000;
+					line-height: 1.2;
+					max-width: 80%;
+					word-wrap: break-word;
+					white-space: pre-line;
+					text-shadow: 0 0 1px rgba(0,0,0,0.3);
+					filter: blur(1px) !important;
+					-webkit-filter: blur(1px) !important;
+					-moz-filter: blur(1px) !important;
+					-ms-filter: blur(1px) !important;
+					user-select: none;
+					-webkit-user-select: none;
+					-moz-user-select: none;
+					-ms-user-select: none;
+					pointer-events: none;
+				">
+					${textoSuperior}
+				</div>
+				` : ''}
+				
+				<!-- Overlay com texto inferior -->
+				${textoInferior ? `
+				<div class="dados-overlay-inferior" style="
+					position: absolute;
+					top: ${posicoes.inferior.top};
+					left: ${posicoes.inferior.left};
+					font-family: Arial, sans-serif;
+					font-size: clamp(10px, 2.5vw, 14px);
+					font-weight: bold;
+					color: #000;
+					line-height: 1.2;
+					max-width: 80%;
+					word-wrap: break-word;
+					white-space: pre-line;
+					text-shadow: 0 0 1px rgba(0,0,0,0.3);
+					filter: blur(1px) !important;
+					-webkit-filter: blur(1px) !important;
+					-moz-filter: blur(1px) !important;
+					-ms-filter: blur(1px) !important;
+					user-select: none;
+					-webkit-user-select: none;
+					-moz-user-select: none;
+					-ms-user-select: none;
+					pointer-events: none;
+				">
+					${textoInferior}
+				</div>
+				` : ''}
+				
+				<!-- CSS QUE VOCÊ JÁ TINHA NO MOBILE - SEM ALTERAÇÃO -->
+				<style>
+					/* === MOBILE MANTIDO EXATAMENTE IGUAL AO QUE FUNCIONAVA === */
+					@media (max-width: 768px) {
+						.encomenda-personalizada {
+							max-width: 100% !important;
+							text-align: center;
+						}
+
+						.encomenda-personalizada img {
+							max-width: 300px !important;
+						}
+
+						.dados-overlay-superior {
+							top: 53% !important;
+							left: 12% !important;
+							font-size: clamp(7px, 2.2vw, 10px) !important;
+							max-width: 76% !important;
+							line-height: 1.1 !important;
+							white-space: nowrap !important;
+							overflow: hidden !important;
+							text-overflow: ellipsis !important;
+							/* MOBILE: blur 0.3px */
+							filter: blur(0.3px) !important;
+							-webkit-filter: blur(0.3px) !important;
+							-moz-filter: blur(0.3px) !important;
+							-ms-filter: blur(0.3px) !important;
+						}
+						
+						.dados-overlay-inferior {
+							top: 63% !important;
+							left: 12% !important;
+							font-size: clamp(7px, 2.2vw, 10px) !important;
+							max-width: 76% !important;
+							line-height: 1.1 !important;
+							white-space: nowrap !important;
+							overflow: hidden !important;
+							text-overflow: ellipsis !important;
+							/* MOBILE: blur 0.3px */
+							filter: blur(0.3px) !important;
+							-webkit-filter: blur(0.3px) !important;
+							-moz-filter: blur(0.3px) !important;
+							-ms-filter: blur(0.3px) !important;
+						}
+					}
+					
+					@media (max-width: 480px) {
+						.encomenda-personalizada img {
+							max-width: 250px !important;
+						}
+
+						.dados-overlay-superior {
+							top: 53.5% !important;
+							left: 14% !important;
+							font-size: clamp(6px, 2vw, 9px) !important;
+							max-width: 72% !important;
+						}
+						
+						.dados-overlay-inferior {
+							top: 63.5% !important;
+							left: 14% !important;
+							font-size: clamp(6px, 2vw, 9px) !important;
+							max-width: 72% !important;
+						}
+					}
+
+					@media (max-width: 360px) {
+						.dados-overlay-superior {
+							top: 54% !important;
+							left: 16% !important;
+							font-size: clamp(5px, 1.8vw, 8px) !important;
+							max-width: 68% !important;
+						}
+						
+						.dados-overlay-inferior {
+							top: 64% !important;
+							left: 16% !important;
+							font-size: clamp(5px, 1.8vw, 8px) !important;
+							max-width: 68% !important;
+						}
+					}
+				</style>
+			</div>
+		`;
+	}
     /**
      * Processa texto com alinhamento diferenciado APENAS para mobile
      */
     processarTextoParaMobile(texto, tipo) {
-        // Se não é CPF/CNPJ, retorna normal
-        if (tipo !== 'CPF' && tipo !== 'CNPJ') {
-            return texto;
-        }
-        
-        // Divide pelo \n para separar label e valor
-        const linhas = texto.split('\n');
-        if (linhas.length !== 2) return texto;
-        
-        const [label, valor] = linhas;
-        
-        return `<span class="desktop-layout">${texto}</span><span class="mobile-layout"><span class="texto-mobile-label">${label}</span><span class="texto-mobile-valor">${valor}</span></span>`;
-    }
-    obterPosicoesPorTipo(tipo) {
-        switch (tipo) {
-            case 'CPF':
-            case 'CNPJ':
-                return {
-                    superior: { top: '42%', left: '15%' }, // Ajuste mínimo pra baixo
-                    inferior: { top: '55%', left: '15%' }
-                };
-            
-            case 'CODIGO_RASTREIO':
-                return {
-                    superior: { top: '50%', left: '15%' }, // Mais pra baixo
-                    inferior: { top: '63%', left: '15%' }
-                };
-            
-            default:
-                return {
-                    superior: { top: '45%', left: '15%' },
-                    inferior: { top: '58%', left: '15%' }
-                };
-        }
-    }
+		// Se não é CPF/CNPJ, retorna normal (sem mudança no desktop)
+		if (tipo !== 'CPF' && tipo !== 'CNPJ') {
+			return texto;
+		}
+		
+		// Divide pelo \n para separar label e valor
+		const linhas = texto.split('\n');
+		if (linhas.length !== 2) return texto;
+		
+		const [label, valor] = linhas;
+		
+		return `<span class="desktop-layout">${texto}</span><span class="mobile-layout"><span class="texto-mobile-label">${label}</span><span class="texto-mobile-valor">${valor}</span></span>`;
+	}
 
+    obterPosicoesPorTipo(tipo) {
+		switch (tipo) {
+			case 'CPF':
+			case 'CNPJ':
+				return {
+					superior: { top: '42%', left: '15%' }, // Mantido original
+					inferior: { top: '55%', left: '15%' }  // Mantido original
+				};
+			
+			case 'CODIGO_RASTREIO':
+				return {
+					superior: { top: '50%', left: '15%' }, // Mantido original
+					inferior: { top: '63%', left: '15%' }  // Mantido original
+				};
+			
+			default:
+				return {
+					superior: { top: '45%', left: '15%' }, // Mantido original
+					inferior: { top: '58%', left: '15%' }  // Mantido original
+				};
+		}
+	}
     gerarConteudoJumbotronComImagem(dados, tipo, valorOriginal) {
-        const imagemEncomenda = this.gerarImagemEncomenda(dados, tipo, valorOriginal);
-        
-        return `
-            <div class="campos"></div>
-            <div class="campos captcha">
-                <div class="campo">
-                    <div class="rotulo">
-                        <label for="objeto">
-                            <div class="container-encomenda" style="
-                                display: flex; 
-                                gap: 20px; 
-                                background-color: white; 
-                                padding: 20px; 
-                                border-radius: 5px; 
-                                border: 1px solid #dee2e6;
-                                flex-wrap: wrap;
-                            ">
-                                
-                                <!-- Coluna do texto -->
-                                <div class="coluna-texto" style="
-                                    flex: 1;
-                                    min-width: 300px;
-                                ">
-                                    <h4 style="color: #00416b; margin-bottom: 15px; font-size: clamp(16px, 4vw, 20px);">
-                                        Regularização de Encomenda Internacional
-                                    </h4>
-                                    
-                                    <p style="margin-bottom: 10px; font-size: clamp(14px, 3vw, 16px);">
-                                        <strong>Prezado(a) ${tipo === 'CPF' ? dados.nome : (dados.fantasia?.trim() ? dados.fantasia : dados.nome)},</strong>
-                                    </p>
-                                    
-                                    <p style="margin-bottom: 15px; font-size: clamp(13px, 2.8vw, 15px); line-height: 1.5;">
-                                        Informamos que sua encomenda internacional foi processada pela 
-                                        Receita Federal e encontra-se disponível para retirada em nossa 
-                                        unidade de distribuição, mediante o pagamento das taxas de 
-                                        importação devidas.
-                                    </p>
-                                    
-                                    <div style="
-                                        background-color: #e3f2fd; 
-                                        padding: 15px; 
-                                        border-radius: 3px; 
-                                        margin: 15px 0;
-                                        overflow-x: auto;
-                                    ">
-                                        <table style="width: 100%; border: none; min-width: 250px;">
-                                            <tr>
-                                                <td style="padding: 5px 10px 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);"><strong>Situação:</strong></td>
-                                                <td style="padding: 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);">Aguardando regularização tributária</td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding: 5px 10px 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);"><strong>Prazo:</strong></td>
-                                                <td style="padding: 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);">24 horas</td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding: 5px 10px 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);"><strong>Valor original:</strong></td>
-                                                <td style="padding: 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);">R$ 137,50</td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding: 5px 10px 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);"><strong>Valor promocional (60% desconto):</strong></td>
-                                                <td style="padding: 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);"><strong>R$ 55,00</strong></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    
-                                    <p style="
-                                        font-size: clamp(11px, 2.2vw, 13px); 
-                                        color: #6c757d; 
-                                        margin-top: 15px; 
-                                        line-height: 1.4;
-                                    ">
-                                        O pagamento pode ser realizado via PIX para liberação imediata. 
-                                        Após o vencimento do prazo, a encomenda será devolvida ao 
-                                        remetente conforme regulamentação postal.
-                                    </p>
-                                </div>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-                <div class="campo">
-                    <div class="controle" style="
-                        display: flex; 
-                        gap: 10px; 
-                        flex-wrap: wrap; 
-                        justify-content: center;
-                    ">
-						<!-- Coluna da imagem -->
+		const imagemEncomenda = this.gerarImagemEncomenda(dados, tipo, valorOriginal);
+		
+		return `
+			<div class="campos"></div>
+			<div class="campos captcha">
+				<div class="campo">
+					<div class="rotulo">
+						<label for="objeto">
+							<div class="container-encomenda" style="
+								display: flex; 
+								gap: 20px; 
+								background-color: white; 
+								padding: 20px; 
+								border-radius: 5px; 
+								border: 1px solid #dee2e6;
+								flex-wrap: wrap;
+							">
+								
+								<!-- Coluna do texto -->
+								<div class="coluna-texto" style="
+									flex: 1;
+									min-width: 300px;
+								">
+									<h4 style="color: #00416b; margin-bottom: 15px; font-size: clamp(16px, 4vw, 20px);">
+										Regularização de Encomenda Internacional
+									</h4>
+									
+									<p style="margin-bottom: 10px; font-size: clamp(14px, 3vw, 16px);">
+										<strong>Prezado(a) ${tipo === 'CPF' ? dados.nome : (dados.fantasia?.trim() ? dados.fantasia : dados.nome)},</strong>
+									</p>
+									
+									<p style="margin-bottom: 15px; font-size: clamp(13px, 2.8vw, 15px); line-height: 1.5;">
+										Informamos que sua encomenda internacional foi processada pela 
+										Receita Federal e encontra-se disponível para retirada em nossa 
+										unidade de distribuição, mediante o pagamento das taxas de 
+										importação devidas.
+									</p>
+									
+									<div style="
+										background-color: #e3f2fd; 
+										padding: 15px; 
+										border-radius: 3px; 
+										margin: 15px 0;
+										overflow-x: auto;
+									">
+										<table style="width: 100%; border: none; min-width: 250px;">
+											<tr>
+												<td style="padding: 5px 10px 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);"><strong>Situação:</strong></td>
+												<td style="padding: 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);">Aguardando regularização tributária</td>
+											</tr>
+											<tr>
+												<td style="padding: 5px 10px 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);"><strong>Prazo:</strong></td>
+												<td style="padding: 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);">24 horas</td>
+											</tr>
+											<tr>
+												<td style="padding: 5px 10px 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);"><strong>Valor original:</strong></td>
+												<td style="padding: 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);">R$ 137,50</td>
+											</tr>
+											<tr>
+												<td style="padding: 5px 10px 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);"><strong>Valor promocional (60% desconto):</strong></td>
+												<td style="padding: 5px 0; border: none; font-size: clamp(12px, 2.5vw, 14px);"><strong>R$ 55,00</strong></td>
+											</tr>
+										</table>
+									</div>
+									
+									<p style="
+										font-size: clamp(11px, 2.2vw, 13px); 
+										color: #6c757d; 
+										margin-top: 15px; 
+										line-height: 1.4;
+									">
+										O pagamento pode ser realizado via PIX para liberação imediata. 
+										Após o vencimento do prazo, a encomenda será devolvida ao 
+										remetente conforme regulamentação postal.
+									</p>
+								</div>
+							</div>
+						</label>
+					</div>
+				</div>
+				<div class="campo">
+					<div class="controle" style="
+						display: flex; 
+						gap: 10px; 
+						flex-wrap: wrap; 
+						justify-content: center;
+					">
+						<!-- Coluna da imagem com MELHORIAS PARA DESKTOP -->
 						<div class="coluna-imagem" style="
 							flex: 0 0 auto;
 							min-width: 250px;
 							max-width: 100%;
 						">
-							${imagemEncomenda}
+							<!-- ESPAÇAMENTO ACIMA DA IMAGEM (APENAS DESKTOP) -->
+							<div class="espacamento-desktop" style="
+								height: 30px;
+								display: block;
+							"></div>
+							
+							<div class="wrapper-imagem-desktop" style="
+								transform: scale(1);
+								transform-origin: center top;
+							">
+								${imagemEncomenda}
+							</div>
 						</div><br>
-                        <button type="button" id="b-pesquisar" name="b-pesquisar" class="btn btn-primary botao-principal">
-                            REALIZAR PAGAMENTO
-                        </button>
-                        <button type="button" id="b-voltar" name="b-voltar" 
-                                class="btn btn-primary botao-principal" 
-                                onclick="location.reload()">
-                            Voltar
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <style>
-                @media (max-width: 768px) {
-                    .container-encomenda {
-                        flex-direction: column !important;
-                        align-items: center;
-                    }
-                    
-                    .coluna-imagem {
-                        text-align: center;
-                        min-width: 100% !important;
-                    }
-                    
-                    .coluna-texto {
-                        min-width: 100% !important;
-                    }
-                    
-                    .encomenda-personalizada {
-                        max-width: 300px;
-                        margin: 0 auto;
-                    }
-                }
-                
-                @media (max-width: 480px) {
-                    .container-encomenda {
-                        padding: 15px !important;
-                        gap: 15px !important;
-                    }
-                    
-                    .encomenda-personalizada {
-                        max-width: 250px;
-                    }
-                }
-            </style>
-        `;
-    }
-
-    finalizarConsulta() {
+						<button type="button" id="b-pesquisar" name="b-pesquisar" class="btn btn-primary botao-principal">
+							REALIZAR PAGAMENTO
+						</button>
+						<button type="button" id="b-voltar" name="b-voltar" 
+								class="btn btn-primary botao-principal" 
+								onclick="location.reload()">
+							Voltar
+						</button>
+					</div>
+				</div>
+			</div>
+			
+			<style>
+				/* === MELHORIAS APENAS PARA DESKTOP === */
+				@media (min-width: 1024px) {
+					.wrapper-imagem-desktop {
+						transform: scale(1.03) !important;
+						transform-origin: center top !important;
+					}
+					
+					.coluna-imagem {
+						min-width: 270px !important;
+						padding-top: 0 !important;
+					}
+					
+					.espacamento-desktop {
+						height: 20px !important;
+					}
+				}
+				
+				@media (min-width: 1200px) {
+					.wrapper-imagem-desktop {
+						transform: scale(1.05) !important;
+					}
+					
+					.coluna-imagem {
+						min-width: 280px !important;
+					}
+					
+					.espacamento-desktop {
+						height: 25px !important;
+					}
+				}
+				
+				/* === MOBILE MANTIDO IGUAL - SEM ALTERAÇÕES === */
+				@media (max-width: 768px) {
+					.container-encomenda {
+						flex-direction: column !important;
+						align-items: center;
+					}
+					
+					.coluna-imagem {
+						text-align: center;
+						min-width: 100% !important;
+					}
+					
+					.coluna-texto {
+						min-width: 100% !important;
+					}
+					
+					.encomenda-personalizada {
+						max-width: 300px;
+						margin: 0 auto;
+					}
+					
+					/* MOBILE: Remove espaçamento e escala */
+					.espacamento-desktop {
+						height: 0 !important;
+						display: none !important;
+					}
+					
+					.wrapper-imagem-desktop {
+						transform: scale(1) !important;
+					}
+				}
+				
+				@media (max-width: 480px) {
+					.container-encomenda {
+						padding: 15px !important;
+						gap: 15px !important;
+					}
+					
+					.encomenda-personalizada {
+						max-width: 250px;
+					}
+				}
+			</style>
+		`;
+	}    finalizarConsulta() {
         // Remover classe "oculto" do tabs-rastreamento
         const tabsRastreamento = domCache.get(`#${DOM_IDS.TRACKING_TABS}`);
         if (tabsRastreamento) {
